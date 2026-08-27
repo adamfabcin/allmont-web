@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ALL MONT · Plastové okná a dvere, Nitra</title>
+<meta name="description" content="Dodávka a montáž plastových a hliníkových okien, vchodových dverí, parapetných dosiek a príslušenstva. Poradenstvo a zameranie zdarma. Nitra, Levice, Bratislava a celé Slovensko.">
+<meta name="theme-color" content="#0F2233">
+<link rel="icon" type="image/svg+xml" href="assets/allmont-icon.svg">
+<!-- DEPLOY STEP: og:url a og:image doplniť absolútnou live adresou -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="ALL MONT · Plastové okná a dvere, Nitra">
+<meta property="og:description" content="Dodávka a montáž plastových a hliníkových okien. Poradenstvo a zameranie zdarma.">
+<meta property="og:url" content="https://REPLACE-AT-DEPLOY/">
+<meta property="og:image" content="https://REPLACE-AT-DEPLOY/assets/hero-ending.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap">
+<style>
+/* ==========================================================================
+   ALL MONT, tokeny podľa dizajn manuálu značky, verzia 1.0
+   Azúrová je akcent, nie pozadie. Pomer plôch 60 hmla / 25 námorná / 12 azúrová.
+   Žiadne gradienty na plochách.
+   ========================================================================== */
+:root{
+  --canvas:#EEF1F4;
+  --panel:#FFFFFF;
+  --ink:#0F2233;
+  --ink-2:#16293C;
+  --line-dark:#33506B;
+  --line-dark-2:#5B7C99;
+  --accent:#1E6FD9;
+  --accent-hover:#1A5FBB;
+  --accent-muted:#8FC1F2;
+  --text-primary:#0F2233;
+  --text-secondary:#4A5D6E;
+  --line:#D7DEE4;
+  --sans:"Helvetica Neue",Helvetica,"Inter Tight",Inter,Arial,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --pad:clamp(20px,5vw,72px);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{overflow-x:hidden;overflow-x:clip}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;font-family:var(--sans)}
+body{
+  margin:0;background:var(--canvas);color:var(--text-primary);
+  font-family:var(--sans);font-weight:400;font-size:clamp(1rem,.96rem + .2vw,1.0625rem);
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-weight:700;letter-spacing:-.025em;line-height:1.06;margin:0;text-wrap:balance}
+h1{font-size:clamp(2rem,1.2rem + 3.6vw,3.9rem);letter-spacing:-.032em}
+h2{font-size:clamp(1.7rem,1.1rem + 2.4vw,2.9rem);letter-spacing:-.03em}
+h3{font-size:clamp(1.0625rem,1rem + .45vw,1.35rem);letter-spacing:-.02em}
+p{margin:0}
+a{color:inherit}
+img,svg{max-width:100%;display:block}
+ul,ol{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit}
+.lede{font-size:clamp(1.0625rem,1rem + .45vw,1.28rem);line-height:1.55;color:var(--text-secondary);max-width:62ch}
+.label{font-weight:500;font-size:.6875rem;text-transform:uppercase;letter-spacing:.11em;color:var(--text-secondary)}
+.data{font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--accent);color:#fff;padding:12px 18px;font-weight:500}
+.skip:focus{left:12px;top:12px}
+
+/* ---------- tlačidlá ---------- */
+.btn{
+  display:inline-block;padding:15px 26px;font-weight:500;font-size:.9375rem;
+  letter-spacing:-.01em;text-decoration:none;border:1px solid transparent;cursor:pointer;
+  transition:background-color .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease),transform .3s var(--ease);
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-hover);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+@media (pointer:coarse){.btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center}}
+
+/* ---------- horná lišta nad videom ---------- */
+.topbar{
+  position:absolute;top:0;left:0;right:0;z-index:30;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:clamp(16px,2.4vw,30px) var(--pad);
+}
+.topbar img{width:clamp(168px,17vw,206px);height:auto}
+.topbar .tel{font-weight:500;font-size:.8125rem;color:#fff;text-decoration:none;letter-spacing:.02em}
+.topbar .tel:hover{color:var(--accent-muted)}
+@media (max-width:720px){.topbar .tel{display:none}}
+
+/* ---------- pevná navigácia ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;background:var(--panel);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:clamp(12px,3vw,40px);
+  padding:12px var(--pad);
+  transform:translateY(-101%);transition:transform .55s var(--ease-out);
+}
+.nav.on{transform:translateY(0)}
+.nav img{width:168px;height:auto}
+.nav ul{display:flex;gap:clamp(14px,2vw,30px);align-items:baseline}
+.nav a.lnk{font-size:.9375rem;font-weight:500;text-decoration:none;color:#3A4B5C;
+  transition:color .25s var(--ease)}
+.nav a.lnk:hover{color:var(--accent)}
+.nav .btn{padding:11px 20px;font-size:.875rem}
+@media (max-width:1000px){.nav ul{display:none}}
+
+/* ==========================================================================
+   INTRO, pripnuté video riadené scrollom.
+   Dva titulky, jednoduché objavenie sa, bez tieňa.
+   Končí plynulým prechodom do plochy stránky.
+   ========================================================================== */
+.hero{position:relative;height:1500vh;background:var(--ink)}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--ink)}
+.stage .poster,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage .poster{background-size:cover;background-position:50% 50%;background-repeat:no-repeat}
+.stage video{opacity:0;transition:opacity .8s var(--ease);transform:translateZ(0);will-change:transform}
+.stage.video-ready video{opacity:1}
+.stage.video-failed video{display:none}
+
+/* Titulky. Farba a podklad sú určené meraním jasu presne v mieste textu:
+   1 a 2 ležia na tmavom zábere (jas 34 a 36), takže biely text má 15:1 a nepotrebuje nič.
+   3 leží na jase 105, biely text so stmavením.
+   4 a 5 ležia na jase 166 a 180, tmavý text s teplým presvetlením.
+   Žiadny tieň pod písmom, žiadny obrys. */
+.caps{position:absolute;inset:0;z-index:14;pointer-events:none}
+.cap{position:absolute;left:var(--pad);top:50%;transform:translateY(-50%);
+  width:min(27ch,43vw);opacity:0}
+.cap .h{font-size:clamp(1.85rem,1.05rem + 3.05vw,3.6rem);font-weight:700;
+  letter-spacing:-.034em;line-height:1.05}
+.cap{color:#fff}
+/* Jeden jemný závoj na všetkých piatich. Meranie: v mieste textu prechádza
+   svetelný pruh, ktorý v najhoršom bode zráža kontrast bielej na 1,2:1.
+   Závoj to drží nad normou a na tmavých záberoch ho takmer nevidno. */
+.cap::before{content:"";position:absolute;inset:-44% -48%;z-index:-1;
+  background:radial-gradient(ellipse 64% 52% at 50% 50%,rgba(6,10,16,.45) 0%,rgba(6,10,16,.35) 32%,rgba(6,10,16,.19) 56%,rgba(6,10,16,.06) 76%,rgba(6,10,16,0) 92%)}
+
+/* prechod do plochy stránky na konci intra */
+.veil{position:absolute;inset:0;z-index:20;pointer-events:none;background:var(--canvas);opacity:0}
+
+/* načítavací krúžok */
+.ring{position:absolute;right:var(--pad);bottom:var(--pad);width:42px;height:42px;color:#fff;
+  opacity:.85;transition:opacity .4s var(--ease);z-index:15}
+.ring circle{transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .12s linear}
+.stage.video-ready .ring{opacity:0}
+
+/* Nápoveda a ukazovateľ postupu v jednom prvku, dole v strede.
+   Farbu si berie podľa jasu obrazu, meranie: do 11,2 s videa je pod ním jas
+   8 az 77, teda biela drzi 8,5:1. Od 12 s je jas 162, tam preberá tmavá 6,4:1. */
+.cue{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:15;
+  display:flex;flex-direction:column;align-items:center;gap:13px;pointer-events:none;
+  transition:color .5s var(--ease)}
+.cue.w{color:#fff}
+.cue.d{color:var(--ink)}
+.cue-t{font-weight:500;font-size:.625rem;letter-spacing:.26em;text-transform:uppercase}
+.cue-rail{position:relative;width:clamp(120px,14vw,190px);height:1px}
+.cue-rail div{position:absolute;left:0;top:0;width:100%;height:1px;background:currentColor}
+.cue-tr{opacity:.26}
+.cue-fl{transform:scaleX(var(--ip,0));transform-origin:0 50%}
+@media (max-height:560px){.cue{display:none}}
+
+/* ---------- obrazová plocha pre mobil a obmedzený pohyb ---------- */
+.plate{display:none;position:relative;min-height:48svh;background:var(--ink) center/cover no-repeat}
+.plate::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(6,14,26,.30) 0%,rgba(6,14,26,.04) 44%,rgba(238,241,244,1) 100%)}
+
+/* ==========================================================================
+   ÚVOD na poslednom obraze intra
+   ========================================================================== */
+.end{position:absolute;left:0;right:0;bottom:0;height:100vh;height:100svh;z-index:30;
+  display:flex;align-items:center;padding:0 var(--pad);opacity:0;pointer-events:none}
+.end .label{display:block;margin-bottom:clamp(16px,2vw,26px)}
+.end h1{max-width:26ch}
+.end .lede{margin-top:clamp(18px,2.2vw,28px)}
+.end .row{margin-top:clamp(24px,3vw,38px);display:flex;gap:12px;flex-wrap:wrap}
+.end .meta{margin-top:clamp(24px,3vw,38px);padding-top:18px;border-top:1px solid var(--line);
+  font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary)}
+.end.live{pointer-events:auto}
+
+/* ==========================================================================
+   SEKCIE
+   ========================================================================== */
+.sec{padding:clamp(64px,8vw,132px) var(--pad);position:relative}
+.sec-ink{background:var(--ink);color:#fff}
+.sec-ink .lede{color:rgba(255,255,255,.74)}
+.sec-ink .label{color:var(--accent-muted)}
+.wrap{max-width:1280px;margin:0 auto}
+.hd{max-width:62ch}
+.hd .label{margin-bottom:18px;display:block}
+.hd p{margin-top:22px}
+
+.divider{max-width:1280px;margin:0 auto;padding:0 var(--pad);display:flex;align-items:center;gap:16px}
+.divider .ln{flex:1;height:1px;background:var(--line);position:relative;overflow:hidden}
+.divider .ln::after{content:"";position:absolute;top:0;left:0;width:64px;height:1px;background:var(--accent);
+  opacity:.5;animation:tickRun 78s linear infinite;animation-delay:-24s}
+.divider .n{font-weight:500;font-size:.625rem;letter-spacing:.18em;color:var(--text-secondary)}
+@keyframes tickRun{0%{transform:translateX(-70px)}100%{transform:translateX(1300px)}}
+
+.dust{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.5}
+.dust i{position:absolute;width:2px;height:2px;background:var(--accent-muted);border-radius:50%;opacity:.34}
+.dust i:nth-child(1){left:12%;top:24%;animation:drift 82s linear infinite;animation-delay:-12s}
+.dust i:nth-child(2){left:38%;top:66%;animation:drift 94s linear infinite;animation-delay:-40s}
+.dust i:nth-child(3){left:64%;top:18%;animation:drift 88s linear infinite;animation-delay:-61s}
+.dust i:nth-child(4){left:81%;top:52%;animation:drift 101s linear infinite;animation-delay:-28s}
+.dust i:nth-child(5){left:52%;top:38%;animation:drift 76s linear infinite;animation-delay:-53s}
+@keyframes drift{0%{transform:translate(0,0)}50%{transform:translate(26px,-40px)}100%{transform:translate(0,0)}}
+
+/* --- pás údajov --- */
+.strip{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:22px var(--pad)}
+.strip ul{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;
+  gap:clamp(14px,2.4vw,34px);justify-content:center}
+.strip li{font-weight:500;font-size:.6875rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--text-secondary);display:flex;align-items:center;gap:clamp(14px,2.4vw,34px)}
+.strip li::after{content:"";width:14px;height:1px;background:var(--accent);opacity:.55}
+.strip li:last-child::after{display:none}
+
+/* --- o nás, text a obraz --- */
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4.4vw,72px);align-items:center}
+.about .txt p + p{margin-top:20px}
+.about figure{margin:0;overflow:hidden;background:var(--ink-2)}
+.about img{width:100%;aspect-ratio:4/3;object-fit:cover}
+@media (max-width:900px){.about{grid-template-columns:1fr}}
+
+/* --- služby --- */
+.srv{margin-top:clamp(32px,4.4vw,58px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line)}
+.srv li{background:var(--panel);padding:clamp(20px,2.2vw,28px);display:flex;gap:16px;align-items:baseline}
+.srv .n{font-weight:500;font-size:.75rem;color:var(--accent);flex:0 0 auto}
+.srv .t{font-weight:500}
+.srv .free{display:inline-block;margin-left:8px;font-weight:500;font-size:.6875rem;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+@media (max-width:760px){.srv{grid-template-columns:1fr}}
+
+/* --- cenník --- */
+.price{width:100%;border-collapse:collapse;margin-top:clamp(28px,3.6vw,48px)}
+.price caption{text-align:left;padding-bottom:16px}
+.price th,.price td{text-align:left;padding:14px 12px;border-bottom:1px solid var(--line-dark)}
+.price thead th{font-weight:500;font-size:.625rem;text-transform:uppercase;letter-spacing:.11em;
+  color:var(--accent-muted);border-bottom:1px solid var(--accent-muted)}
+.price tbody th{font-weight:400;font-size:.9375rem;color:#fff}
+.price td.q{color:var(--accent);font-weight:600}
+.price td{font-weight:500;font-size:.875rem;color:var(--accent-muted);
+  font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.price tr:last-child th,.price tr:last-child td{border-bottom:0}
+.pnote{margin-top:22px;font-size:.875rem;color:rgba(255,255,255,.6);max-width:70ch}
+.pnote + .pnote{margin-top:10px}
+.pwrap{overflow-x:auto}
+
+.refpair{margin-top:clamp(14px,2vw,26px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,26px)}
+.refpair figure{margin:0;position:relative;overflow:hidden;background:var(--ink-2);
+  border:1px solid var(--hair);box-shadow:var(--lift);transition:box-shadow .4s var(--ease)}
+.refpair figure:hover{box-shadow:var(--lift-2)}
+.refpair img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform 1.2s var(--ease)}
+.refpair figure:hover img{transform:scale(1.02)}
+.refpair figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px;color:#fff;
+  font-weight:500;font-size:.6875rem;letter-spacing:.11em;text-transform:uppercase;
+  background:rgba(9,18,30,.52);border-top:1px solid rgba(255,255,255,.14);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.refnote{margin-top:22px;font-size:.8125rem;color:var(--text-secondary)}
+@media (max-width:720px){.refpair{grid-template-columns:1fr}}
+
+/* --- zoznam servisných prác --- */
+.slist{margin-top:clamp(30px,4vw,52px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1px;background:var(--hair-ink);border:1px solid var(--hair-ink)}
+.slist li{background:#16293C;padding:16px clamp(16px,2vw,24px);font-size:.9375rem;color:#fff;
+  display:flex;align-items:baseline;gap:12px;transition:background-color .3s var(--ease)}
+.slist li::before{content:"";flex:0 0 auto;width:10px;height:1px;background:var(--accent);
+  transform:translateY(-4px);transition:width .3s var(--ease)}
+.slist li:hover{background:rgba(143,193,242,.10)}
+.slist li:hover::before{width:20px}
+@media (max-width:700px){.slist{grid-template-columns:1fr}}
+
+.ask{margin-top:clamp(28px,3.4vw,44px);display:flex;flex-wrap:wrap;align-items:center;
+  gap:clamp(16px,2.4vw,32px);padding:clamp(20px,2.6vw,30px);
+  background:#16293C;border:1px solid var(--hair-ink-2)}
+.ask p{flex:1 1 320px;font-size:1.0625rem;color:#fff;line-height:1.5}
+
+/* --- sortiment --- */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);
+  margin-top:clamp(32px,4.4vw,58px);border:1px solid var(--line)}
+.card{background:var(--panel);padding:clamp(22px,2.4vw,34px);display:flex;flex-direction:column;gap:14px;
+  transition:background-color .35s var(--ease)}
+.card:hover{background:#F7F9FA}
+.card svg{color:var(--accent);width:42px;height:42px}
+.card p{font-size:.9375rem;color:var(--text-secondary)}
+@media (max-width:1000px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.cards{grid-template-columns:1fr}}
+
+/* --- z coho je okno, vseobecna kresba --- */
+.cut{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(26px,4vw,60px);
+  align-items:center;margin-top:clamp(34px,4.4vw,60px)}
+.cut .draw{overflow-x:auto;padding-bottom:6px}
+.cut .draw svg{min-width:500px}
+.leg{display:flex;flex-direction:column}
+.leg button{display:flex;gap:14px;align-items:baseline;text-align:left;background:none;border:0;
+  padding:14px 12px;cursor:pointer;border-bottom:1px solid var(--line-dark-2);width:100%;
+  transition:background-color .3s var(--ease)}
+.leg button:hover,.leg button:focus-visible{background:rgba(143,193,242,.08)}
+.leg .m{font-weight:500;font-size:.6875rem;color:var(--accent-muted);flex:0 0 auto;width:16px}
+.leg .t{font-size:.9375rem;font-weight:500;color:#fff}
+.leg .v{display:block;font-size:.8125rem;color:rgba(255,255,255,.62);margin-top:5px;font-weight:400}
+svg text{font-family:var(--sans)}
+#cutSvg .part{transition:opacity .3s var(--ease)}
+#cutSvg.dim .part:not(.hl){opacity:.28}
+#cutSvg .hl .face{stroke:var(--accent)}
+@media (max-width:940px){.cut{grid-template-columns:1fr}}
+
+/* --- referencie --- */
+.refs{margin-top:clamp(32px,4.4vw,58px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);
+  gap:clamp(20px,3vw,44px);align-items:start}
+.refs figure{margin:0;position:relative;overflow:hidden;background:var(--ink-2)}
+.refs img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.refs figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px;
+  background:linear-gradient(to top,rgba(6,14,26,.86),rgba(6,14,26,0));
+  font-weight:500;font-size:.6875rem;letter-spacing:.11em;text-transform:uppercase;color:#fff}
+.reflist{border-top:1px solid var(--line)}
+.reflist li{display:flex;justify-content:space-between;gap:16px;align-items:baseline;
+  padding:14px 0;border-bottom:1px solid var(--line)}
+.reflist .nm{font-weight:500;font-size:.9375rem}
+.reflist .ty{font-weight:500;font-size:.6875rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--text-secondary);flex:0 0 auto}
+.refcats{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.refcats span{font-weight:500;font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--line);padding:8px 12px;color:var(--text-secondary)}
+@media (max-width:900px){.refs{grid-template-columns:1fr}}
+
+/* --- certifikáty --- */
+.certs{margin-top:clamp(28px,3.6vw,48px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
+  background:var(--line-dark);border:1px solid var(--line-dark)}
+.certs li{background:var(--ink);padding:clamp(22px,2.4vw,32px)}
+.certs .c{font-weight:600;font-size:.9375rem;font-variant-numeric:tabular-nums;color:#fff;letter-spacing:.02em}
+.certs .d{display:block;margin-top:10px;font-size:.8125rem;color:rgba(255,255,255,.6)}
+@media (max-width:760px){.certs{grid-template-columns:1fr}}
+
+/* --- kontakt --- */
+.contact{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(30px,5vw,80px);align-items:start}
+.form{display:grid;gap:18px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+label{display:block}
+label .label{display:block;margin-bottom:8px}
+input,textarea{
+  width:100%;font:inherit;font-size:.9375rem;padding:13px 14px;background:var(--panel);
+  color:var(--text-primary);border:1px solid var(--line);border-radius:0;
+  transition:border-color .25s var(--ease)}
+input:hover,textarea:hover{border-color:#B9C6D0}
+input:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+textarea{min-height:118px;resize:vertical}
+.form .micro{font-size:.8125rem;color:var(--text-secondary)}
+.form .btn{justify-self:start}
+.formnote{display:none;padding:16px;border:1px solid var(--accent);background:#fff;font-size:.9375rem}
+.formnote.on{display:block}
+.cbox{background:var(--panel);border:1px solid var(--line);padding:clamp(24px,2.6vw,36px)}
+.crow{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:15px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.crow:last-of-type{border-bottom:0}
+.crow a{font-weight:500;font-size:.9375rem;text-decoration:none;color:var(--ink)}
+.crow a:hover{color:var(--accent)}
+.crow .v,.crow address{font-weight:500;font-size:.875rem;font-style:normal;line-height:1.6;font-variant-numeric:tabular-nums}
+@media (max-width:880px){.contact{grid-template-columns:1fr}.f2{grid-template-columns:1fr}}
+
+/* --- pätička --- */
+footer{background:var(--ink);color:#fff;padding:clamp(44px,5.6vw,78px) var(--pad) 32px}
+footer .fwrap{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:34px;justify-content:space-between;align-items:flex-start}
+footer img{width:186px}
+footer .fnav{display:flex;flex-wrap:wrap;gap:8px 26px}
+footer a{color:rgba(255,255,255,.72);text-decoration:none;font-size:.9375rem}
+footer a:hover{color:var(--accent-muted)}
+footer .fbot{max-width:1280px;margin:36px auto 0;padding-top:22px;border-top:1px solid var(--line-dark);
+  display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+footer .fbot p{font-weight:500;font-size:.6875rem;letter-spacing:.06em;color:rgba(255,255,255,.5)}
+
+/* --- príchody na scroll, len objavenie sa --- */
+.rv{opacity:0;transition:opacity .32s var(--ease-out)}
+.rv.nofade,.stg.nofade>*{transition:none !important}
+.rv.in{opacity:1}
+.stg>*{opacity:0;transition:opacity .32s var(--ease-out)}
+.stg.in>*{opacity:1}
+.stg.in>*:nth-child(2){transition-delay:.04s}
+.stg.in>*:nth-child(3){transition-delay:.08s}
+.stg.in>*:nth-child(4){transition-delay:.12s}
+.stg.in>*:nth-child(5){transition-delay:.16s}
+.stg.in>*:nth-child(6){transition-delay:.2s}
+.stg.stg-done>*{transition-delay:0s !important}
+
+body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused !important}
+
+/* ==========================================================================
+   PÄŤ PODMIENOK, KEDY SA INTRO NESCROLLUJE
+   Musia byť znak na znak rovnaké v JS.
+   ========================================================================== */
+@media (max-width:720px){
+  .hero{height:auto}
+  .stage{display:none}
+  .plate{display:block}
+  .end{position:static;height:auto;opacity:1 !important;pointer-events:auto;
+    display:block;padding:clamp(34px,5vw,74px) var(--pad) clamp(40px,5vw,80px)}
+}
+@media (orientation:portrait) and (max-width:1024px){
+  .hero{height:auto}
+  .stage{display:none}
+  .plate{display:block}
+  .end{position:static;height:auto;opacity:1 !important;pointer-events:auto;
+    display:block;padding:clamp(34px,5vw,74px) var(--pad) clamp(40px,5vw,80px)}
+}
+@media (orientation:portrait) and (pointer:coarse){
+  .hero{height:auto}
+  .stage{display:none}
+  .plate{display:block}
+  .end{position:static;height:auto;opacity:1 !important;pointer-events:auto;
+    display:block;padding:clamp(34px,5vw,74px) var(--pad) clamp(40px,5vw,80px)}
+}
+@media (orientation:landscape) and (pointer:coarse) and (max-height:560px){
+  .hero{height:auto}
+  .stage{display:none}
+  .plate{display:block}
+  .end{position:static;height:auto;opacity:1 !important;pointer-events:auto;
+    display:block;padding:clamp(34px,5vw,74px) var(--pad) clamp(40px,5vw,80px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero{height:auto}
+  .stage{display:none}
+  .plate{display:block}
+  .end{position:static;height:auto;opacity:1 !important;pointer-events:auto;
+    display:block;padding:clamp(34px,5vw,74px) var(--pad) clamp(40px,5vw,80px)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;transition-delay:0s !important}
+  .rv,.stg>*{opacity:1 !important}
+  .cue i::after,.divider .ln::after,.dust i{animation:none !important}
+}
+
+/* ==========================================================================
+   PRIEMIUM VRSTVA. Efekt je matné sklo, teda ich vlastný výrobok ako materiál
+   rozhrania. Pravé uhly a žiadne gradienty na plochách zostávajú, presne podľa
+   manuálu. Hĺbku nesú vlasové linky, priesvitnosť a veľmi tichý tieň.
+   ========================================================================== */
+:root{
+  --glass:rgba(255,255,255,.84);
+  --glass-hi:rgba(255,255,255,.90);
+  --hair:rgba(15,34,51,.10);
+  --hair-2:rgba(15,34,51,.16);
+  --glass-ink:rgba(143,193,242,.055);
+  --hair-ink:rgba(143,193,242,.16);
+  --hair-ink-2:rgba(143,193,242,.30);
+  --lift:0 1px 2px rgba(15,34,51,.04), 0 8px 24px rgba(15,34,51,.05);
+  --lift-2:0 2px 4px rgba(15,34,51,.05), 0 16px 44px rgba(15,34,51,.09);
+}
+
+/* ukazovateľ prescrollovania, 2 px vlasová linka navrchu */
+.prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:120;pointer-events:none;
+  background:rgba(15,34,51,.06)}
+.prog i{display:block;height:2px;width:100%;background:var(--accent);
+  transform:scaleX(var(--sp,0));transform-origin:0 50%}
+
+/* navigácia z matného skla */
+.nav{background:var(--glass);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--hair);box-shadow:none;
+  transition:transform .55s var(--ease-out),box-shadow .4s var(--ease),background-color .4s var(--ease)}
+.nav.on{box-shadow:var(--lift)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .nav{background:rgba(255,255,255,.97)}
+}
+
+/* karty a panely: priesvitná biela, vlasová linka, tichý tieň, zdvih pri prejdení */
+.cards{background:var(--hair);border:1px solid var(--hair)}
+.card{background:var(--glass-hi);
+  transition:background-color .35s var(--ease),box-shadow .35s var(--ease),transform .35s var(--ease)}
+.card:hover{background:#fff;box-shadow:var(--lift-2);transform:translateY(-2px);position:relative;z-index:2}
+.card svg{transition:transform .45s var(--ease)}
+.card:hover svg{transform:translateY(-1px) scale(1.03)}
+
+.srv{background:var(--hair);border:1px solid var(--hair)}
+.srv li{background:var(--glass-hi);transition:background-color .3s var(--ease)}
+.srv li:hover{background:#fff}
+
+.cbox{background:var(--glass-hi);border:1px solid var(--hair);box-shadow:var(--lift)}
+
+.strip{background:rgba(255,255,255,.86);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+
+/* tmavé bloky: sklo v opačnom smere */
+.sec-ink{border-top:1px solid rgba(143,193,242,.14)}
+.pwrap{background:var(--glass-ink);border:1px solid var(--hair-ink);padding:clamp(14px,2vw,26px)}
+.price th,.price td{border-bottom:1px solid var(--hair-ink)}
+.price thead th{border-bottom:1px solid var(--hair-ink-2)}
+.certs{background:var(--hair-ink);border:1px solid var(--hair-ink)}
+.certs li{background:#16293C;transition:background-color .35s var(--ease)}
+.certs li:hover{background:rgba(143,193,242,.10)}
+
+/* legenda pri kresbe okna: rastúca azúrová hrana */
+.leg button{border-bottom:1px solid var(--hair-ink);position:relative}
+.leg button::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent);
+  transform:scaleY(0);transform-origin:50% 0;transition:transform .35s var(--ease)}
+.leg button:hover::before,.leg button:focus-visible::before{transform:scaleY(1)}
+.leg button:hover,.leg button:focus-visible{background:rgba(143,193,242,.07)}
+
+/* obrázky: vlasový rám a sklená lišta s popisom */
+.about figure,.refs figure{border:1px solid var(--hair);box-shadow:var(--lift)}
+.refs figure{transition:box-shadow .4s var(--ease)}
+.refs figure:hover{box-shadow:var(--lift-2)}
+.refs img{transition:transform 1.2s var(--ease)}
+.refs figure:hover img{transform:scale(1.02)}
+.refs figcaption{background:rgba(9,18,30,.52);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-top:1px solid rgba(255,255,255,.14)}
+
+/* zoznam referencií: hrana, ktorá sa rozsvieti */
+.reflist li{border-bottom:1px solid var(--hair);position:relative;
+  transition:padding-left .3s var(--ease)}
+.reflist li::before{content:"";position:absolute;left:0;top:50%;width:0;height:1px;background:var(--accent);
+  transition:width .3s var(--ease)}
+.reflist li:hover{padding-left:18px}
+.reflist li:hover::before{width:12px}
+.refcats span{border:1px solid var(--hair-2);background:rgba(255,255,255,.9)}
+
+/* tlačidlá: plochá farba, len tichá hĺbka */
+.btn-primary{box-shadow:0 1px 2px rgba(15,34,51,.10), 0 10px 26px rgba(30,111,217,.20)}
+.btn-primary:hover{box-shadow:0 2px 4px rgba(15,34,51,.12), 0 16px 38px rgba(30,111,217,.28)}
+.btn-ghost{background:rgba(255,255,255,.9);border-color:var(--hair-2)}
+
+/* formulár: sklo a vlasové linky */
+input,textarea{background:rgba(255,255,255,.82);border:1px solid var(--hair-2)}
+input:hover,textarea:hover{border-color:rgba(15,34,51,.28)}
+input:focus,textarea:focus{background:#fff;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(30,111,217,.14)}
+
+/* deliaca kóta: tichšia */
+.divider .ln{background:var(--hair)}
+
+/* sklená lišta na mobile s telefónom a ponukou */
+.callbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:110;
+  padding:10px clamp(12px,4vw,20px);
+  padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  background:rgba(255,255,255,.86);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-top:1px solid var(--hair);box-shadow:0 -8px 30px rgba(15,34,51,.08);
+  gap:10px}
+.callbar a{flex:1;text-align:center;padding:14px 10px;font-weight:500;font-size:.9375rem;
+  text-decoration:none;min-height:48px;display:inline-flex;align-items:center;justify-content:center}
+.callbar .tel{color:var(--ink);border:1px solid var(--hair-2)}
+.callbar .cta{background:var(--accent);color:#fff}
+@media (max-width:720px){
+  .callbar{display:flex}
+  body{padding-bottom:76px}
+}
+@media (orientation:portrait) and (pointer:coarse) and (max-width:900px){
+  .callbar{display:flex}
+  body{padding-bottom:76px}
+}
+
+/* na tmavom podklade nech je sklo naozaj sklo aj v Safari */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .nav{background:rgba(255,255,255,.97)}
+  .callbar{background:rgba(255,255,255,.97)}
+  .refs figcaption,.refpair figcaption{background:rgba(9,18,30,.86)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .card:hover,.reflist li:hover{transform:none;padding-left:0}
+  .prog i{transition:none}
+}
+
+/* ==========================================================================
+   KURZOR. Zameriavací kríž namiesto šípky, pokračovanie tónu značky:
+   pravé uhly a presnosť. Vnútorný kríž nemá žiadny sklz, aby sedel presne
+   na hrote. Vonkajší štvorec ho dobieha, a práve ten rozdiel vytvára pocit
+   presného nástroja. Zapne sa len na zariadeniach s myšou.
+   ========================================================================== */
+.cur{position:fixed;left:0;top:0;z-index:900;pointer-events:none;opacity:0;
+  transition:opacity .25s var(--ease);will-change:transform}
+.cur.on{opacity:1}
+html.cur-on,html.cur-on body{cursor:none}
+html.cur-on input,html.cur-on textarea{cursor:text}
+html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:none}
+
+/* vonkajší štvorec, dobieha so sklzom */
+.cur-box{position:absolute;left:0;top:0;width:26px;height:26px;margin:-13px 0 0 -13px;
+  border:1px solid var(--accent);opacity:.42;
+  transition:width .22s var(--ease),height .22s var(--ease),margin .22s var(--ease),
+             opacity .22s var(--ease),border-color .22s var(--ease)}
+.cur.hot .cur-box{width:17px;height:17px;margin:-8.5px 0 0 -8.5px;opacity:.9}
+.cur.press .cur-box{width:13px;height:13px;margin:-6.5px 0 0 -6.5px}
+
+/* vnútorný kríž, presne na hrote, bez sklzu */
+.cur-cross{position:absolute;left:0;top:0;width:0;height:0;
+  filter:drop-shadow(0 0 1px rgba(255,255,255,.9)) drop-shadow(0 0 3px rgba(9,18,30,.35))}
+.cur-cross i{position:absolute;background:var(--accent);
+  transition:transform .22s var(--ease)}
+.cur-cross i:nth-child(1){left:-11px;top:-.5px;width:7px;height:1px}
+.cur-cross i:nth-child(2){left:4px;top:-.5px;width:7px;height:1px}
+.cur-cross i:nth-child(3){left:-.5px;top:-11px;width:1px;height:7px}
+.cur-cross i:nth-child(4){left:-.5px;top:4px;width:1px;height:7px}
+.cur.hot .cur-cross i:nth-child(1),.cur.hot .cur-cross i:nth-child(2){transform:scaleX(.55)}
+.cur.hot .cur-cross i:nth-child(3),.cur.hot .cur-cross i:nth-child(4){transform:scaleY(.55)}
+
+/* na tmavom podklade a na azúrovom tlačidle sa kríž prepne na biely */
+.cur.ondark .cur-cross i{background:#fff}
+.cur.ondark .cur-box{border-color:#fff;opacity:.5}
+.cur.ondark.hot .cur-box{opacity:.95}
+.cur-cross{filter:drop-shadow(0 0 1px rgba(255,255,255,.55)) drop-shadow(0 0 3px rgba(9,18,30,.55))}
+.cur.ondark .cur-cross{filter:drop-shadow(0 0 1px rgba(9,18,30,.7)) drop-shadow(0 0 4px rgba(9,18,30,.5))}
+
+@media (pointer:coarse){.cur{display:none}html.cur-on,html.cur-on body{cursor:auto}}
+@media (prefers-reduced-motion:reduce){
+  .cur-box,.cur-cross i{transition:none !important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#uvod">Preskočiť na obsah</a>
+
+<div class="prog" id="prog" aria-hidden="true"><i></i></div>
+
+<div class="cur" id="cur" aria-hidden="true">
+  <div class="cur-box" id="curBox"></div>
+  <div class="cur-cross" id="curCross"><i></i><i></i><i></i><i></i></div>
+</div>
+
+<nav class="nav" id="nav" aria-label="Hlavná navigácia">
+  <a href="#uvod" aria-label="ALL MONT, domov"><img src="assets/allmont-logo-horizontal.svg" alt="ALL MONT, plastové okná a dvere" width="410" height="100"></a>
+  <ul>
+    <li><a class="lnk" href="#o-nas">O nás</a></li>
+    <li><a class="lnk" href="#okno">Z čoho je okno</a></li>
+    <li><a class="lnk" href="#sluzby">Služby</a></li>
+    <li><a class="lnk" href="#sortiment">Sortiment</a></li>
+    <li><a class="lnk" href="#cennik">Servis</a></li>
+    <li><a class="lnk" href="#referencie">Referencie</a></li>
+  </ul>
+  <a class="btn btn-primary" href="#kontakt">Nezáväzná ponuka</a>
+</nav>
+
+<main id="main">
+
+<!-- ================= INTRO ================= -->
+<section class="hero" id="hero" aria-label="Úvodné video">
+  <div class="stage" id="stage">
+    <div class="poster" id="poster" aria-hidden="true"></div>
+    <video id="heroVideo" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+
+    <div class="topbar" id="topbar">
+      <img src="assets/allmont-logo-horizontal-dark.svg" alt="ALL MONT, plastové okná a dvere" width="410" height="100">
+      <a class="tel" href="tel:+421903512163">0903 512 163</a>
+    </div>
+
+    <div class="caps" id="caps">
+      <div class="cap" id="c1" data-a="0.030" data-b="0.155">
+        <p class="h">Okná si vyrábame sami.</p>
+      </div>
+      <div class="cap" id="c2" data-a="0.185" data-b="0.310">
+        <p class="h">Na mieru, aj v atypických tvaroch.</p>
+      </div>
+      <div class="cap" id="c3" data-a="0.340" data-b="0.465">
+        <p class="h">Demontáž, montáž aj murárske práce. Jedna firma.</p>
+      </div>
+      <div class="cap" id="c4" data-a="0.495" data-b="0.610">
+        <p class="h">Doma potom zostane ticho a teplo.</p>
+      </div>
+      <div class="cap" id="c5" data-a="0.640" data-b="0.745">
+        <p class="h">Poradenstvo a zameranie u nás nič nestoja.</p>
+      </div>
+    </div>
+
+    <svg class="ring" id="ring" viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"/>
+    </svg>
+
+    <div class="cue" id="cue" aria-hidden="true">
+      <p class="cue-t">Scrollujte</p>
+      <div class="cue-rail"><div class="cue-tr"></div><div class="cue-fl" id="cueFill"></div></div>
+    </div>
+
+    <div class="veil" id="veil" aria-hidden="true"></div>
+  </div>
+
+  <div class="plate" id="plate" aria-label="ALL MONT, realizácia"></div>
+
+  <!-- ÚVOD. Sedí na poslednom obraze intra, takže vo chvíli, keď obraz zbelie,
+       je text už na mieste a nič sa nedoskrollováva. V mobilnom režime, kde sa
+       intro nescrolluje, sa z toho stane bežná sekcia pod obrázkom. -->
+  <div class="end" id="uvod" tabindex="-1">
+    <div class="wrap">
+      <span class="label">ALL MONT, spol. s r.o. · Nitra</span>
+      <h1>Dodávka a montáž plastových a hliníkových okien.</h1>
+      <p class="lede">Vchodové dvere, parapetné dosky a príslušenstvo. Sme dlhoročný výrobca plastových a hliníkových okien a poskytujeme svoje služby na celom území Slovenska.</p>
+      <div class="row">
+        <a class="btn btn-primary" href="#kontakt">Nezáväzná cenová ponuka</a>
+        <a class="btn btn-ghost" href="#sluzby">Naše služby</a>
+      </div>
+      <p class="meta">Poradenstvo a zameranie zdarma · Nitra, Levice, Bratislava · celé Slovensko</p>
+    </div>
+  </div>
+</section>
+
+  <!-- ================= PÁS ÚDAJOV ================= -->
+  <div class="strip">
+    <ul>
+      <li>ISO 9001</li>
+      <li>ISO 14001</li>
+      <li>OHSAS 18001</li>
+      <li>Rodinné domy</li>
+      <li>Občianska vybavenosť</li>
+      <li>Celé Slovensko</li>
+    </ul>
+  </div>
+
+  <!-- ================= O NÁS ================= -->
+  <section class="sec" id="o-nas">
+    <div class="wrap about">
+      <div class="txt rv">
+        <span class="label" style="display:block;margin-bottom:18px">O spoločnosti</span>
+        <h2>Plastové okná na kľúč.</h2>
+        <p class="lede" style="margin-top:22px">Výroba a montáž plastových okien a dverí, s týmito službami je tu pre Vás naša spoločnosť ALL MONT Nitra.</p>
+        <p style="margin-top:20px;color:var(--text-secondary)">Špecializáciou našej firmy je dodávka plastových okien na kľúč, kedy zabezpečíme celý proces dodávky tak, aby sme šetrili Váš čas. Našou filozofiou je poskytnúť individuálnu starostlivosť každému zákazníkovi a jeho zákazke.</p>
+        <p style="margin-top:20px;color:var(--text-secondary)">Radi Vám vyjdeme v ústrety aj vo výrobe plastových okien a dverí v atypických tvarových prevedeniach. Kladieme veľký dôraz na kvalitu našich výrobkov a komplexnosť našich služieb s cieľom Vašej spokojnosti s priebehom i výsledkom celého diela.</p>
+        <p style="margin-top:20px;color:var(--text-secondary)">Pracujeme na celom území Slovenska, ale hlavne v Nitre, Leviciach a Bratislave.</p>
+      </div>
+      <figure class="rv">
+        <img src="assets/shot-1.jpg" alt="Novostavba s veľkými presklenami, realizácia ALL MONT" width="1920" height="1080" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </section>
+
+
+  <!-- ================= Z ČOHO JE OKNO, všeobecne ================= -->
+  <section class="sec sec-ink" id="okno">
+    <div class="dust" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="wrap" style="position:relative;z-index:2">
+      <div class="hd rv">
+        <span class="label">Z čoho je okno</span>
+        <h2>Šesť častí, každá má svoju úlohu.</h2>
+        <p class="lede">Kresba je schematická. Ukazuje, ako je okno zložené a čo v ňom akú úlohu plní. Konkrétny profil a zasklenie vyberáme podľa toho, čo od okna potrebujete, a dohodneme ich pri zameraní.</p>
+      </div>
+
+      <div class="cut">
+        <div class="draw rv">
+          <svg id="cutSvg" viewBox="0 0 640 480" role="img" aria-label="Schematický rez okenným profilom so zasklením, krídlom, rámom, tesnením a výstužou">
+            <g class="part" id="pGlass">
+              <rect x="152" y="18" width="308" height="112" fill="rgba(143,193,242,.07)"/>
+              <rect class="face" x="152" y="18" width="26" height="112" fill="rgba(143,193,242,.28)" stroke="#8FC1F2" stroke-width="1"/>
+              <rect class="face" x="293" y="18" width="26" height="112" fill="rgba(143,193,242,.28)" stroke="#8FC1F2" stroke-width="1"/>
+              <rect class="face" x="434" y="18" width="26" height="112" fill="rgba(143,193,242,.28)" stroke="#8FC1F2" stroke-width="1"/>
+            </g>
+
+            <g class="part" id="pSpacer">
+              <rect class="face" x="152" y="114" width="308" height="16" fill="#1E6FD9" stroke="#8FC1F2" stroke-width="1"/>
+            </g>
+
+            <g class="part" id="pSash">
+              <rect class="face" x="40" y="130" width="532" height="150" fill="#16293C" stroke="#33506B" stroke-width="1.6"/>
+              <rect x="70" y="156" width="120" height="98" fill="none" stroke="#33506B" stroke-width="1"/>
+              <rect x="206" y="156" width="150" height="98" fill="none" stroke="#33506B" stroke-width="1"/>
+              <rect x="372" y="156" width="170" height="98" fill="none" stroke="#33506B" stroke-width="1"/>
+            </g>
+
+            <g class="part" id="pSteel">
+              <path class="face" d="M222 170 h118 v70 h-14 v-56 h-90 v56 h-14 z" fill="#8FC1F2" stroke="#8FC1F2" stroke-width="1"/>
+              <path class="face" d="M222 328 h118 v70 h-14 v-56 h-90 v56 h-14 z" fill="#8FC1F2" stroke="#8FC1F2" stroke-width="1"/>
+            </g>
+
+            <g class="part" id="pSeal">
+              <rect class="face" x="96" y="276" width="40" height="14" rx="7" fill="#1E6FD9" stroke="#8FC1F2" stroke-width="1"/>
+              <rect class="face" x="470" y="276" width="40" height="14" rx="7" fill="#1E6FD9" stroke="#8FC1F2" stroke-width="1"/>
+            </g>
+
+            <g class="part" id="pFrame">
+              <rect class="face" x="40" y="290" width="532" height="152" fill="#16293C" stroke="#33506B" stroke-width="1.6"/>
+              <line x1="146" y1="290" x2="146" y2="442" stroke="#33506B" stroke-width="1"/>
+              <line x1="252" y1="290" x2="252" y2="442" stroke="#33506B" stroke-width="1"/>
+              <line x1="358" y1="290" x2="358" y2="442" stroke="#33506B" stroke-width="1"/>
+              <line x1="464" y1="290" x2="464" y2="442" stroke="#33506B" stroke-width="1"/>
+            </g>
+
+            <g stroke="#33506B" stroke-width="1" opacity=".85">
+              <line x1="588" y1="74" x2="470" y2="74"/>
+              <line x1="588" y1="122" x2="470" y2="122"/>
+              <line x1="588" y1="205" x2="578" y2="205"/>
+              <line x1="36" y1="205" x2="222" y2="205"/>
+              <line x1="36" y1="283" x2="96" y2="283"/>
+              <line x1="588" y1="366" x2="578" y2="366"/>
+            </g>
+
+            <g class="mk" font-size="10" font-weight="500">
+              <circle cx="600" cy="74" r="11" fill="#0F2233" stroke="#8FC1F2" stroke-width="1"/><text x="600" y="78" text-anchor="middle" fill="#8FC1F2">A</text>
+              <circle cx="600" cy="122" r="11" fill="#0F2233" stroke="#8FC1F2" stroke-width="1"/><text x="600" y="126" text-anchor="middle" fill="#8FC1F2">B</text>
+              <circle cx="600" cy="205" r="11" fill="#0F2233" stroke="#8FC1F2" stroke-width="1"/><text x="600" y="209" text-anchor="middle" fill="#8FC1F2">C</text>
+              <circle cx="24" cy="205" r="11" fill="#0F2233" stroke="#8FC1F2" stroke-width="1"/><text x="24" y="209" text-anchor="middle" fill="#8FC1F2">D</text>
+              <circle cx="24" cy="283" r="11" fill="#0F2233" stroke="#8FC1F2" stroke-width="1"/><text x="24" y="287" text-anchor="middle" fill="#8FC1F2">E</text>
+              <circle cx="600" cy="366" r="11" fill="#0F2233" stroke="#8FC1F2" stroke-width="1"/><text x="600" y="370" text-anchor="middle" fill="#8FC1F2">F</text>
+            </g>
+          </svg>
+        </div>
+
+        <ul class="leg rv" id="leg">
+          <li><button type="button" data-part="pGlass"><span class="m">A</span><span><span class="t">Zasklenie</span><span class="v">Tabule skla oddelené dutinou. Vypĺňa väčšinu plochy okna.</span></span></button></li>
+          <li><button type="button" data-part="pSpacer"><span class="m">B</span><span><span class="t">Dištančný rámik</span><span class="v">Drží tabule v rovnakej vzdialenosti po celom obvode.</span></span></button></li>
+          <li><button type="button" data-part="pSash"><span class="m">C</span><span><span class="t">Krídlo</span><span class="v">Pohyblivá časť, v ktorej je zasklenie osadené.</span></span></button></li>
+          <li><button type="button" data-part="pSteel"><span class="m">D</span><span><span class="t">Výstuž</span><span class="v">Ocelový profil vnútri. Drží rámu aj krídlu tvar.</span></span></button></li>
+          <li><button type="button" data-part="pSeal"><span class="m">E</span><span><span class="t">Tesnenie</span><span class="v">Dosadá po obvode krídla. Rozhoduje o tom, či okno tesní.</span></span></button></li>
+          <li><button type="button" data-part="pFrame"><span class="m">F</span><span><span class="t">Rám</span><span class="v">Pevná časť ukotvená do steny. Je členená na komory.</span></span></button></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="n">01</span><span class="ln"></span><span class="n">Služby</span></div>
+
+  <!-- ================= SLUŽBY ================= -->
+  <section class="sec" id="sluzby" style="padding-top:clamp(44px,5.6vw,84px)">
+    <div class="wrap">
+      <div class="hd rv">
+        <span class="label">Čo pre Vás robíme</span>
+        <h2>Kompletné služby, od poradenstva po servis.</h2>
+        <p class="lede">Ponúkame kompletné služby: demontáž, montáž, murárske práce. Servisujeme aj okná od iných výrobcov.</p>
+      </div>
+      <ul class="srv stg">
+        <li><span class="n">01</span><span><span class="t">Poradenstvo</span><span class="free">zdarma</span></span></li>
+        <li><span class="n">02</span><span><span class="t">Zameranie</span><span class="free">zdarma</span></span></li>
+        <li><span class="n">03</span><span><span class="t">Demontáž</span><br><span style="font-size:.875rem;color:var(--text-secondary)">Likvidácia odpadu v spolupráci s NKS</span></span></li>
+        <li><span class="n">04</span><span><span class="t">Montáž „A“ podľa STN 733134</span></span></li>
+        <li><span class="n">05</span><span><span class="t">Montáž „B“ na montážnu penu</span></span></li>
+        <li><span class="n">06</span><span><span class="t">Murárske začistenie špaliet</span></span></li>
+        <li><span class="n">07</span><span><span class="t">Murovanie balkónov</span></span></li>
+        <li><span class="n">08</span><span><span class="t">Servis okien a dverí</span><br><span style="font-size:.875rem;color:var(--text-secondary)">Aj tých, ktoré neboli dodané našou spoločnosťou</span></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= SORTIMENT ================= -->
+  <section class="sec" id="sortiment" style="padding-top:0">
+    <div class="wrap">
+      <div class="hd rv">
+        <span class="label">Sortiment</span>
+        <h2>Plast aj hliník.</h2>
+      </div>
+      <div class="cards stg">
+
+        <article class="card">
+          <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <rect x="4.5" y="4.5" width="39" height="39" rx="6" stroke="currentColor" stroke-width="3.5"/>
+            <line x1="24" y1="5" x2="24" y2="43" stroke="currentColor" stroke-width="2"/>
+            <line x1="5" y1="24" x2="43" y2="24" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <h3>Plastové okná a dvere</h3>
+          <p>Okná a balkónové dvere na mieru, aj v atypických tvarových prevedeniach.</p>
+        </article>
+
+        <article class="card">
+          <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <rect x="4.75" y="4.75" width="38.5" height="38.5" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="26" y1="5" x2="26" y2="43" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="29" y1="24" x2="40" y2="24" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <h3>Hliníkové systémy</h3>
+          <p>Systémy Reynaers, v prevedení s prerušením aj bez prerušenia tepelného mostu.</p>
+        </article>
+
+        <article class="card">
+          <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <rect x="4.75" y="9" width="38.5" height="30" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="24" y1="9" x2="24" y2="39" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M28 20 h10 M28 28 h10" stroke="currentColor" stroke-width="2.6"/>
+          </svg>
+          <h3>Posuvné systémy</h3>
+          <p>Posuvné a terasové zostavy pre veľké zasklenia.</p>
+        </article>
+
+        <article class="card">
+          <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <rect x="10.5" y="4.5" width="27" height="39" stroke="currentColor" stroke-width="3.5"/>
+            <rect x="17" y="11" width="14" height="11" stroke="currentColor" stroke-width="1.6"/>
+            <line x1="17" y1="30" x2="23" y2="30" stroke="currentColor" stroke-width="2.4"/>
+          </svg>
+          <h3>Vchodové dvere</h3>
+          <p>Vstupné dvere na mieru, vrátane kovania a príslušenstva.</p>
+        </article>
+
+        <article class="card">
+          <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <path d="M6 14 h22 v20 h14" stroke="currentColor" stroke-width="3.5" fill="none"/>
+            <line x1="6" y1="40" x2="42" y2="40" stroke="currentColor" stroke-width="1.2"/>
+            <line x1="6" y1="37" x2="6" y2="43" stroke="currentColor" stroke-width="1.2"/>
+            <line x1="42" y1="37" x2="42" y2="43" stroke="currentColor" stroke-width="1.2"/>
+          </svg>
+          <h3>Parapetné dosky a príslušenstvo</h3>
+          <p>Vnútorné aj vonkajšie parapety, krytky, kľučky a kovanie.</p>
+        </article>
+
+        <article class="card">
+          <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <rect x="4.5" y="4.5" width="39" height="39" rx="6" stroke="currentColor" stroke-width="3.5"/>
+            <circle cx="16" cy="24" r="3.2" stroke="currentColor" stroke-width="2"/>
+            <path d="M24 15 a9 9 0 0 1 0 18" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+          <h3>Servis okien</h3>
+          <p>Nastavenie, kovanie, tesnenia a výmena skla. Aj na oknách iných výrobcov.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CENNÍK SERVISNÝCH PRÁC ================= -->
+  <section class="sec sec-ink" id="cennik">
+    <div class="dust" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="wrap" style="position:relative;z-index:2">
+      <div class="hd rv">
+        <span class="label">Servis a náhradné diely</span>
+        <h2>Servis, ktorý robíme sami.</h2>
+        <p class="lede">Servisujeme kovanie MACO, GU, ROTO a Siegenia-Aubi, v Nitre a okolí do 25 km. Vykonávame aj ošetrenie tesnení, kovaní, rámov a krídel plastových, hliníkových a drevených okien a dverí.</p>
+      </div>
+
+      <ul class="slist stg">
+        <li>Výjazd technika</li>
+        <li>Nastavenie okna a premazanie</li>
+        <li>Nastavenie dverí a premazanie</li>
+        <li>Výmena kompletného kovania a tesnenia</li>
+        <li>Samozatvárač GU BKS 430</li>
+        <li>Ramienko aretačné</li>
+        <li>Madielko balkónové</li>
+        <li>Západka balkónová</li>
+        <li>Výmena skla do 1,5 m²</li>
+        <li>Výmena skla nad 1,5 m²</li>
+        <li>Izolačné dvojsklo</li>
+        <li>Izolačné dvojsklo dubová kôra a činčila</li>
+        <li>Izolačné trojsklo</li>
+        <li>Ošetrenie tesnení, kovaní, rámov a krídel</li>
+      </ul>
+
+      <div class="ask rv">
+        <p>Cenník servisných prác pošleme na vyžiadanie, aj s cenami náhradných dielov a skiel.</p>
+        <a class="btn btn-primary" href="#kontakt">Vyžiadať cenník servisu</a>
+      </div>
+
+      <p class="pnote rv">Zoznam je prevzatý z pôvodného cenníka spoločnosti. Ceny posielame na vyžiadanie, aby ste vždy dostali tie aktuálne.</p>
+      <p class="pnote rv">Suma za výjazd sa hradí po príchode servisného technika, zvyšok po vykonaní servisného zásahu.</p>
+      <p class="pnote rv">Ak servis nie je možné vykonať pre technickú obtiažnosť, nedostupnosť náhradných dielov alebo pre iné objektívne dôvody, a nedokážeme odstrániť nahlásenú závadu, účtujeme poplatok za výjazd.</p>
+      <p class="pnote rv">Izolačné dvojsklo dubová kôra a činčila, ako aj iné prevedenia, kalkulujeme na požiadanie.</p>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="n">02</span><span class="ln"></span><span class="n">Referencie</span></div>
+
+  <!-- ================= REFERENCIE ================= -->
+  <section class="sec" id="referencie" style="padding-top:clamp(44px,5.6vw,84px)">
+    <div class="wrap">
+      <div class="hd rv">
+        <span class="label">Referencie</span>
+        <h2>Rodinné domy aj občianska vybavenosť.</h2>
+      </div>
+      <div class="refs">
+        <figure class="rv">
+          <img src="assets/real-1.jpg" alt="Novostavba s veľkoplošným presklením a bielymi rámami" width="1920" height="1080" loading="lazy" decoding="async">
+          <figcaption>Novostavba · veľkoplošné presklenie</figcaption>
+        </figure>
+        <div class="rv">
+          <ul class="reflist">
+            <li><span class="nm">RD Golianovo I</span><span class="ty">Rodinný dom</span></li>
+            <li><span class="nm">RD Golianovo II</span><span class="ty">Rodinný dom</span></li>
+            <li><span class="nm">RD 100 Doly</span><span class="ty">Rodinný dom</span></li>
+            <li><span class="nm">RD Partizánske</span><span class="ty">Rodinný dom</span></li>
+            <li><span class="nm">RD Nitra CH</span><span class="ty">Rodinný dom</span></li>
+            <li><span class="nm">RD Nitra V</span><span class="ty">Rodinný dom</span></li>
+          </ul>
+          <div class="refcats">
+            <span>Rodinné domy</span><span>Občianska vybavenosť</span><span>Zábradlia</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="refpair">
+        <figure class="rv">
+          <img src="assets/real-2.jpg" alt="Interiér s presklením od podlahy, tenké biele rámy" width="1920" height="1080" loading="lazy" decoding="async">
+          <figcaption>Interiér · presklenie od podlahy</figcaption>
+        </figure>
+        <figure class="rv">
+          <img src="assets/real-3.jpg" alt="Detail osadeného bieleho okna s kovaním a tesnením" width="1920" height="1080" loading="lazy" decoding="async">
+          <figcaption>Detail osadenia a kovania</figcaption>
+        </figure>
+      </div>
+
+      <p class="refnote rv">Fotografie sú ilustračné. Snímky konkrétnych realizácií zo zoznamu dopĺňame.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CERTIFIKÁTY ================= -->
+  <section class="sec sec-ink" id="certifikaty" style="padding-top:clamp(52px,6vw,96px);padding-bottom:clamp(52px,6vw,96px)">
+    <div class="wrap">
+      <div class="hd rv">
+        <span class="label">Certifikáty</span>
+        <h2>Čím sa vieme preukázať.</h2>
+      </div>
+      <ul class="certs stg">
+        <li><span class="c">STN EN ISO 9001 : 2009</span><span class="d">Systém manažérstva kvality</span></li>
+        <li><span class="c">STN EN ISO 14001 : 2005</span><span class="d">Environmentálne manažérstvo</span></li>
+        <li><span class="c">STN OHSAS 18001 : 2009</span><span class="d">Bezpečnosť a ochrana zdravia pri práci</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= KONTAKT ================= -->
+  <section class="sec" id="kontakt" style="background:var(--panel);border-top:1px solid var(--line)">
+    <div class="wrap contact">
+      <div class="rv">
+        <span class="label">Napíšte nám</span>
+        <h2 style="margin-top:16px">Nechajte si zaslať nezáväznú ponuku.</h2>
+        <p class="lede" style="margin-top:20px">Stačí, ak nám napíšete parametre okien alebo dverí. Ponuku obdržíte nasledovný pracovný deň.</p>
+
+        <form class="form" id="form" style="margin-top:32px" novalidate>
+          <div class="f2">
+            <label><span class="label">Meno a priezvisko</span>
+              <input type="text" name="meno" id="f-meno" autocomplete="name" required></label>
+            <label><span class="label">Telefón</span>
+              <input type="tel" name="tel" id="f-tel" autocomplete="tel" required></label>
+          </div>
+          <div class="f2">
+            <label><span class="label">E-mail</span>
+              <input type="email" name="email" id="f-email" autocomplete="email"></label>
+            <label><span class="label">Mesto alebo obec</span>
+              <input type="text" name="mesto" id="f-mesto" autocomplete="address-level2"></label>
+          </div>
+          <label><span class="label">Parametre okien alebo dverí</span>
+            <textarea name="sprava" id="f-sprava" placeholder="Napríklad: 6 okien 1500 × 1400 mm, jedno balkónové dvere, staré okná treba odviezť."></textarea></label>
+          <button class="btn btn-primary" type="submit">Pripraviť správu v e-maile</button>
+          <p class="micro">Tlačidlo otvorí Váš e-mailový program s vyplnenou správou na allmont@allmont.sk. Odosielate ju Vy, my ju za Vás neposielame. Ak Vám e-mail nefunguje, zavolajte na 0903 512 163.</p>
+          <p class="formnote" id="formDone">Správa je pripravená vo Vašom e-mailovom programe. Skontrolujte ju a odošlite. Ak sa okno neotvorilo, napíšte nám priamo na <a href="mailto:allmont@allmont.sk">allmont@allmont.sk</a>.</p>
+        </form>
+      </div>
+
+      <div class="cbox rv">
+        <span class="label" style="display:block;margin-bottom:8px">Kontakt</span>
+        <div class="crow"><span class="label">Firma</span><span class="v">ALL MONT, spol. s r.o.</span></div>
+        <div class="crow"><span class="label">Adresa</span><address>Široká 1<br>949 01 Nitra</address></div>
+        <div class="crow"><span class="label">Telefón</span><span><a href="tel:+421903512163">0903 512 163</a><br><a href="tel:+421915658977">0915 658 977</a></span></div>
+        <div class="crow"><span class="label">E-mail</span><a href="mailto:allmont@allmont.sk">allmont@allmont.sk</a></div>
+        <div class="crow"><span class="label">Hodiny</span><span class="v">Po až Pia · 08:00 do 16:00</span></div>
+        <div class="crow"><span class="label">IČO</span><span class="v">44194064</span></div>
+        <div class="crow"><span class="label">IČ DPH</span><span class="v">SK2022622646</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="fwrap">
+    <div>
+      <img src="assets/allmont-logo-horizontal-dark.svg" alt="ALL MONT, plastové okná a dvere" width="410" height="100">
+      <p class="data" style="margin-top:18px;font-size:.8125rem;color:rgba(255,255,255,.6)">Dodávka a montáž plastových a hliníkových okien<br>Nitra · Levice · Bratislava · celé Slovensko</p>
+    </div>
+    <div class="fnav">
+      <a href="#o-nas">O nás</a>
+      <a href="#okno">Z čoho je okno</a>
+      <a href="#sluzby">Služby</a>
+      <a href="#sortiment">Sortiment</a>
+      <a href="#cennik">Servis</a>
+      <a href="#referencie">Referencie</a>
+      <a href="#certifikaty">Certifikáty</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </div>
+  <div class="fbot">
+    <p>© 2026 ALL MONT, spol. s r.o. · IČO 44194064 · IČ DPH SK2022622646</p>
+    <p><a href="tel:+421903512163" style="font-weight:500;font-size:.6875rem">0903 512 163</a> · <a href="mailto:allmont@allmont.sk" style="font-weight:500;font-size:.6875rem">allmont@allmont.sk</a></p>
+  </div>
+</footer>
+
+<div class="callbar" aria-label="Rýchly kontakt">
+  <a class="tel" href="tel:+421903512163">0903 512 163</a>
+  <a class="cta" href="#kontakt">Nezáväzná ponuka</a>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ==========================================================================
+   1. Základ
+   ========================================================================== */
+var VIDEO_1080  = 'assets/hero-1080.mp4';
+var VIDEO_1440  = 'assets/hero-1440.mp4';
+var VIDEO_2160  = 'assets/hero-2160.mp4';
+var POSTER_URL  = 'assets/hero-poster.jpg';
+var ENDING_URL  = 'assets/hero-ending.jpg';
+var PLATE_URL   = 'assets/hero-plate.jpg';
+
+/* Ktorá verzia videa. Každá snímka je kľúčová, takže jeden skok dekóduje jednu
+   snímku, okolo 9 ms aj v 4K. Výkonový dôvod nesahovať po 4K teda neexistuje,
+   preto ho dostane každý počítač, ktorý scroll vôbec spúšťa. Menšia verzia je
+   len ochrana pred zhltnutím 28 MB na slabom mobilnom pripojení. */
+function pickVideo(){
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (conn){
+    var et = conn.effectiveType || '';
+    /* 3G sem zámerne nepatrí: effectiveType je len odhad a vedel by zbytočne
+       zraziť kvalitu aj na rýchlej linke. Zľavujeme len pri šetrení dát a 2G. */
+    if (conn.saveData || et === 'slow-2g' || et === '2g') return { url: VIDEO_1080 };
+  }
+  return { url: VIDEO_2160 };
+}
+var SRC = pickVideo();
+
+/* kde intro dohrá a kde sa začne prechod do plochy stránky */
+var TIME_END = 0.90;
+var VEIL_A   = 0.955;
+var VEIL_B   = 0.998;
+
+var stage  = document.getElementById('stage');
+var video  = document.getElementById('heroVideo');
+var poster = document.getElementById('poster');
+var ring   = document.getElementById('ring');
+var hero   = document.getElementById('hero');
+var nav    = document.getElementById('nav');
+var topbar = document.getElementById('topbar');
+var cue    = document.getElementById('cue');
+var cueFill= document.getElementById('cueFill');
+var veil   = document.getElementById('veil');
+var plate  = document.getElementById('plate');
+var endBox = document.getElementById('uvod');
+
+var clamp = function(v,lo,hi){ return v<lo?lo:(v>hi?hi:v); };
+var smoothstep = function(p,e0,e1){
+  var t = clamp((p-e0)/(e1-e0),0,1);
+  return t*t*(3-2*t);
+};
+
+plate.style.backgroundImage = "url('"+PLATE_URL+"')";
+
+/* Toto video nemá mrtvé miesto, pohyb medzi snímkami sa drží po celej dĺžke,
+   takže čas ide so scrollom rovnomerne, jeden k jednému. */
+function mapTime(p){
+  if (p >= TIME_END) return 1;
+  return p / TIME_END;
+}
+
+/* ==========================================================================
+   2. Titulky, len objavenie sa
+   ========================================================================== */
+var caps = Array.prototype.map.call(document.querySelectorAll('.cap'), function(el){
+  return { el: el, a: parseFloat(el.getAttribute('data-a')), b: parseFloat(el.getAttribute('data-b')), op: -1 };
+});
+function updateCaps(p){
+  for (var i=0;i<caps.length;i++){
+    var c = caps[i];
+    var f = Math.min(0.035,(c.b-c.a)/3);
+    var op = smoothstep(p,c.a,c.a+f) * (1 - smoothstep(p,c.b-f,c.b));
+    if (Math.abs(op-c.op) > 0.004){
+      c.op = op;
+      c.el.style.opacity = op.toFixed(3);
+      c.el.style.visibility = op < 0.012 ? 'hidden' : 'visible';
+    }
+  }
+}
+
+/* ==========================================================================
+   3. Progres, lerp a seek
+   ========================================================================== */
+function heroProgress(){
+  var r = hero.getBoundingClientRect();
+  var total = hero.offsetHeight - window.innerHeight;
+  if (total <= 0) return 0;
+  return clamp(-r.top/total,0,1);
+}
+
+var scrubOn = false;
+var target = 0, shown = 0, rafId = null, lastTick = 0, heroOnScreen = true;
+var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null, end:-1 };
+
+function updateChrome(p){
+  /* nápoveda zostáva po celý čas a zmizne až s prechodom do stránky */
+  var cueOp = 1 - smoothstep(p,0.93,0.99);
+  if (Math.abs(cueOp-chrome.cue) > 0.01){
+    chrome.cue = cueOp;
+    cue.style.opacity = cueOp.toFixed(2);
+    cue.style.visibility = cueOp < 0.02 ? 'hidden' : 'visible';
+  }
+  var ip = clamp(p / TIME_END, 0, 1);
+  if (Math.abs(ip-chrome.ip) > 0.003){
+    chrome.ip = ip;
+    cueFill.style.setProperty('--ip', ip.toFixed(4));
+  }
+  var cueDark = p >= 0.64;
+  if (cueDark !== chrome.cueDark){
+    chrome.cueDark = cueDark;
+    cue.classList.toggle('d', cueDark);
+    cue.classList.toggle('w', !cueDark);
+  }
+  var topOp = 1 - smoothstep(p,0.02,0.09);
+  if (Math.abs(topOp-chrome.top) > 0.01){
+    chrome.top = topOp;
+    topbar.style.opacity = topOp.toFixed(2);
+    topbar.style.visibility = topOp < 0.02 ? 'hidden' : 'visible';
+  }
+  var vOp = smoothstep(p,VEIL_A,VEIL_B);
+  if (Math.abs(vOp-chrome.veil) > 0.004){
+    chrome.veil = vOp;
+    veil.style.opacity = vOp.toFixed(3);
+  }
+  /* nadpis prichádza spolu s prechodom do plochy, nie po ňom */
+  var endOp = smoothstep(p,0.962,0.998);
+  if (Math.abs(endOp-chrome.end) > 0.004){
+    chrome.end = endOp;
+    endBox.style.opacity = endOp.toFixed(3);
+    endBox.classList.toggle('live', endOp > 0.6);
+  }
+  var navOn = p > 0.94;
+  if (navOn !== chrome.nav){ chrome.nav = navOn; nav.classList.toggle('on', navOn); }
+}
+
+function tick(now){
+  var dt = Math.min(100, now - (lastTick || now));
+  lastTick = now;
+  shown += (target - shown) * (1 - Math.pow(1-0.14, dt/16.667));
+
+  var done = Math.abs(target-shown) < 0.0005;
+  if (done) shown = target;
+  if (video.duration) requestSeek(mapTime(shown) * video.duration);
+  updateCaps(shown);
+  updateChrome(shown);
+
+  if (done){ rafId = null; lastTick = 0; }
+  else rafId = requestAnimationFrame(tick);
+}
+function kick(){ if (!scrubOn) return; if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick); }
+function onScroll(){ target = heroProgress(); kick(); }
+
+var seekBusy = false, pendingTime = null;
+function requestSeek(t){
+  if (!video.duration) return;
+  if (seekBusy){ pendingTime = t; return; }
+  seekBusy = true;
+  try { video.currentTime = t; } catch(e){ seekBusy = false; }
+}
+video.addEventListener('seeked', function(){
+  seekBusy = false;
+  if (pendingTime !== null){ var t = pendingTime; pendingTime = null; requestSeek(t); }
+});
+video.addEventListener('error', function(){ seekBusy = false; pendingTime = null; failVideo(); });
+
+if ('IntersectionObserver' in window){
+  new IntersectionObserver(function(es){
+    heroOnScreen = es[0].isIntersecting;
+    if (heroOnScreen) kick();
+  },{rootMargin:'10px'}).observe(hero);
+}
+
+/* ==========================================================================
+   4. Video ako Blob so streamom a krúžkom
+   ========================================================================== */
+var heroInit = false, fetchStarted = false;
+
+function initHeroOnce(){
+  if (heroInit) return;
+  heroInit = true;
+  poster.style.backgroundImage = "url('"+POSTER_URL+"')";
+  var img = new Image();
+  img.onload = startBlobFetch;
+  img.onerror = startBlobFetch;
+  img.src = POSTER_URL;
+  setTimeout(startBlobFetch, 4000);
+}
+function startBlobFetch(){
+  if (fetchStarted) return;
+  fetchStarted = true;
+  loadHeroBlob().catch(failVideo);
+}
+function loadHeroBlob(){
+  if (!window.fetch || !window.AbortController) return Promise.reject(new Error('no fetch'));
+  var ctrl = new AbortController();
+  var watchdog = setTimeout(function(){ ctrl.abort(); }, 25000);
+  var opts = { signal: ctrl.signal };
+  try { opts.priority = 'low'; } catch(e){}
+
+  return fetch(SRC.url, opts).then(function(res){
+    if (!res.ok || !res.body) throw new Error('bad response');
+    var total = Number(res.headers.get('Content-Length')) || SRC.bytes;
+    var reader = res.body.getReader();
+    var chunks = [], got = 0, lastRing = 0;
+
+    function pump(){
+      return reader.read().then(function(r){
+        if (r.done) return;
+        clearTimeout(watchdog);
+        watchdog = setTimeout(function(){ ctrl.abort(); }, 25000);
+        chunks.push(r.value);
+        got += r.value.length;
+        var frac = Math.min(1, got/total);
+        var now = performance.now();
+        if (now - lastRing > 100 || frac === 1){
+          lastRing = now;
+          ring.style.setProperty('--ld', Math.round(126*(1-frac)));
+        }
+        return pump();
+      });
+    }
+    return pump().then(function(){
+      clearTimeout(watchdog);
+      ring.style.setProperty('--ld', 0);
+      video.src = URL.createObjectURL(new Blob(chunks, {type:'video/mp4'}));
+      video.load();
+      video.addEventListener('canplay', function(){
+        target = heroProgress();
+        requestSeek(mapTime(target) * video.duration);
+        stage.classList.add('video-ready');
+        kick();
+      }, {once:true});
+    });
+  });
+}
+function failVideo(){
+  stage.classList.add('video-failed');
+  if (ring) ring.style.display = 'none';
+}
+
+/* ==========================================================================
+   5. Päť podmienok, kedy sa intro nescrolluje. Živé v oboch smeroch.
+   ========================================================================== */
+var GATES = [
+  '(max-width: 720px)',
+  '(orientation: portrait) and (max-width: 1024px)',
+  '(orientation: portrait) and (pointer: coarse)',
+  '(orientation: landscape) and (pointer: coarse) and (max-height: 560px)',
+  '(prefers-reduced-motion: reduce)'
+];
+var MQLS = GATES.map(function(q){ return window.matchMedia(q); });
+
+function enableScrub(){
+  if (scrubOn) return;
+  scrubOn = true;
+  initHeroOnce();
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null, end:-1 };
+  caps.forEach(function(c){ c.op = -1; });
+  updateCaps(heroProgress());
+  updateChrome(heroProgress());
+  onScroll();
+}
+function disableScrub(){
+  if (!scrubOn) return;
+  scrubOn = false;
+  window.removeEventListener('scroll', onScroll);
+  window.removeEventListener('resize', onScroll);
+  if (rafId !== null){ cancelAnimationFrame(rafId); rafId = null; }
+}
+function applyHeroMode(){
+  var gated = MQLS.some(function(m){ return m.matches; });
+  if (gated){ disableScrub(); nav.classList.add('on'); }
+  else { nav.classList.remove('on'); chrome.nav = false; enableScrub(); }
+}
+MQLS.forEach(function(m){
+  if (m.addEventListener) m.addEventListener('change', applyHeroMode);
+  else if (m.addListener) m.addListener(applyHeroMode);
+});
+
+/* ==========================================================================
+   6. Príchody sekcií
+   ========================================================================== */
+var revealTargets = document.querySelectorAll('.rv,.stg');
+
+/* Rýchle scrollovanie: keď človek cukne o viac ako obrazovku, prelínanie sa
+   vypne a obsah je na mieste okamžite. Animácia je príjemnosť pre pomalé
+   čítanie, nikdy nemá byť prekážkou. */
+var fastUntil = 0, lastY = window.pageYOffset;
+window.addEventListener('scroll', function(){
+  var y = window.pageYOffset;
+  if (Math.abs(y - lastY) > window.innerHeight * 1.1) fastUntil = performance.now() + 500;
+  lastY = y;
+}, {passive:true});
+
+function reveal(el){
+  if (el.classList.contains('in')) return;
+  if (performance.now() < fastUntil) el.classList.add('nofade');
+  el.classList.add('in');
+  if (el.classList.contains('stg')) setTimeout(function(){ el.classList.add('stg-done'); }, 400);
+}
+
+if ('IntersectionObserver' in window){
+  var ro = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      reveal(e.target);
+      ro.unobserve(e.target);
+    });
+  },{rootMargin:'1800px 0px 1800px 0px', threshold:0});
+  Array.prototype.forEach.call(revealTargets, function(el){ ro.observe(el); });
+
+  /* Záchytná sieť pre prípad, že prehliadač hlásenia zlúči. */
+  var sweeping = false;
+  var sweep = function(){
+    sweeping = false;
+    var vh = window.innerHeight;
+    Array.prototype.forEach.call(document.querySelectorAll('.rv:not(.in),.stg:not(.in)'), function(el){
+      var r = el.getBoundingClientRect();
+      if (r.top < vh * 2.6 && r.bottom > -vh * 1.6) reveal(el);
+    });
+  };
+  window.addEventListener('scroll', function(){
+    if (sweeping) return;
+    sweeping = true;
+    requestAnimationFrame(sweep);
+  }, {passive:true});
+} else {
+  Array.prototype.forEach.call(revealTargets, function(el){ el.classList.add('in','stg-done'); });
+}
+
+document.addEventListener('visibilitychange', function(){
+  document.body.classList.toggle('paused', document.hidden);
+});
+
+/* ukazovateľ prescrollovania, zápis len na zmenu */
+var prog = document.getElementById('prog');
+if (prog){
+  var pi = prog.firstElementChild, lastSp = -1, pQueued = false;
+  var paint = function(){
+    pQueued = false;
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var v = h > 0 ? clamp(window.pageYOffset / h, 0, 1) : 0;
+    if (Math.abs(v - lastSp) < 0.002) return;
+    lastSp = v;
+    pi.style.setProperty('--sp', v.toFixed(4));
+  };
+  window.addEventListener('scroll', function(){
+    if (pQueued) return;
+    pQueued = true;
+    requestAnimationFrame(paint);
+  }, {passive:true});
+  window.addEventListener('resize', paint);
+  paint();
+}
+
+/* ==========================================================================
+   Kresba okna, zvýraznenie časti
+   ========================================================================== */
+var cutSvg = document.getElementById('cutSvg');
+var leg = document.getElementById('leg');
+if (leg && cutSvg){
+  var hl = null;
+  var setHl = function(id){
+    if (hl === id) return;
+    hl = id;
+    Array.prototype.forEach.call(cutSvg.querySelectorAll('.part'), function(g){
+      g.classList.toggle('hl', g.id === id);
+    });
+    cutSvg.classList.toggle('dim', !!id);
+  };
+  Array.prototype.forEach.call(leg.querySelectorAll('button'), function(btn){
+    var id = btn.getAttribute('data-part');
+    btn.addEventListener('mouseenter', function(){ setHl(id); });
+    btn.addEventListener('focus', function(){ setHl(id); });
+    btn.addEventListener('click', function(){ setHl(hl === id ? null : id); });
+  });
+  leg.addEventListener('mouseleave', function(){ setHl(null); });
+}
+
+/* ==========================================================================
+   7. Formulár, mailto
+   ========================================================================== */
+var form = document.getElementById('form');
+if (form){
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var v = function(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    if (!v('f-meno') || !v('f-tel')){
+      document.getElementById(!v('f-meno') ? 'f-meno' : 'f-tel').focus();
+      return;
+    }
+    var lines = [
+      'Meno: ' + v('f-meno'),
+      'Telefón: ' + v('f-tel'),
+      'E-mail: ' + (v('f-email') || 'neuvedený'),
+      'Mesto: ' + (v('f-mesto') || 'neuvedené'),
+      '',
+      v('f-sprava') || 'Prosím o nezáväznú cenovú ponuku.'
+    ];
+    document.getElementById('formDone').classList.add('on');
+    window.location.href = 'mailto:allmont@allmont.sk'
+      + '?subject=' + encodeURIComponent('Nezáväzná cenová ponuka, ' + v('f-meno'))
+      + '&body=' + encodeURIComponent(lines.join('\n'));
+  });
+}
+
+/* ==========================================================================
+   8. Obmedzený pohyb naživo, v oboch smeroch
+   ========================================================================== */
+function pinToFinalStates(){
+  Array.prototype.forEach.call(document.querySelectorAll('.rv,.stg'), function(el){ el.classList.add('in','stg-done'); });
+  nav.classList.add('on');
+}
+var rmq = window.matchMedia('(prefers-reduced-motion: reduce)');
+var onRm = function(e){
+  if (e.matches) pinToFinalStates();
+  else applyHeroMode();
+};
+if (rmq.addEventListener) rmq.addEventListener('change', onRm);
+else if (rmq.addListener) rmq.addListener(onRm);
+
+applyHeroMode();
+if (rmq.matches) pinToFinalStates();
+})();
+
+/* ==========================================================================
+   Zameriavací kríž. Kríž sedí presne na hrote, štvorec ho dobieha.
+   Natívny kurzor sa skryje až po prvom pohybe, aby nikto nezostal bez kurzora,
+   keby skript nedobehol.
+   ========================================================================== */
+(function(){
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  var cur = document.getElementById('cur');
+  var box = document.getElementById('curBox');
+  var cross = document.getElementById('curCross');
+  if (!cur || !box || !cross) return;
+
+  var mx = 0, my = 0, bx = 0, by = 0, started = false, raf = null;
+  var hot = false, hidden = false;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var HOT = 'a,button,summary,label,.leg button,input,textarea';
+
+  /* Podklad pod hrotom rozhoduje o farbe kríža. Prejde nahor po prvok,
+     ktorý má nepriehľadné pozadie, a spočíta jeho svetlosť. */
+  var lastEl = null, onDark = false;
+  function lum(rgb){
+    var m = rgb.match(/(\d+(?:\.\d+)?)/g);
+    if (!m || m.length < 3) return null;
+    if (m.length > 3 && parseFloat(m[3]) < 0.35) return null;
+    var f = function(v){ v = v/255; return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4); };
+    return 0.2126*f(+m[0]) + 0.7152*f(+m[1]) + 0.0722*f(+m[2]);
+  }
+  function resolveDark(el){
+    var n = el, guard = 0;
+    while (n && n.nodeType === 1 && guard++ < 12){
+      var L = lum(getComputedStyle(n).backgroundColor);
+      if (L !== null) return L < 0.35;
+      n = n.parentElement;
+    }
+    return false;
+  }
+
+  function frame(){
+    raf = null;
+    var k = reduce ? 1 : 0.22;
+    bx += (mx - bx) * k;
+    by += (my - by) * k;
+    cross.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0)';
+    box.style.transform   = 'translate3d(' + bx + 'px,' + by + 'px,0)';
+    if (Math.abs(mx - bx) > 0.4 || Math.abs(my - by) > 0.4) raf = requestAnimationFrame(frame);
+  }
+  function kick(){ if (raf === null) raf = requestAnimationFrame(frame); }
+
+  document.addEventListener('pointermove', function(e){
+    if (e.pointerType !== 'mouse') return;
+    mx = e.clientX; my = e.clientY;
+    if (!started){
+      started = true;
+      bx = mx; by = my;
+      document.documentElement.classList.add('cur-on');
+      cur.classList.add('on');
+    }
+    var t = e.target;
+    var overInput = !!(t && t.closest && t.closest('input,textarea'));
+    if (overInput !== hidden){
+      hidden = overInput;
+      cur.style.opacity = hidden ? '0' : '';
+    }
+    var isHot = !hidden && !!(t && t.closest && t.closest(HOT));
+    if (isHot !== hot){ hot = isHot; cur.classList.toggle('hot', hot); }
+
+    if (t !== lastEl){
+      lastEl = t;
+      var d = resolveDark(t);
+      if (d !== onDark){ onDark = d; cur.classList.toggle('ondark', onDark); }
+    }
+    kick();
+  }, {passive:true});
+
+  document.addEventListener('pointerdown', function(){ cur.classList.add('press'); }, {passive:true});
+  document.addEventListener('pointerup', function(){ cur.classList.remove('press'); }, {passive:true});
+  document.addEventListener('mouseleave', function(){ cur.classList.remove('on'); }, {passive:true});
+  document.addEventListener('mouseenter', function(){ if (started) cur.classList.add('on'); }, {passive:true});
+  window.addEventListener('blur', function(){ cur.classList.remove('on'); });
+})();
+</script>
+</body>
+</html>
