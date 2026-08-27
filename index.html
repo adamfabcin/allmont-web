@@ -571,8 +571,11 @@ input:focus,textarea:focus{background:#fff;border-color:var(--accent);
    presného nástroja. Zapne sa len na zariadeniach s myšou.
    ========================================================================== */
 .cur{position:fixed;left:0;top:0;z-index:900;pointer-events:none;opacity:0;
-  transition:opacity .25s var(--ease);will-change:transform}
+  transition:opacity .5s var(--ease-out);will-change:transform}
 .cur.on{opacity:1}
+/* počas intra kurzor pri scrollovaní zmizne a vráti sa na pohyb myšou.
+   Keď intro skončí, zostáva natrvalo. */
+.cur.hid{opacity:0;transition:opacity .2s var(--ease)}
 html.cur-on,html.cur-on body{cursor:none}
 html.cur-on input,html.cur-on textarea{cursor:text}
 html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:none}
@@ -1234,7 +1237,7 @@ function tick(now){
   else rafId = requestAnimationFrame(tick);
 }
 function kick(){ if (!scrubOn) return; if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick); }
-function onScroll(){ target = heroProgress(); kick(); }
+function onScroll(){ target = heroProgress(); window.__introRunning = target < 0.985; kick(); }
 
 var seekBusy = false, pendingTime = null;
 function requestSeek(t){
@@ -1357,6 +1360,7 @@ function disableScrub(){
 }
 function applyHeroMode(){
   var gated = MQLS.some(function(m){ return m.matches; });
+  window.__introRunning = !gated;
   if (gated){ disableScrub(); nav.classList.add('on'); }
   else { nav.classList.remove('on'); chrome.nav = false; enableScrub(); }
 }
@@ -1585,6 +1589,23 @@ if (rmq.matches) pinToFinalStates();
       if (d !== onDark){ onDark = d; cur.classList.toggle('ondark', onDark); }
     }
     kick();
+  }, {passive:true});
+
+  /* Počas intra kurzor pri scrollovaní zmizne, aby nerozptyľoval obraz.
+     Pohyb myšou ho okamžite vráti, aby sa dalo kliknúť na hlavičku aj navigáciu.
+     Po intre sa už neskrýva. */
+  var hid = false;
+  function setHid(v){
+    if (v === hid) return;
+    hid = v;
+    cur.classList.toggle('hid', v);
+  }
+  window.addEventListener('scroll', function(){
+    if (window.__introRunning) setHid(true);
+    else setHid(false);
+  }, {passive:true});
+  document.addEventListener('pointermove', function(e){
+    if (e.pointerType === 'mouse') setHid(false);
   }, {passive:true});
 
   document.addEventListener('pointerdown', function(){ cur.classList.add('press'); }, {passive:true});
