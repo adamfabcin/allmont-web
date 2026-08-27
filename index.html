@@ -12,7 +12,7 @@
 <meta property="og:title" content="ALL MONT · Plastové okná a dvere, Nitra">
 <meta property="og:description" content="Dodávka a montáž plastových a hliníkových okien. Poradenstvo a zameranie zdarma.">
 <meta property="og:url" content="https://REPLACE-AT-DEPLOY/">
-<meta property="og:image" content="https://REPLACE-AT-DEPLOY/assets/hero-ending.jpg">
+<meta property="og:image" content="https://REPLACE-AT-DEPLOY/assets/hero-ending.jpg?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap">
@@ -115,8 +115,9 @@ button{font:inherit;color:inherit}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--ink)}
 .stage .poster,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .stage .poster{background-size:cover;background-position:50% 50%;background-repeat:no-repeat}
-.stage video{opacity:0;transition:opacity .8s var(--ease);transform:translateZ(0);will-change:transform}
+.stage video{opacity:0;transform:translateZ(0);will-change:transform}
 .stage.video-ready video{opacity:1}
+.stage.video-ready .poster{opacity:0}
 .stage.video-failed video{display:none}
 
 /* Titulky. Farba a podklad sú určené meraním jasu presne v mieste textu:
@@ -719,7 +720,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
         <p style="margin-top:20px;color:var(--text-secondary)">Pracujeme na celom území Slovenska, ale hlavne v Nitre, Leviciach a Bratislave.</p>
       </div>
       <figure class="rv">
-        <img src="assets/shot-1.jpg" alt="Novostavba s veľkými presklenami, realizácia ALL MONT" width="1920" height="1080" loading="lazy" decoding="async">
+        <img src="assets/shot-1.jpg?v=3" alt="Novostavba s veľkými presklenami, realizácia ALL MONT" width="1920" height="1080" loading="lazy" decoding="async">
       </figure>
     </div>
   </section>
@@ -953,7 +954,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
       </div>
       <div class="refs">
         <figure class="rv">
-          <img src="assets/real-1.jpg" alt="Novostavba s veľkoplošným presklením a bielymi rámami" width="1920" height="1080" loading="lazy" decoding="async">
+          <img src="assets/real-1.jpg?v=3" alt="Novostavba s veľkoplošným presklením a bielymi rámami" width="1920" height="1080" loading="lazy" decoding="async">
           <figcaption>Novostavba · veľkoplošné presklenie</figcaption>
         </figure>
         <div class="rv">
@@ -973,11 +974,11 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
 
       <div class="refpair">
         <figure class="rv">
-          <img src="assets/real-2.jpg" alt="Interiér s presklením od podlahy, tenké biele rámy" width="1920" height="1080" loading="lazy" decoding="async">
+          <img src="assets/real-2.jpg?v=3" alt="Interiér s presklením od podlahy, tenké biele rámy" width="1920" height="1080" loading="lazy" decoding="async">
           <figcaption>Interiér · presklenie od podlahy</figcaption>
         </figure>
         <figure class="rv">
-          <img src="assets/real-3.jpg" alt="Detail osadeného bieleho okna s kovaním a tesnením" width="1920" height="1080" loading="lazy" decoding="async">
+          <img src="assets/real-3.jpg?v=3" alt="Detail osadeného bieleho okna s kovaním a tesnením" width="1920" height="1080" loading="lazy" decoding="async">
           <figcaption>Detail osadenia a kovania</figcaption>
         </figure>
       </div>
@@ -1081,12 +1082,12 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
 /* ==========================================================================
    1. Základ
    ========================================================================== */
-var VIDEO_1080  = 'assets/hero-1080.mp4';
-var VIDEO_1440  = 'assets/hero-1440.mp4';
-var VIDEO_2160  = 'assets/hero-2160.mp4';
-var POSTER_URL  = 'assets/hero-poster.jpg';
-var ENDING_URL  = 'assets/hero-ending.jpg';
-var PLATE_URL   = 'assets/hero-plate.jpg';
+var VIDEO_1080  = 'assets/hero-1080.mp4?v=3';
+var VIDEO_1440  = 'assets/hero-1440.mp4?v=3';
+var VIDEO_2160  = 'assets/hero-2160.mp4?v=3';
+var POSTER_URL  = 'assets/hero-poster.jpg?v=3';
+var ENDING_URL  = 'assets/hero-ending.jpg?v=3';
+var PLATE_URL   = 'assets/hero-plate.jpg?v=3';
 
 /* Ktorá verzia videa. Každá snímka je kľúčová, takže jeden skok dekóduje jednu
    snímku, okolo 9 ms aj v 4K. Výkonový dôvod nesahovať po 4K teda neexistuje,
@@ -1121,6 +1122,13 @@ var cueFill= document.getElementById('cueFill');
 var veil   = document.getElementById('veil');
 var plate  = document.getElementById('plate');
 var endBox = document.getElementById('uvod');
+
+/* Prehliadač si pri obnovení stránky pamätá pozíciu scrollu a vrátil by vás do
+   stredu intra. Obrázok, ktorý drží miesto, je ale vždy prvá snímka, takže by
+   ste videli prvú snímku a potom skok na svoju pozíciu. Preto pamätanie
+   vypíname a intro vždy začína od začiatku. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.addEventListener('beforeunload', function(){ window.scrollTo(0,0); });
 
 var clamp = function(v,lo,hi){ return v<lo?lo:(v>hi?hi:v); };
 var smoothstep = function(p,e0,e1){
@@ -1256,7 +1264,7 @@ var heroInit = false, fetchStarted = false;
 function initHeroOnce(){
   if (heroInit) return;
   heroInit = true;
-  poster.style.backgroundImage = "url('"+POSTER_URL+"')";
+  if (heroProgress() < 0.02) poster.style.backgroundImage = "url('"+POSTER_URL+"')";
   var img = new Image();
   img.onload = startBlobFetch;
   img.onerror = startBlobFetch;
