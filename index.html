@@ -1507,13 +1507,16 @@ var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null };
 
 function updateChrome(p){
   /* nápoveda zostáva po celý čas a zmizne až s prechodom do stránky */
-  var cueOp = 1 - smoothstep(p,0.920,0.958);
+  var cueOp = 1 - smoothstep(p,0.950,0.968);
   if (Math.abs(cueOp-chrome.cue) > 0.01){
     chrome.cue = cueOp;
     cue.style.opacity = cueOp.toFixed(2);
     cue.style.visibility = cueOp < 0.02 ? 'hidden' : 'visible';
   }
-  var ip = clamp(p / TIME_END, 0, 1);
+  /* Linka postupu je plná presne vtedy, keď je obrazovka úplne biela, teda
+     keď sa prvá animácia naozaj končí. Nie na TIME_END, to je len koniec
+     obrazu, po ktorom ešte beží dobielenie. */
+  var ip = clamp(p / VEIL_B, 0, 1);
   if (Math.abs(ip-chrome.ip) > 0.003){
     chrome.ip = ip;
     cueFill.style.setProperty('--ip', ip.toFixed(4));
@@ -1753,11 +1756,12 @@ function vanFade(){
 }
 
 /* Kde na úseku odovzdania sa plocha dodávky vynára z bielej.
-   0,55 je vrchol bielej: závoj je tam na sto percentách, obrazovka je čisto
-   biela a nič cez ňu nepresvitá. Až odtiaľ sa vynára dodávka a v tom istom
-   bode sa rozbieha aj jej video, takže prichádza sprava priamo z tej bielej,
-   presne ako v predlohe. */
-var VAN_FADE_A = 0.55;
+   Vrchol bielej je na 55 percentách úseku, tam je závoj na sto percentách.
+   Biela potom ešte chvíľu drží, do 66 percent, aby bol koniec prvej animácie
+   naozaj koniec a nie hneď začiatok druhej. Až odtiaľ sa vynára dodávka a v tom
+   istom bode sa rozbieha aj jej video, takže prichádza sprava priamo z tej
+   bielej, presne ako v predlohe. */
+var VAN_FADE_A = 0.66;
 var VAN_FADE_B = 1.0;
 function vanMap(p){
   var a = vanFade() * VAN_FADE_A;
@@ -1813,17 +1817,26 @@ function onVanScroll(){ vanTarget = vanProgress(); paintStage(vanTarget); vanKic
 
    Text sa neprelína zvlášť, ide s celou plochou, takže vo chvíli, keď je
    obrazovka svetlá, stojí na nej nadpis aj dodávka naraz. */
-var lastStageOp = -1;
+var lastStageOp = -1, lastTextOp = -1;
 function paintStage(p){
   var f = vanFade();
+
+  /* Text príde až potom, ďalším scrollovaním, keď je dodávka poriadne v obraze.
+     Nie spolu s ňou a nie zdola: neposúva sa, len sa vynorí.
+
+     Musí mať vlastného strážcu. Kým ho mal spoločného s plochou, prestal sa
+     zapisovať vo chvíli, keď plocha dosiahla jednotku a prestala sa meniť,
+     takže sa text neobjavil nikdy. */
+  var tOp = smoothstep(p, 0.26, 0.44);
+  if (Math.abs(tOp - lastTextOp) > 0.004){
+    lastTextOp = tOp;
+    end2.style.opacity = tOp.toFixed(3);
+  }
+
   var op = smoothstep(p, f * VAN_FADE_A, f * VAN_FADE_B);
   if (Math.abs(op - lastStageOp) < 0.004) return;
   lastStageOp = op;
   stage2.style.opacity = op.toFixed(3);
-
-  /* Text príde až potom, ďalším scrollovaním, keď je dodávka poriadne v obraze.
-     Nie spolu s ňou a nie zdola: neposúva sa, len sa vynorí. */
-  end2.style.opacity = smoothstep(p, 0.26, 0.44).toFixed(3);
   /* Bielenie obrazu okna robí závoj intra, nie táto priesvitnosť. Tu je len
      poistka na poslednú štvrtinu úseku: keby závoj z akéhokoľvek dôvodu
      nedobehol, plocha intra sa aj tak stratí a nemôže cez dodávku presvitať.
@@ -1903,7 +1916,7 @@ function applyVanMode(){
     stage.style.opacity = '';
   } else {
     hero2.classList.remove('flat');
-    lastStageOp = -1;
+    lastStageOp = -1; lastTextOp = -1;
     paintStage(vanProgress());
     if (!vanOn){
       vanOn = true;

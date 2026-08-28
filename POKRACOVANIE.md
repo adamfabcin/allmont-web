@@ -142,14 +142,28 @@ Rozpis na scroll. Celé odovzdanie je **jedna obrazovka**, preto má `.hero2`
 |---|---|---|---|
 | 0 až 50 % | 0 → 0,98 | 0 | ešte beží |
 | 55 % | **1,00, čistá biela** | 0 | dohraté |
-| 55 až 100 % | 1,00 | 0 → 1 | – |
+| 55 až 66 % | 1,00 | 0 | biela drží |
+| 66 až 100 % | 1,00 | 0 → 1 | – |
 
-Čísla: `VEIL_A` 0,9286, `VEIL_B` 0,968, `TIME_END` 0,965, `VAN_FADE_A` 0,55,
+Biela medzi 55 a 66 percentami **zámerne drží**, aby bol koniec prvej animácie
+naozaj koniec a nie hneď začiatok druhej.
+
+Čísla: `VEIL_A` 0,9286, `VEIL_B` 0,968, `TIME_END` 0,965, `VAN_FADE_A` 0,66,
 `VAN_FADE_B` 1,0.
+
+**Linka postupu je plná presne vtedy, keď je obrazovka biela**, teda keď sa prvá
+animácia naozaj končí. Počíta sa z `VEIL_B`, nie z `TIME_END`, lebo `TIME_END` je
+len koniec obrazu, po ktorom ešte beží dobielenie. Nápoveda „Scrollujte" odchádza
+0,950 až 0,968, teda zmizne presne na bielej.
 
 **Text príde až potom**, ďalším scrollovaním, na postupe sekcie 0,26 až 0,44,
 keď je dodávka poriadne v obraze. Neposúva sa, len sa vynorí. Skúšané bolo aj
 dotiahnutie zdola aj príchod spolu s dodávkou, klient odmietol oboje.
+
+**Text musí mať vlastného strážcu zápisu.** Kým ho mal spoločný s priesvitnosťou
+plochy, prestal sa zapisovať vo chvíli, keď plocha dosiahla jednotku a prestala
+sa meniť. Text sa tým pádom neobjavil nikdy. Toto je ľahké omylom vrátiť späť
+pri optimalizovaní zápisov, tak pozor naň.
 
 **Ostatné, čo sa na tomto prechode už raz vyriešilo a nesmie sa vrátiť:**
 
