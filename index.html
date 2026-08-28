@@ -1412,14 +1412,21 @@ var SRC = pickVideo();
 
    Teraz je to bez akejkoľvek medzery a bez toho, aby sa dve 4K videá dekódovali
    naraz. Sekcia s dodávkou je vytiahnutá o jednu obrazovku hore, takže jej
-   plocha sa začne prelínať už na 0,857. Video okna beží ďalej až do 0,95, teda
-   ešte v priebehu prelínania, aby obraz nikde nestál. Rozplynutie okna do farby
-   stránky ide s prelínaním, nie pred ním (0,86 až 0,99): okno bledne presne
-   vtedy, keď dodávka pribúda, takže sa oba zábery nemiešajú do kaše, a zároveň
-   nie je chvíľa, keď by na obrazovke nebolo nič. */
-var TIME_END = 0.95;
-var VEIL_A   = 0.86;
-var VEIL_B   = 0.99;
+   plocha nastúpi presne na 0,857 a odovzdanie má dva kroky za sebou, nie jeden.
+
+   Najprv obraz okna **zbelie**: závoj beží 0,857 až 0,925, teda posledné snímky
+   okna sa už prehrávajú do bledej. Video beží do 0,92, takže obraz sa hýbe po
+   celý čas belenia a nikde nestojí. Keď je obrazovka biela, video je dohraté.
+
+   Prepočítané na úsek odovzdania: belenie zaberá jeho prvých 48 percent,
+   dodávka sa začína objavovať na 42 percentách, keď je závoj na 96 percentách.
+   Obraz okna teda cez dodávku nepresvitá.
+
+   Až na tej bielej sa potom postupne objaví dodávka aj text. Poradie je
+   zámerné: keby sa objavovali skôr, presvital by cez ne obraz okna. */
+var TIME_END = 0.92;
+var VEIL_A   = 0.857;
+var VEIL_B   = 0.925;
 
 var stage  = document.getElementById('stage');
 var video  = document.getElementById('heroVideo');
@@ -1490,7 +1497,7 @@ var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null };
 
 function updateChrome(p){
   /* nápoveda zostáva po celý čas a zmizne až s prechodom do stránky */
-  var cueOp = 1 - smoothstep(p,0.845,0.905);
+  var cueOp = 1 - smoothstep(p,0.850,0.912);
   if (Math.abs(cueOp-chrome.cue) > 0.01){
     chrome.cue = cueOp;
     cue.style.opacity = cueOp.toFixed(2);
@@ -1518,7 +1525,7 @@ function updateChrome(p){
     chrome.veil = vOp;
     veil.style.opacity = vOp.toFixed(3);
   }
-  var navOn = p > 0.90;
+  var navOn = p > 0.925;
   if (navOn !== chrome.nav){ chrome.nav = navOn; nav.classList.toggle('on', navOn); }
 }
 
@@ -1735,14 +1742,16 @@ function vanFade(){
   return clamp(window.innerHeight * 2.0 / total, 0.02, 0.9);
 }
 
-/* Dodávka sa pohne v tej istej chvíli, ako sa začne prelínať. Nečaká na nič.
-   Príchod sprava tým neprichádza o nič, len sa jeho začiatok deje už pod
-   rozplývajúcim sa oknom, nie až po ňom. */
-var VAN_LEAD = 0.0;
+/* Kde na úseku odovzdania sa plocha dodávky začne a prestane objavovať.
+   0,42 nie je náhodné číslo: v tej chvíli je závoj intra už na 96 percentách,
+   teda obrazovka je prakticky biela a obraz okna cez dodávku nepresvitá.
+   Video dodávky sa rozbieha v tom istom bode, takže dodávka prichádza sprava
+   práve vtedy, keď sa objavuje. Neobjaví sa hotová a nestojí. */
+var VAN_FADE_A = 0.42;
+var VAN_FADE_B = 0.96;
 function vanMap(p){
-  var a = vanFade() * VAN_LEAD;
-  var q = clamp((p - a) / (VAN_END - a), 0, 1);
-  return q;
+  var a = vanFade() * VAN_FADE_A;
+  return clamp((p - a) / (VAN_END - a), 0, 1);
 }
 
 var vanBusy = false, vanPending = null, vanLastSeek = -1;
@@ -1796,17 +1805,18 @@ function onVanScroll(){ vanTarget = vanProgress(); paintStage(vanTarget); vanKic
    obrazovka svetlá, stojí na nej nadpis aj dodávka naraz. */
 var lastStageOp = -1;
 function paintStage(p){
-  var op = smoothstep(p, 0, vanFade() * 0.62);
+  var f = vanFade();
+  var op = smoothstep(p, f * VAN_FADE_A, f * VAN_FADE_B);
   if (Math.abs(op - lastStageOp) < 0.004) return;
   lastStageOp = op;
   stage2.style.opacity = op.toFixed(3);
-  end2.style.transform = 'translate3d(0,' + ((1-op)*26).toFixed(1) + 'px,0)';
-  /* Plocha intra sa rozplýva priesvitnosťou, nie maskou. Maska má z podstaty
-     okraj, a ten okraj bol práve tá seknutá hrana. Priesvitnosť žiadnu
-     geometriu nemá, takže sa nemá kde nič seknúť: okno sa po celej ploche
-     naraz vytratí do farby stránky, zatiaľ čo dodávka pribúda.
-     Skrytie na konci zostáva ako posledná poistka a šetrí skladanie obrazu. */
-  stage.style.opacity = (1 - op).toFixed(3);
+  /* Text sa neposúva. Nepríchádza zdola, len sa objaví spolu s dodávkou,
+     pretože priesvitnosť nesie celá plocha naraz. */
+  /* Bielenie obrazu okna robí závoj intra, nie táto priesvitnosť. Tu je len
+     poistka na poslednú štvrtinu úseku: keby závoj z akéhokoľvek dôvodu
+     nedobehol, plocha intra sa aj tak stratí a nemôže cez dodávku presvitať.
+     Je to neviditeľné, lebo v tej chvíli je obrazovka aj tak biela. */
+  stage.style.opacity = (1 - smoothstep(p, f * 0.78, f * 0.99)).toFixed(3);
   stage.style.visibility = op > 0.995 ? 'hidden' : '';
 }
 

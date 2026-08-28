@@ -119,73 +119,28 @@ tmavom zábere, tu z hmly na svetlom. Krytie 0,86 je merané, nie odhadnuté:
 najtmavší bod pod textom cez všetkých 167 snímok má bez závoja kontrast 1,0:1,
 so závojom 10,4:1. Úplné krytie by dalo 14,1:1, ale zjedlo by kolesá dodávky.
 
-**Obe plochy sa prekrývajú, prechod je prelínanie, nie scroll.** Toto je
-najdôležitejšia časť a bola postavená na dva razy nesprávne, tak pozor:
+**Odovzdanie na dodávku má dva kroky za sebou, nie jeden.** Toto je zadanie
+klienta doslova: skončí animácia s oknami, ku koncu, teda na posledných
+snímkach, sa obraz scrollovaním zmení na bielu, a až na tej bielej sa postupne
+objaví animácia dodávky aj text. Text nepríde zdola, len sa objaví.
 
-- `.hero2` má `margin-top:-195vh`. Nie -95vh. Pripnutá plocha intra sa totiž
-  odopne už **jednu obrazovku pred koncom** svojej sekcie, nie na jej konci.
-  Prekryv teda musí byť o tú obrazovku väčší, inak nevznikne vôbec. 100vh je
-  to dobehnutie, 95vh je samotné prelínanie.
-- Na prekryve sú obe pripnuté plochy naraz. Plocha dodávky má `z-index:1`,
-  takže kreslí navrchu, a jej priesvitnosť riadi skript zo svojho postupu.
-  Pozadie sekcie `.hero2` sa pritom kreslí **pod** plochu intra, takže cez
-  polopriesvitnú dodávku vidno dohrávajúce intro. To je zámer.
-- Rozplynutie intra do hmly je **rýchlejšie** ako prelínanie (0,925 až 0,965
-  oproti prekryvu, ktorý beží až do konca). Musí to tak byť, inak by sa pod
-  polopriesvitnou plochou dodávky ukazoval duch poslednej snímky okna.
-- **`.stage` musí mať `z-index:0`. Toto je najdôležitejší riadok celého
-  odovzdania.** Bez neho `.stage` nevytvára vlastnú vrstvu, takže jej deti so
-  `z-index`, teda závoj 20, titulky 14, nápoveda 15 a horná lišta 30, nekreslia
-  vnútri intra, ale v spoločnej vrstve stránky, a tým pádom **nad** plochou
-  dodávky, ktorá má `z-index:1`. Prelínanie pritom pracovalo správne, len ho
-  intro prekrývalo zhora. Prejavovalo sa to dvoma vecami naraz, ktoré vyzerali
-  ako dve rôzne chyby: tvrdý zlom na hrane pripnutej plochy pri scrollovaní
-  dopredu, a pri scrollovaní späť dojem, že sa animácia už nevracia, pretože
-  krycí závoj intra prekryl dodávku aj sám seba.
-- **Plocha intra sa rozplýva priesvitnosťou, nie maskou.** Skúšaná bola aj
-  maska s prechodom na spodnom okraji, ale maska má z podstaty okraj a práve
-  ten okraj bol tá seknutá hrana. Priesvitnosť žiadnu geometriu nemá, takže sa
-  nemá kde nič seknúť: okno sa po celej ploche naraz vytratí do farby stránky,
-  zatiaľ čo dodávka pribúda. Je to čisté prelínanie, `intro 1 → 0` a
-  `dodávka 0 → 1` na tom istom úseku.
-- **Prekryv je 200vh, teda dve celé obrazovky.** Pri 95vh bolo prelínanie
-  technicky správne, ale dodávka za ten čas stihla vystrčiť len nos a plocha
-  pôsobila prázdno. Cez dve obrazovky sa okno rozplýva a dodávka prichádza
-  súčasne, takže nie je chvíľa, keď by na obrazovke nebolo nič.
-- **Plocha intra je `position:fixed`, nie `sticky`. Toto je posledný a hlavný
-  kus skladačky.** Pripnutá plocha sa pri scrollovaní hýbe: keď dorazí na
-  koniec svojej sekcie, odopne sa a odchádza hore. Priesvitnosť jej pritom
-  nastavuje skript, ktorý pri rýchlom scrolle o zlomok sekundy zaostane, lebo
-  scroll beží na inom vlákne než skript. Vtedy sa plocha už posunula, ale ešte
-  nezmizla, a jej spodný okraj bolo vidieť ako tvrdú hranu. **Žiadne ladenie
-  čísel to nemohlo vyriešiť, lebo príčinou nebol čas, ale pohyb.** Pevná plocha
-  sa nehýbe nikdy, takže nie je čo posunúť a hrana nemá ako vzniknúť.
-  Overené skenovaním: `stTop` je 0 na každej pozícii, dopredu aj späť, vrátane
-  1500 px za bodom, kde sa pripnutá plocha kedysi odopínala.
-- V štýloch zostáva `sticky` a na pevnú ju prepína skript v `enableScrub`,
-  aby stránka bez JavaScriptu neostala navždy pod celoobrazovkovou plochou.
-  `disableScrub` to vracia späť.
-- **Priesvitnosť prelínania ide zo surového postupu scrollu, nie z tlmenej
-  hodnoty.** Tlmenie patrí k času videa, aby skoky nedrhli. Pri prelínaní
-  zaostávalo, takže pri rýchlejšom scrolle plocha nestihla docelovať skôr,
-  než sa pripnutá plocha intra odopla, a bolo vidieť **tvrdú hranu**: obraz
-  okna odchádzal hore a pod ním svietila holá hmla. Toto bola hlásená chyba.
-- Prelínanie končí na **72 percentách** prekryvu, nie na sto. Zvyšok je
-  rezerva, aby bolo hotové s istotou skôr, než sa intro pohne. Pri 1440×860 to
-  vychádza tak, že prelínanie dobehne na 11 811 px a intro sa odopne až na
-  12 040 px.
-- Keď je plocha dodávky krycia, plocha intra sa prepne na `visibility:hidden`.
-  Poistka proti tej istej hrane a zároveň úspora pri skladaní obrazu.
-- Dodávka sa pohne v tej istej chvíli, ako sa začne prelínať (`VAN_LEAD` 0).
-  Nečaká na nič. Príchod sprava tým neprichádza o nič, len sa jeho začiatok
-  deje už pod rozplývajúcim sa oknom, nie až po ňom.
-- Záber dodávky má `object-fit:contain` a `object-position:50% 40%`. Contain,
-  nie cover: stojan so sklom siaha až po pravý okraj obrazu a cover by ho na
-  inom pomere strán odrezal. Takto sa záber vždy zmestí celý, na väčšej
-  obrazovke vyrastie, a pásy, ktoré pritom vzniknú, nie je vidieť, majú tú istú
-  farbu ako pozadie záberu aj ako stránka. Ťažisko nad stredom drží dodávku
-  nad textom.
-- `VAN_SKIP` bol zrušený, žiadne snímky sa nepreskakujú. Príchod je celý.
+Rozpis úseku odovzdania (celý úsek je 200vh, teda dve obrazovky):
+
+| úsek | čo sa deje |
+|---|---|
+| 0 až 44 % | dohrávajú posledné snímky okna a obraz sa beleje, závoj ide 0 → 0,93 |
+| 48 % | obrazovka je úplne biela, video okna je dohraté |
+| 42 až 96 % | na bielej sa postupne objavuje dodávka aj text |
+
+Čísla, ktoré to držia: `VEIL_A` 0,857, `VEIL_B` 0,925, `TIME_END` 0,92,
+`VAN_FADE_A` 0,42, `VAN_FADE_B` 0,96. Belenie musí byť hotové skôr, než sa
+dodávka začne objavovať, inak cez ňu presvitá obraz okna. Pri 42 percentách
+je závoj na 96 percentách, čo je dosť.
+
+**Text sa neposúva.** Priesvitnosť nesie celá plocha dodávky naraz, takže sa
+text objaví spolu s ňou. Skúšaný bol aj dotiahnutý zdola a klient to odmietol.
+
+**Ostatné, čo sa na tomto prechode už raz vyriešilo a nesmie sa vrátiť:**
 
 Sekcia má 720vh, `VAN_END` je 0,94, teda tá istá filozofia ako pri intre: video
 dobehne tesne pred koncom a nezostane stáť. Výška je zvolená tak, aby spád vyšiel
