@@ -266,6 +266,9 @@ pre obe videá.
 1. **Fotky do sekcie realizácií.** `real-1.jpg` až `real-3.jpg` sú ilustračné,
    vygenerované. V sekcii je o tom poctivá poznámka. Pred spustením naostro ich
    treba vymeniť za skutočné fotky z tých šiestich menovaných realizácií.
+   `shot-1.jpg` v sekcii o spoločnosti už **skutočná je**, je to fotka výrobnej
+   haly od klienta. Je na výšku, do rámu 4:3 je vložená s bielym okrajom po
+   stranách, aby sa nemusel orezať baner s logom ani stroje.
 2. **Ceny servisu.** Zoznam prác je z pôvodnej stránky, kde bol cenník platný od
    15.01.2013. Ceny sú zámerne na vyžiadanie.
 3. **Formulár** otvára návštevníkovi jeho e-mailový program. Ak má odosielať web
@@ -300,6 +303,14 @@ Prvé dve veci sú hotové, popísané sú v časti 1. Ostáva:
   nesú `?v=3`, pretože súbory si medzi verziami držali rovnaké názvy a prehliadač
   ukazoval staré snímky.
 - **Obnovenie stránky** nevracia pozíciu scrollu, intro vždy začína od začiatku.
+
+**Atribúty `width` a `height` na `<img>` prebíjajú `aspect-ratio`.** Prehliadač
+ich uplatňuje ako pevné rozmery. Šírku prebije `width:100%`, ale výšku neprebije
+nič, takže rám dostane pevnú výšku z atribútu a pomer strán sa ignoruje. Stalo
+sa to pri výmene fotky: rám mal 1200 px výšku namiesto pomeru 4:3 a obrázok sa
+kvôli tomu pri odloženom načítaní ani nestiahol. Preto majú všetky obrázky
+s `aspect-ratio` aj **`height:auto`**, a atribúty musia sedieť so skutočným
+pomerom súboru.
 
 ## 7. Ako to spustiť a otestovať
 

@@ -183,8 +183,17 @@ button{font:inherit;color:inherit}
    ale ten závoj, takže nezáleží, aká svetlá je snímka pod ním. */
 .cue{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:15;
   display:flex;flex-direction:column;align-items:center;gap:13px;pointer-events:none;
-  color:#fff;
-  filter:drop-shadow(0 1px 1px rgba(9,18,30,.55)) drop-shadow(0 0 6px rgba(9,18,30,.5))}
+  color:#fff}
+/* Ten istý systém čitateľnosti ako za titulkami: jedna mäkká radiálna elipsa,
+   nie ostrý tieň. Sila je odvodená z merania, nie od oka. Pod nápovedou je
+   v najsvetlejších snímkach jas až 255, kde biely text drží len 1,5:1. Aby
+   vyšla norma 4,5:1, musí byť pod písmom jas najviac 119, čo pri závoji farby
+   6,10,16 znamená krytie 0,56 v strede. Von sa vytráca do nuly, takže na
+   tmavých záberoch ho takmer nevidno, presne ako pri titulkoch. */
+.cue::before{content:"";position:absolute;inset:-210% -75%;z-index:-1;
+  background:radial-gradient(ellipse 62% 56% at 50% 50%,
+    rgba(6,10,16,.56) 0%,rgba(6,10,16,.44) 34%,rgba(6,10,16,.24) 58%,
+    rgba(6,10,16,.08) 78%,rgba(6,10,16,0) 94%)}
 .cue-t{font-weight:500;font-size:.625rem;letter-spacing:.26em;text-transform:uppercase}
 .cue-rail{position:relative;width:clamp(120px,14vw,190px);height:1px}
 .cue-rail div{position:absolute;left:0;top:0;width:100%;height:1px;background:currentColor}
@@ -343,7 +352,7 @@ button{font:inherit;color:inherit}
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4.4vw,72px);align-items:center}
 .about .txt p + p{margin-top:20px}
 .about figure{margin:0;overflow:hidden;background:var(--ink-2)}
-.about img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.about img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
 @media (max-width:900px){.about{grid-template-columns:1fr}}
 
 /* --- služby --- */
@@ -375,7 +384,7 @@ button{font:inherit;color:inherit}
 .refpair figure{margin:0;position:relative;overflow:hidden;background:var(--ink-2);
   border:1px solid var(--hair);box-shadow:var(--lift);transition:box-shadow .4s var(--ease)}
 .refpair figure:hover{box-shadow:var(--lift-2)}
-.refpair img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform 1.2s var(--ease)}
+.refpair img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;transition:transform 1.2s var(--ease)}
 .refpair figure:hover img{transform:scale(1.02)}
 .refpair figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px;color:#fff;
   font-weight:500;font-size:.6875rem;letter-spacing:.11em;text-transform:uppercase;
@@ -435,7 +444,7 @@ svg text{font-family:var(--sans)}
 .refs{margin-top:clamp(32px,4.4vw,58px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);
   gap:clamp(20px,3vw,44px);align-items:start}
 .refs figure{margin:0;position:relative;overflow:hidden;background:var(--ink-2)}
-.refs img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.refs img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
 .refs figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px;
   background:linear-gradient(to top,rgba(6,14,26,.86),rgba(6,14,26,0));
   font-weight:500;font-size:.6875rem;letter-spacing:.11em;text-transform:uppercase;color:#fff}
@@ -1024,7 +1033,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
         <p style="margin-top:20px;color:var(--text-secondary)">Pracujeme na celom území Slovenska, ale hlavne v Nitre, Leviciach a Bratislave.</p>
       </div>
       <figure class="rv wipe">
-        <img src="assets/shot-1.jpg?v=3" alt="Novostavba s veľkými presklenami, realizácia ALL MONT" width="1920" height="1080" loading="lazy" decoding="async">
+        <img src="assets/shot-1.jpg?v=5" alt="Výrobná hala ALL MONT v Nitre, výroba plastových okien" width="1600" height="1200" loading="lazy" decoding="async">
       </figure>
     </div>
   </section>

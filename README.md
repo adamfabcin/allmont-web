@@ -38,7 +38,7 @@ assets/
   dodavka-plate.jpg        posledná snímka, namiesto videa na mobile
   allmont-logo-*.svg       logo podľa dizajn manuálu značky
   real-1..3.jpg            ilustračné obrázky v sekcii realizácií
-  shot-1.jpg               snímka do sekcie o spoločnosti
+  shot-1.jpg               výrobná hala ALL MONT, skutočná fotka od klienta
 ```
 
 ## Úvodné video
