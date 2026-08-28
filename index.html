@@ -840,14 +840,6 @@ footer .fnav a:hover::after{transform:scaleX(1)}
 }
 
 
-/* Diagnostický štítok. Zapína sa len adresou ?debug=1, na ostrej stránke
-   neexistuje. Slúži na to, aby vedela stránka o sebe povedať, v akom režime
-   beží a kde presne je na úseku odovzdania. */
-.dbg{position:fixed;left:0;top:0;z-index:950;pointer-events:none;
-  background:rgba(15,34,51,.92);color:#fff;padding:10px 14px;
-  font-family:var(--sans);font-size:12px;line-height:1.7;letter-spacing:.02em;
-  font-variant-numeric:tabular-nums;white-space:pre}
-
 /* ==========================================================================
    KURZOR. Zameriavací kríž namiesto šípky, pokračovanie tónu značky:
    pravé uhly a presnosť. Vnútorný kríž nemá žiadny sklz, aby sedel presne
@@ -1959,39 +1951,6 @@ MQLS.forEach(function(m){
 });
 applyVanMode();
 
-
-/* ==========================================================================
-   Diagnostika. Len s ?debug=1 v adrese. Ukáže, v akom režime stránka beží
-   a kde presne je na úseku odovzdania z okna na dodávku.
-   ========================================================================== */
-if (/[?&]debug=1/.test(location.search)){
-  var dbg = document.createElement('div');
-  dbg.className = 'dbg';
-  document.body.appendChild(dbg);
-  var dbgPaint = function(){
-    var gated = MQLS.some(function(m){ return m.matches; });
-    var vh = window.innerHeight, vw = window.innerWidth;
-    var t2 = hero2.getBoundingClientRect().top + window.pageYOffset;
-    var unpin = hero.offsetHeight - vh;
-    var usek = (unpin - t2) > 0 ? (window.pageYOffset - t2) / (unpin - t2) : 0;
-    var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    dbg.textContent =
-      'okno        ' + vw + ' x ' + vh + '\n' +
-      'rezim       ' + (gated ? 'STATICKY, video sa nescrolluje' : 'scrollovane video') + '\n' +
-      'reduce mot. ' + (rm ? 'ZAPNUTE v systeme' : 'vypnute') + '\n' +
-      'poloha      ' + Math.round(window.pageYOffset) + ' px\n' +
-      'usek odovz. ' + (usek < 0 ? 'pred nim' : usek > 1 ? 'za nim' : (usek*100).toFixed(0) + ' %') + '\n' +
-      'zavoj okna  ' + (veil.style.opacity || '0') + '\n' +
-      'dodavka     ' + (stage2.style.opacity || '0') + '\n' +
-      'plocha intra ' + getComputedStyle(stage).position + ', top ' +
-        Math.round(stage.getBoundingClientRect().top) + ', vis ' +
-        (stage.style.visibility || 'viditelna');
-  };
-  window.addEventListener('scroll', dbgPaint, {passive:true});
-  window.addEventListener('resize', dbgPaint);
-  setInterval(dbgPaint, 200);
-  dbgPaint();
-}
 
 /* ==========================================================================
    6a. Nadpisy po riadkoch
