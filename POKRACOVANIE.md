@@ -142,9 +142,19 @@ najdôležitejšia časť a bola postavená na dva razy nesprávne, tak pozor:
   ako dve rôzne chyby: tvrdý zlom na hrane pripnutej plochy pri scrollovaní
   dopredu, a pri scrollovaní späť dojem, že sa animácia už nevracia, pretože
   krycí závoj intra prekryl dodávku aj sám seba.
-- Počas odovzdania má plocha intra mäkký spodný okraj (`.stage.soft`, maska
-  s prechodom). Zapína sa len na tom úseku, inak by odkrajovala spodok obrazu
-  po celé intro. Je to poistka, aby okraj nikdy nebol rez.
+- **Plocha intra sa rozplýva priesvitnosťou, nie maskou.** Skúšaná bola aj
+  maska s prechodom na spodnom okraji, ale maska má z podstaty okraj a práve
+  ten okraj bol tá seknutá hrana. Priesvitnosť žiadnu geometriu nemá, takže sa
+  nemá kde nič seknúť: okno sa po celej ploche naraz vytratí do farby stránky,
+  zatiaľ čo dodávka pribúda. Je to čisté prelínanie, `intro 1 → 0` a
+  `dodávka 0 → 1` na tom istom úseku.
+- **Prekryv je 200vh, teda dve celé obrazovky.** Pri 95vh bolo prelínanie
+  technicky správne, ale dodávka za ten čas stihla vystrčiť len nos a plocha
+  pôsobila prázdno. Cez dve obrazovky sa okno rozplýva a dodávka prichádza
+  súčasne, takže nie je chvíľa, keď by na obrazovke nebolo nič.
+- Plocha intra je počas celého prelínania **pripnutá** (`stTop` je 0) a je
+  úplne priesvitná ešte predtým, než by sa vôbec pohla. To je overené
+  skenovaním celého úseku, nie odhadom.
 - **Priesvitnosť prelínania ide zo surového postupu scrollu, nie z tlmenej
   hodnoty.** Tlmenie patrí k času videa, aby skoky nedrhli. Pri prelínaní
   zaostávalo, takže pri rýchlejšom scrolle plocha nestihla docelovať skôr,
@@ -156,10 +166,15 @@ najdôležitejšia časť a bola postavená na dva razy nesprávne, tak pozor:
   12 040 px.
 - Keď je plocha dodávky krycia, plocha intra sa prepne na `visibility:hidden`.
   Poistka proti tej istej hrane a zároveň úspora pri skladaní obrazu.
-- Dodávka začne vchádzať sprava v tretine prelínania (`VAN_LEAD` 0,34), nie
-  až po ňom. Keby čakala, nasledoval by po prelínaní kus prázdnej hmly a človek
-  by sa k nej musel doscrollovať. A keby začínala skôr, prišla by o príchod
-  sprava, čo je celý zámer záberu.
+- Dodávka sa pohne v tej istej chvíli, ako sa začne prelínať (`VAN_LEAD` 0).
+  Nečaká na nič. Príchod sprava tým neprichádza o nič, len sa jeho začiatok
+  deje už pod rozplývajúcim sa oknom, nie až po ňom.
+- Záber dodávky má `object-fit:contain` a `object-position:50% 40%`. Contain,
+  nie cover: stojan so sklom siaha až po pravý okraj obrazu a cover by ho na
+  inom pomere strán odrezal. Takto sa záber vždy zmestí celý, na väčšej
+  obrazovke vyrastie, a pásy, ktoré pritom vzniknú, nie je vidieť, majú tú istú
+  farbu ako pozadie záberu aj ako stránka. Ťažisko nad stredom drží dodávku
+  nad textom.
 - `VAN_SKIP` bol zrušený, žiadne snímky sa nepreskakujú. Príchod je celý.
 
 Sekcia má 720vh, `VAN_END` je 0,94, teda tá istá filozofia ako pri intre: video
