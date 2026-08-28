@@ -138,18 +138,24 @@ ale nebol potrebný, násobenie je vratná operácia.
 Rozpis na scroll. Celé odovzdanie je **jedna obrazovka**, preto má `.hero2`
 `margin-top:-200vh`, teda 100vh dobehnutie plus 100vh samotné odovzdanie:
 
-| úsek | závoj | dodávka | video okna |
+| úsek | závoj | plocha dodávky | snímka dodávky |
 |---|---|---|---|
-| 0 až 50 % | 0 → 0,98 | 0 | ešte beží |
-| 55 % | **1,00, čistá biela** | 0 | dohraté |
-| 55 až 66 % | 1,00 | 0 | biela drží |
-| 66 až 100 % | 1,00 | 0 → 1 | – |
+| 0 % | 0 | 0 | 0, video sa rozbieha už tu |
+| 50 % | **1,00, čistá biela** | 0 | 14 |
+| 75 % | 1,00 | 0,45 | 21 |
+| 100 % | 1,00 | 1,00 | 29 |
 
-Biela medzi 55 a 66 percentami **zámerne drží**, aby bol koniec prvej animácie
-naozaj koniec a nie hneď začiatok druhej.
+**Video dodávky beží už pod bielou.** Toto je jediná vec, ktorá na tom prechode
+naozaj rozhoduje, a dá sa ľahko pokaziť: `VAN_VIDEO_A`, teda kde sa rozbehne
+video, je 0, ale `VAN_FADE_A`, teda kde sa začne objavovať plocha, je 0,52. Keď
+boli obe na tom istom čísle, dodávka sa vynorila z bielej na nultej snímke, teda
+ako prázdna biela plocha, a pôsobilo to, akoby sa druhá animácia vôbec nezačala.
+V predlohe sa obe stopy prekrývajú a keď biela odíde, dodávka je na 24. snímke.
+Na stránke je na 29., čo je to isté.
 
-Čísla: `VEIL_A` 0,9286, `VEIL_B` 0,968, `TIME_END` 0,965, `VAN_FADE_A` 0,66,
-`VAN_FADE_B` 1,0.
+Čísla: `VEIL_A` 0,9286, `VEIL_B` 0,9657, `TIME_END` 0,9657, `VAN_VIDEO_A` 0,
+`VAN_FADE_A` 0,52, `VAN_FADE_B` 1,0. Biela na vrchole nedrží, dip je symetrický
+ako v predlohe: trinásť snímok do bielej a dvanásť z nej.
 
 **Linka postupu je plná presne vtedy, keď je obrazovka biela**, teda keď sa prvá
 animácia naozaj končí. Počíta sa z `VEIL_B`, nie z `TIME_END`, lebo `TIME_END` je
