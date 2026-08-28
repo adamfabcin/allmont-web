@@ -58,6 +58,17 @@ ffmpeg -i majster.mov -map 0:v:0 -an -sn -dn \
 Kvalita overená proti majstrovi: SSIM 0,989, v tmavých plochách plných 256
 jasových úrovní, teda bez pásovania.
 
+## Piktogramy a oznamovače sekcií
+
+Piktogramy v sortimente sú kreslené na tej istej konštrukcii ako logo: mriežka
+96 jednotiek, vonkajší obrys hrúbky 11 s rádiusom R14, vnútorné priečky 6,5
+a jeden 45° odlesk vo farbe skla v ľavej hornej tabuli. Preto vyzerajú ako
+súrodenci loga. Kto bude kresliť ďalší, nech drží tie isté čísla.
+
+Pred každou sekciou stojí ten istý oznamovač: číslo, vlasová linka a názov
+sekcie. Je to jediné miesto, kde názov sekcie stojí, v hlavičke sekcie sa už
+neopakuje.
+
 ## Čo ešte potrebuje potvrdenie od firmy
 
 1. **Obrázky v sekcii realizácií sú ilustračné, nie skutočné.** Pred spustením

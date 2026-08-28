@@ -31,6 +31,22 @@ Ako intro funguje:
 - Kurzor je zameriavací kríž. Počas intra sa pri scrollovaní skryje a pohyb
   myšou ho vráti. Po intre zostáva.
 
+**Piktogramy sortimentu sú postavené na konštrukcii loga.** Nekreslia sa už od
+oka. Každý stojí v mriežke 96, vonkajší obrys má hrúbku 11 a rádius R14, vnútorné
+priečky 6,5 a jeden 45° odlesk vo farbe skla `#8FC1F2` v ľavej hornej tabuli ako
+podpis. Sú to teda súrodenci loga, nie cudzie ikony. Kreslia sa v `currentColor`,
+odlesk nesie trieda `gl`. Šesť motívov: okno s nadsvetlíkom, tri úzke tabule,
+krídlo so šípkou, dvere s bočným svetlom a kľučkou, okno s parapetnou doskou,
+okno s kľučkou.
+
+**Prechod pred každou sekciou je systémový.** Ten istý prvok `.divider` stojí ako
+prvé dieťa každej z ôsmich sekcií a nesie číslo `01` až `08`, vlasovú linku
+s pomaly bežiacim azúrovým ťahom a názov sekcie. Názov nesie oznamovač, preto sa
+štítok `.label` z hlavičky sekcie zrušil, inak by tá istá vec stála na stránke
+dvakrát pod sebou. Na tmavých sekciách sa linka aj text prepnú, sekcia si drží
+vlastné odsadenie a oznamovač zdedí len šírku sadzobného zrkadla. Odsadenia
+sekcií sú preto späť na jednom rytme, bez ručných výnimiek.
+
 ## 2. Pravidlá značky, ktoré platia bez výnimky
 
 Vychádzajú z dizajn manuálu značky, verzia 1.0, ktorý má klient vlastný.
@@ -81,15 +97,12 @@ Vychádzajú z dizajn manuálu značky, verzia 1.0, ktorý má klient vlastný.
 
 ## 5. Čo bolo zadané ako ďalší krok
 
-- **Krajšie piktogramy** v sekcii sortimentu. Súčasné sú nakreslené od oka.
-  Správne riešenie: postaviť ich na konštrukcii loga, teda mriežka 96 jednotiek,
-  vonkajší obrys 11 jednotiek, vnútorné priečky 6,5, rádius R14, a jeden 45°
-  odlesk vo farbe skla ako podpis. Vtedy budú vyzerať ako súrodenci loga.
-- **Krajšie prechody medzi sekciami.** Teraz sú oddeľovače len na troch miestach
-  a nesystematicky. Cieľom je jeden opakovaný prvok pred každou sekciou, ktorý
-  nesie číslo, názov a vlasovú linku, aby prechod bol oznámený a nie náhodný.
-- **Mobilná verzia.** Klient má pripravené video v zvislom formáte. Treba sa
-  spýtať, či v ňom bude vypálené logo.
+Prvé dve veci sú hotové, popísané sú v časti 1. Ostáva:
+
+- **Mobilná verzia.** Klient má pripravené video v zvislom formáte. **Otázka na
+  klienta, na ktorej to stojí: bude v tom videu vypálené logo?** Ak áno, treba
+  vedieť kde, aby sa naň neposadili titulky ani navigácia. Zatiaľ je na mobile
+  namiesto videa statický `hero-plate.jpg`.
 - **Zmeny obsahu**, zatiaľ neurčené.
 
 ## 6. Technické veci, ktoré sa už raz vyriešili, netreba nanovo
