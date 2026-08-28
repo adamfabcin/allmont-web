@@ -1432,11 +1432,13 @@ var SRC = pickVideo();
 
    Prepočítané na scroll: celé odovzdanie je jedna obrazovka. Sekcia s dodávkou
    je preto vytiahnutá o 200vh hore, teda 100vh dobehnutie plus 100vh samotné
-   odovzdanie. Bielenie beží 0,9286 až 0,968, video okna do 0,965, takže sa
-   obraz hýbe takmer po celý čas bielenia a nikde nestojí. */
-var TIME_END = 0.965;
+   odovzdanie. Bielenie zaberá prvých 52 percent úseku, presne ako v predlohe,
+   kde bolo trinásť snímok do bielej a dvanásť z nej. Biela na vrchole nedrží,
+   dip je symetrický. Video okna beží do 0,9657, teda jeho posledná snímka sadne
+   presne na vrchol bielej. */
+var TIME_END = 0.9657;
 var VEIL_A   = 0.9286;
-var VEIL_B   = 0.968;
+var VEIL_B   = 0.9657;
 
 var stage  = document.getElementById('stage');
 var video  = document.getElementById('heroVideo');
@@ -1507,7 +1509,7 @@ var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null };
 
 function updateChrome(p){
   /* nápoveda zostáva po celý čas a zmizne až s prechodom do stránky */
-  var cueOp = 1 - smoothstep(p,0.950,0.968);
+  var cueOp = 1 - smoothstep(p,0.948,0.9657);
   if (Math.abs(cueOp-chrome.cue) > 0.01){
     chrome.cue = cueOp;
     cue.style.opacity = cueOp.toFixed(2);
@@ -1538,7 +1540,7 @@ function updateChrome(p){
     chrome.veil = vOp;
     veil.style.opacity = vOp.toFixed(3);
   }
-  var navOn = p > 0.965;
+  var navOn = p > 0.9657;
   if (navOn !== chrome.nav){ chrome.nav = navOn; nav.classList.toggle('on', navOn); }
 }
 
@@ -1755,16 +1757,23 @@ function vanFade(){
   return clamp(window.innerHeight * 1.0 / total, 0.02, 0.9);
 }
 
-/* Kde na úseku odovzdania sa plocha dodávky vynára z bielej.
-   Vrchol bielej je na 55 percentách úseku, tam je závoj na sto percentách.
-   Biela potom ešte chvíľu drží, do 66 percent, aby bol koniec prvej animácie
-   naozaj koniec a nie hneď začiatok druhej. Až odtiaľ sa vynára dodávka a v tom
-   istom bode sa rozbieha aj jej video, takže prichádza sprava priamo z tej
-   bielej, presne ako v predlohe. */
-var VAN_FADE_A = 0.66;
-var VAN_FADE_B = 1.0;
+/* Odovzdanie kopíruje predlohu snímku po snímke.
+
+   V predlohe sa obe stopy prekrývajú: druhá stopa začne bežať v tej istej
+   chvíli, ako sa prvá začne vybieľovať. Kým je obrazovka biela, dodávka už
+   ide. Keď biela odíde, dodávka je na 24. snímke a vchádza sprava.
+
+   Preto sú tu dve rôzne veci a nesmú sa zlúčiť do jednej:
+   VAN_VIDEO_A hovorí, kde sa rozbehne VIDEO dodávky, a to je hneď na začiatku
+   odovzdania, ešte pod bielou. VAN_FADE_A hovorí, kde sa začne objavovať jej
+   PLOCHA, a to je až na vrchole bielej. Keď boli obe na tom istom čísle,
+   dodávka sa vynorila z bielej na nultej snímke, teda ako prázdna plocha,
+   a človek mal pocit, že druhá animácia sa vôbec nezačala. */
+var VAN_VIDEO_A = 0.0;
+var VAN_FADE_A  = 0.52;
+var VAN_FADE_B  = 1.0;
 function vanMap(p){
-  var a = vanFade() * VAN_FADE_A;
+  var a = vanFade() * VAN_VIDEO_A;
   return clamp((p - a) / (VAN_END - a), 0, 1);
 }
 
