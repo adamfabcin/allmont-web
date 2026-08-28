@@ -163,7 +163,10 @@ button{font:inherit;color:inherit}
   background:radial-gradient(ellipse 64% 52% at 50% 50%,rgba(6,10,16,.45) 0%,rgba(6,10,16,.35) 32%,rgba(6,10,16,.19) 56%,rgba(6,10,16,.06) 76%,rgba(6,10,16,0) 92%)}
 
 /* prechod do plochy stránky na konci intra */
-.veil{position:absolute;inset:0;z-index:20;pointer-events:none;background:var(--canvas);opacity:0}
+/* Závoj je BIELY, nie farba stránky. Odovzdanie na dodávku ide cez bielu:
+   obraz okna sa vybieli až do úplnej bielej a z tej sa vynorí dodávka.
+   Preto je aj pozadie záberu dodávky biele, nie hmlové. */
+.veil{position:absolute;inset:0;z-index:20;pointer-events:none;background:#fff;opacity:0}
 
 /* načítavací krúžok */
 .ring{position:absolute;right:var(--pad);bottom:var(--pad);width:42px;height:42px;color:#fff;
@@ -214,9 +217,9 @@ button{font:inherit;color:inherit}
    nos a plocha pôsobila prázdno, hoci prelínanie bolo technicky správne. Teraz
    sa okno rozplýva a dodávka prichádza súčasne, cez viac ako dve obrazovky
    scrollu, takže nie je chvíľa, keď by na obrazovke nebolo nič. */
-.hero2{position:relative;height:720vh;margin-top:-300vh;background:var(--canvas)}
+.hero2{position:relative;height:720vh;margin-top:-200vh;background:#fff}
 .stage2{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
-  background:var(--canvas);z-index:1;opacity:0}
+  background:#fff;z-index:1;opacity:0}
 /* Záber je presné 16:9 a využíva sa celý. Contain, nie cover, pretože stojan
    so sklom siaha až po pravý okraj obrazu a cover by ho na užšej obrazovke
    odrezal. Pásy, ktoré pri contain vzniknú, nie je vidieť: majú tú istú farbu
@@ -230,7 +233,7 @@ button{font:inherit;color:inherit}
   object-position:50% 40%;
   display:block;opacity:0;transition:opacity .7s var(--ease-out)}
 .stage2.van-ready video{opacity:1}
-.plate2{display:none;position:absolute;inset:0;background:var(--canvas) center/contain no-repeat}
+.plate2{display:none;position:absolute;inset:0;background:#fff center/contain no-repeat}
 .stage2.van-failed video{display:none}
 .stage2.van-failed .plate2{display:block}
 
@@ -243,7 +246,7 @@ button{font:inherit;color:inherit}
 .end2{position:absolute;left:0;right:0;bottom:0;z-index:2;
   padding:0 var(--pad) clamp(22px,3.4vw,48px)}
 .end2::before{content:"";position:absolute;left:0;right:0;bottom:0;top:-132px;z-index:-1;
-  background:linear-gradient(to bottom,rgba(238,241,244,0) 0,rgba(238,241,244,.86) 132px)}
+  background:linear-gradient(to bottom,rgba(255,255,255,0) 0,rgba(255,255,255,.88) 132px)}
 .end2 .wrap{display:grid;grid-template-columns:minmax(0,1.34fr) minmax(0,.66fr);
   gap:clamp(20px,3vw,56px);align-items:end}
 /* nadpis v tomto bloku sadá na dva riadky, aby závoj nezjedol kolesá dodávky */
@@ -1419,23 +1422,21 @@ var SRC = pickVideo();
    posledná sekunda má 100 až 250 percent svojho priemerného pohybu. Stálo teda
    scrollovanie, nie obraz.
 
-   Teraz je to bez akejkoľvek medzery a bez toho, aby sa dve 4K videá dekódovali
-   naraz. Sekcia s dodávkou je vytiahnutá o jednu obrazovku hore, takže jej
-   plocha nastúpi presne na 0,857 a odovzdanie má dva kroky za sebou, nie jeden.
+   Odovzdanie na dodávku je PRECHOD CEZ BIELU, nie prelínanie. Klient to
+   zostrihal a poslal ako predlohu. Zmerané z jeho videa: trinásť snímok sa
+   obraz okna vybieluje, jednu snímku je celá plocha úplne biela, a dvanásť
+   snímok sa z tej bielej vynára dodávka. Priemerný jas ide 179 → 252
+   a najtmavší bod v obraze 28 → 251, čiže na vrchole tam naozaj nie je nič
+   okrem bielej. Preto je aj závoj biely, nie hmlový, a pozadie záberu dodávky
+   je biele.
 
-   Najprv obraz okna **zbelie**: závoj beží 0,857 až 0,925, teda posledné snímky
-   okna sa už prehrávajú do bledej. Video beží do 0,92, takže obraz sa hýbe po
-   celý čas belenia a nikde nestojí. Keď je obrazovka biela, video je dohraté.
-
-   Prepočítané na úsek odovzdania: belenie zaberá jeho prvých 48 percent,
-   dodávka sa začína objavovať na 42 percentách, keď je závoj na 96 percentách.
-   Obraz okna teda cez dodávku nepresvitá.
-
-   Až na tej bielej sa potom postupne objaví dodávka aj text. Poradie je
-   zámerné: keby sa objavovali skôr, presvital by cez ne obraz okna. */
-var TIME_END = 0.92;
-var VEIL_A   = 0.857;
-var VEIL_B   = 0.925;
+   Prepočítané na scroll: celé odovzdanie je jedna obrazovka. Sekcia s dodávkou
+   je preto vytiahnutá o 200vh hore, teda 100vh dobehnutie plus 100vh samotné
+   odovzdanie. Bielenie beží 0,9286 až 0,968, video okna do 0,965, takže sa
+   obraz hýbe takmer po celý čas bielenia a nikde nestojí. */
+var TIME_END = 0.965;
+var VEIL_A   = 0.9286;
+var VEIL_B   = 0.968;
 
 var stage  = document.getElementById('stage');
 var video  = document.getElementById('heroVideo');
@@ -1506,7 +1507,7 @@ var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null };
 
 function updateChrome(p){
   /* nápoveda zostáva po celý čas a zmizne až s prechodom do stránky */
-  var cueOp = 1 - smoothstep(p,0.850,0.912);
+  var cueOp = 1 - smoothstep(p,0.920,0.958);
   if (Math.abs(cueOp-chrome.cue) > 0.01){
     chrome.cue = cueOp;
     cue.style.opacity = cueOp.toFixed(2);
@@ -1534,7 +1535,7 @@ function updateChrome(p){
     chrome.veil = vOp;
     veil.style.opacity = vOp.toFixed(3);
   }
-  var navOn = p > 0.925;
+  var navOn = p > 0.965;
   if (navOn !== chrome.nav){ chrome.nav = navOn; nav.classList.toggle('on', navOn); }
 }
 
@@ -1748,16 +1749,16 @@ function vanProgress(){
 function vanFade(){
   var total = hero2.offsetHeight - window.innerHeight;
   if (total <= 0) return 1;
-  return clamp(window.innerHeight * 2.0 / total, 0.02, 0.9);
+  return clamp(window.innerHeight * 1.0 / total, 0.02, 0.9);
 }
 
-/* Kde na úseku odovzdania sa plocha dodávky začne a prestane objavovať.
-   0,42 nie je náhodné číslo: v tej chvíli je závoj intra už na 96 percentách,
-   teda obrazovka je prakticky biela a obraz okna cez dodávku nepresvitá.
-   Video dodávky sa rozbieha v tom istom bode, takže dodávka prichádza sprava
-   práve vtedy, keď sa objavuje. Neobjaví sa hotová a nestojí. */
-var VAN_FADE_A = 0.42;
-var VAN_FADE_B = 0.96;
+/* Kde na úseku odovzdania sa plocha dodávky vynára z bielej.
+   0,55 je vrchol bielej: závoj je tam na sto percentách, obrazovka je čisto
+   biela a nič cez ňu nepresvitá. Až odtiaľ sa vynára dodávka a v tom istom
+   bode sa rozbieha aj jej video, takže prichádza sprava priamo z tej bielej,
+   presne ako v predlohe. */
+var VAN_FADE_A = 0.55;
+var VAN_FADE_B = 1.0;
 function vanMap(p){
   var a = vanFade() * VAN_FADE_A;
   return clamp((p - a) / (VAN_END - a), 0, 1);
@@ -1819,13 +1820,15 @@ function paintStage(p){
   if (Math.abs(op - lastStageOp) < 0.004) return;
   lastStageOp = op;
   stage2.style.opacity = op.toFixed(3);
-  /* Text sa neposúva. Nepríchádza zdola, len sa objaví spolu s dodávkou,
-     pretože priesvitnosť nesie celá plocha naraz. */
+
+  /* Text príde až potom, ďalším scrollovaním, keď je dodávka poriadne v obraze.
+     Nie spolu s ňou a nie zdola: neposúva sa, len sa vynorí. */
+  end2.style.opacity = smoothstep(p, 0.26, 0.44).toFixed(3);
   /* Bielenie obrazu okna robí závoj intra, nie táto priesvitnosť. Tu je len
      poistka na poslednú štvrtinu úseku: keby závoj z akéhokoľvek dôvodu
      nedobehol, plocha intra sa aj tak stratí a nemôže cez dodávku presvitať.
      Je to neviditeľné, lebo v tej chvíli je obrazovka aj tak biela. */
-  stage.style.opacity = (1 - smoothstep(p, f * 0.78, f * 0.99)).toFixed(3);
+  stage.style.opacity = (1 - smoothstep(p, f * 0.72, f * 0.97)).toFixed(3);
   stage.style.visibility = op > 0.995 ? 'hidden' : '';
 }
 
@@ -1895,6 +1898,7 @@ function applyVanMode(){
     hero2.classList.add('flat');
     plate2.style.backgroundImage = "url('" + VAN_PLATE + "')";
     stage2.style.opacity = '1';
+    end2.style.opacity = '1';
     stage.style.visibility = '';
     stage.style.opacity = '';
   } else {

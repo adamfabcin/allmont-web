@@ -119,26 +119,37 @@ tmavom zábere, tu z hmly na svetlom. Krytie 0,86 je merané, nie odhadnuté:
 najtmavší bod pod textom cez všetkých 167 snímok má bez závoja kontrast 1,0:1,
 so závojom 10,4:1. Úplné krytie by dalo 14,1:1, ale zjedlo by kolesá dodávky.
 
-**Odovzdanie na dodávku má dva kroky za sebou, nie jeden.** Toto je zadanie
-klienta doslova: skončí animácia s oknami, ku koncu, teda na posledných
-snímkach, sa obraz scrollovaním zmení na bielu, a až na tej bielej sa postupne
-objaví animácia dodávky aj text. Text nepríde zdola, len sa objaví.
+**Odovzdanie na dodávku je PRECHOD CEZ BIELU, nie prelínanie.** Toto sa hľadalo
+dlho a nakoniec to rozsekla predloha: klient si prechod zostrihal vo videu
+a poslal ho. Nech to nikto neprerába naslepo, tu je, čo z tej predlohy vyšlo
+z merania:
 
-Rozpis úseku odovzdania (celý úsek je 200vh, teda dve obrazovky):
+- trinásť snímok sa obraz okna **vybieluje**,
+- jednu snímku je celá plocha **úplne biela** (priemerný jas 252, najtmavší bod
+  v obraze 251, čiže tam naozaj nie je nič okrem bielej),
+- dvanásť snímok sa z tej bielej **vynára dodávka** a hneď prichádza sprava.
 
-| úsek | čo sa deje |
-|---|---|
-| 0 až 44 % | dohrávajú posledné snímky okna a obraz sa beleje, závoj ide 0 → 0,93 |
-| 48 % | obrazovka je úplne biela, video okna je dohraté |
-| 42 až 96 % | na bielej sa postupne objavuje dodávka aj text |
+Preto je **závoj biely, nie hmlový**, a **pozadie záberu dodávky je biele**.
+Video dodávky bolo pôvodne vynásobené hmlou; to sa vrátilo späť presným
+inverzným prevodom (`colorchannelmixer` 1,071429 / 1,058091 / 1,045082), takže
+pozadie je opäť čistá 255,255,255. Zdrojový `dodavka.mov` už nie je k dispozícii,
+ale nebol potrebný, násobenie je vratná operácia.
 
-Čísla, ktoré to držia: `VEIL_A` 0,857, `VEIL_B` 0,925, `TIME_END` 0,92,
-`VAN_FADE_A` 0,42, `VAN_FADE_B` 0,96. Belenie musí byť hotové skôr, než sa
-dodávka začne objavovať, inak cez ňu presvitá obraz okna. Pri 42 percentách
-je závoj na 96 percentách, čo je dosť.
+Rozpis na scroll. Celé odovzdanie je **jedna obrazovka**, preto má `.hero2`
+`margin-top:-200vh`, teda 100vh dobehnutie plus 100vh samotné odovzdanie:
 
-**Text sa neposúva.** Priesvitnosť nesie celá plocha dodávky naraz, takže sa
-text objaví spolu s ňou. Skúšaný bol aj dotiahnutý zdola a klient to odmietol.
+| úsek | závoj | dodávka | video okna |
+|---|---|---|---|
+| 0 až 50 % | 0 → 0,98 | 0 | ešte beží |
+| 55 % | **1,00, čistá biela** | 0 | dohraté |
+| 55 až 100 % | 1,00 | 0 → 1 | – |
+
+Čísla: `VEIL_A` 0,9286, `VEIL_B` 0,968, `TIME_END` 0,965, `VAN_FADE_A` 0,55,
+`VAN_FADE_B` 1,0.
+
+**Text príde až potom**, ďalším scrollovaním, na postupe sekcie 0,26 až 0,44,
+keď je dodávka poriadne v obraze. Neposúva sa, len sa vynorí. Skúšané bolo aj
+dotiahnutie zdola aj príchod spolu s dodávkou, klient odmietol oboje.
 
 **Ostatné, čo sa na tomto prechode už raz vyriešilo a nesmie sa vrátiť:**
 
