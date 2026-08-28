@@ -338,15 +338,6 @@ button{font:inherit;color:inherit}
 .dust i:nth-child(5){left:52%;top:38%;animation:drift 76s linear infinite;animation-delay:-53s}
 @keyframes drift{0%{transform:translate(0,0)}50%{transform:translate(26px,-40px)}100%{transform:translate(0,0)}}
 
-/* --- pás údajov --- */
-.strip{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  padding:22px var(--pad)}
-.strip ul{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;
-  gap:clamp(14px,2.4vw,34px);justify-content:center}
-.strip li{font-weight:500;font-size:.6875rem;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--text-secondary);display:flex;align-items:center;gap:clamp(14px,2.4vw,34px)}
-.strip li::after{content:"";width:14px;height:1px;background:var(--accent);opacity:.55}
-.strip li:last-child::after{display:none}
 
 /* --- o nás, text a obraz --- */
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4.4vw,72px);align-items:center}
@@ -626,7 +617,6 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 
 .cbox{background:var(--glass-hi);border:1px solid var(--hair);box-shadow:var(--lift)}
 
-.strip{background:rgba(255,255,255,.86);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
 
 /* tmavé bloky: sklo v opačnom smere */
 .sec-ink{border-top:1px solid rgba(143,193,242,.14)}
@@ -825,9 +815,6 @@ footer{position:relative;overflow:hidden}
   transition:transform .4s var(--ease)}
 .nav a.lnk:hover::after{transform:scaleX(1)}
 
-/* --- pás údajov: nech je naozaj sklo ------------------------------------- */
-.strip{background:rgba(255,255,255,.72)}
-.strip li{transition:color .3s var(--ease)}
 
 /* --- viac vzduchu, aby mala sadzba kde dýchať ----------------------------- */
 .sec{padding:clamp(76px,9.4vw,158px) var(--pad)}
@@ -1010,18 +997,6 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
     </div>
   </div>
 </section>
-
-  <!-- ================= PÁS ÚDAJOV ================= -->
-  <div class="strip rv">
-    <ul>
-      <li>ISO 9001</li>
-      <li>ISO 14001</li>
-      <li>OHSAS 18001</li>
-      <li>Rodinné domy</li>
-      <li>Občianska vybavenosť</li>
-      <li>Celé Slovensko</li>
-    </ul>
-  </div>
 
   <!-- ================= O NÁS ================= -->
   <section class="sec" id="o-nas">

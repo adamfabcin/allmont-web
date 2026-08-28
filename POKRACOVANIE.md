@@ -247,6 +247,12 @@ Preto sa skok, ktorý sa neohlásil do 400 ms, považuje za stratený a hľadani
 kým sa posledný skok naozaj nezadá, inak by ostalo video o krok pozadu. Platí to
 pre obe videá.
 
+**Pás údajov je preč.** Bola to lišta hneď za dodávkou s položkami ISO 9001,
+ISO 14001, OHSAS 18001, rodinné domy, občianska vybavenosť, celé Slovensko.
+Klient si ju neželá. Certifikáty tým nezmizli, tie sú stále vo vlastnej sekcii
+07 aj so správnymi normami. Kto by ju chcel späť, je v histórii pred týmto
+commitom.
+
 ## 3. Ako sa tu pracuje, čo klient ocenil
 
 - **Merať, nie hádať.** Každé rozhodnutie o čitateľnosti textu nad videom padlo
