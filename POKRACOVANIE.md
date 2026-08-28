@@ -145,6 +145,15 @@ Rozpis na scroll. Celé odovzdanie je **jedna obrazovka**, preto má `.hero2`
 | 75 % | 1,00 | 0,45 | 21 |
 | 100 % | 1,00 | 1,00 | 29 |
 
+**Bielenie ide zo surového postupu scrollu, nie z tlmenej hodnoty, a začína
+ešte na konci prvej animácie.** Toto bola posledná chyba na tomto prechode
+a bola dvojitá. Tlmenie patrí len času videa, aby skoky pri scrollovaní nedrhli.
+Kým na ňom visel aj závoj, bielenie za scrollom zaostávalo, takže sa obraz
+začal bieliť až potom, ako už dobehol, a prechod pôsobil nadvakrát: najprv
+koniec animácie, potom biela. Druhá polovica: závoj začínal až tam, kde sa
+prihlásila sekcia dodávky. Teraz začína na 0,912, teda ešte v prvej animácii,
+takže jej koniec **je** začiatkom prechodu, nie samostatný krok pred ním.
+
 **Video dodávky beží už pod bielou.** Toto je jediná vec, ktorá na tom prechode
 naozaj rozhoduje, a dá sa ľahko pokaziť: `VAN_VIDEO_A`, teda kde sa rozbehne
 video, je 0, ale `VAN_FADE_A`, teda kde sa začne objavovať plocha, je 0,52. Keď
@@ -153,7 +162,7 @@ ako prázdna biela plocha, a pôsobilo to, akoby sa druhá animácia vôbec neza
 V predlohe sa obe stopy prekrývajú a keď biela odíde, dodávka je na 24. snímke.
 Na stránke je na 29., čo je to isté.
 
-Čísla: `VEIL_A` 0,9286, `VEIL_B` 0,9657, `TIME_END` 0,9657, `VAN_VIDEO_A` 0,
+Čísla: `VEIL_A` 0,912, `VEIL_B` 0,9657, `TIME_END` 0,9657, `VAN_VIDEO_A` 0,
 `VAN_FADE_A` 0,52, `VAN_FADE_B` 1,0. Biela na vrchole nedrží, dip je symetrický
 ako v predlohe: trinásť snímok do bielej a dvanásť z nej.
 

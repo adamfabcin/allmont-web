@@ -1432,12 +1432,14 @@ var SRC = pickVideo();
 
    Prepočítané na scroll: celé odovzdanie je jedna obrazovka. Sekcia s dodávkou
    je preto vytiahnutá o 200vh hore, teda 100vh dobehnutie plus 100vh samotné
-   odovzdanie. Bielenie zaberá prvých 52 percent úseku, presne ako v predlohe,
+   odovzdanie. Bielenie začína ešte pred ním, na 0,912, teda **na konci prvej
+   animácie**, aby bol jej koniec zároveň začiatkom prechodu a nie dva kroky za
+   sebou. Zvyšok zaberá prvú polovicu úseku, presne ako v predlohe,
    kde bolo trinásť snímok do bielej a dvanásť z nej. Biela na vrchole nedrží,
    dip je symetrický. Video okna beží do 0,9657, teda jeho posledná snímka sadne
    presne na vrchol bielej. */
 var TIME_END = 0.9657;
-var VEIL_A   = 0.9286;
+var VEIL_A   = 0.912;
 var VEIL_B   = 0.9657;
 
 var stage  = document.getElementById('stage');
@@ -1509,7 +1511,7 @@ var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null };
 
 function updateChrome(p){
   /* nápoveda zostáva po celý čas a zmizne až s prechodom do stránky */
-  var cueOp = 1 - smoothstep(p,0.948,0.9657);
+  var cueOp = 1 - smoothstep(p,0.930,0.9657);
   if (Math.abs(cueOp-chrome.cue) > 0.01){
     chrome.cue = cueOp;
     cue.style.opacity = cueOp.toFixed(2);
@@ -1553,13 +1555,22 @@ function tick(now){
   if (done) shown = target;
   if (video.duration) requestSeek(mapTime(shown) * video.duration);
   updateCaps(shown);
-  updateChrome(shown);
+  updateChrome(target);
 
   if (done){ rafId = null; lastTick = 0; }
   else rafId = requestAnimationFrame(tick);
 }
 function kick(){ if (!scrubOn) return; if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick); }
-function onScroll(){ target = heroProgress(); window.__introRunning = target < 0.985; kick(); }
+function onScroll(){
+  target = heroProgress();
+  window.__introRunning = target < 0.985;
+  /* Závoj a spol. hneď, bez tlmenia. Tlmenie patrí len času videa, aby
+     skoky nedrhli. Keď na ňom visel aj závoj, bielenie zaostávalo za
+     scrollom a prechod pôsobil nadvakrát: najprv obraz dobehol, až potom
+     sa začal bieliť. Takto sa obraz beleje presne pod rukou. */
+  updateChrome(target);
+  kick();
+}
 
 /* Zahodenie požiadavky na ten istý čas. Kým intro drží poslednú snímku, nemá
    zmysel púšťať hľadanie znova a znova, zbytočne by to uberalo z plynulosti
