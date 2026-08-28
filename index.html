@@ -112,13 +112,26 @@ button{font:inherit;color:inherit}
    Končí plynulým prechodom do plochy stránky.
    ========================================================================== */
 .hero{position:relative;height:1500vh;background:var(--ink)}
-.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--ink)}
+/* z-index:0 tu nie je kozmetika, drží celé odovzdanie na dodávku.
+   Bez neho .stage nevytvára vlastnú vrstvu, takže jej deti so z-index, teda
+   závoj 20, titulky 14, nápoveda 15 a horná lišta 30, nekreslia vnútri intra,
+   ale v spoločnej vrstve stránky, a tým pádom NAD plochou dodávky, ktorá má
+   z-index 1. Prelínanie potom pracovalo správne, len ho intro prekrývalo
+   zhora, a na hrane pripnutej plochy z toho bol tvrdý zlom. */
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
+  background:var(--ink);z-index:0}
 .stage .poster,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .stage .poster{background-size:cover;background-position:50% 50%;background-repeat:no-repeat}
 .stage video{opacity:0;transform:translateZ(0);will-change:transform}
 .stage.video-ready video{opacity:1}
 .stage.video-ready .poster{opacity:0}
 .stage.video-failed video{display:none}
+/* Mäkký spodný okraj plochy intra počas odovzdania na dodávku. Zapína ho
+   skript len na tom úseku, inak by odkrajoval spodok obrazu po celé intro. */
+.stage.soft{
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 68%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to bottom,#000 0,#000 68%,rgba(0,0,0,0) 100%);
+}
 
 /* Titulky. Farba a podklad sú určené meraním jasu presne v mieste textu:
    1 a 2 ležia na tmavom zábere (jas 34 a 36), takže biely text má 15:1 a nepotrebuje nič.
@@ -1758,8 +1771,10 @@ function paintStage(p){
   lastStageOp = op;
   stage2.style.opacity = op.toFixed(3);
   end2.style.transform = 'translate3d(0,' + ((1-op)*26).toFixed(1) + 'px,0)';
-  /* Keď je plocha dodávky krycia, plochu intra netreba vôbec kresliť.
-     Je to poistka proti tej hrane a zároveň sa tým ušetrí skladanie obrazu. */
+  /* Dve poistky proti tvrdej hrane. Počas odovzdania má plocha intra mäkký
+     spodný okraj, takže sa nekončí rezom, ale vytratí sa do farby stránky.
+     A keď je plocha dodávky krycia, plocha intra sa nekreslí vôbec. */
+  stage.classList.toggle('soft', op > 0.01 && op < 0.995);
   stage.style.visibility = op > 0.995 ? 'hidden' : '';
 }
 

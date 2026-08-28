@@ -133,6 +133,18 @@ najdôležitejšia časť a bola postavená na dva razy nesprávne, tak pozor:
 - Rozplynutie intra do hmly je **rýchlejšie** ako prelínanie (0,925 až 0,965
   oproti prekryvu, ktorý beží až do konca). Musí to tak byť, inak by sa pod
   polopriesvitnou plochou dodávky ukazoval duch poslednej snímky okna.
+- **`.stage` musí mať `z-index:0`. Toto je najdôležitejší riadok celého
+  odovzdania.** Bez neho `.stage` nevytvára vlastnú vrstvu, takže jej deti so
+  `z-index`, teda závoj 20, titulky 14, nápoveda 15 a horná lišta 30, nekreslia
+  vnútri intra, ale v spoločnej vrstve stránky, a tým pádom **nad** plochou
+  dodávky, ktorá má `z-index:1`. Prelínanie pritom pracovalo správne, len ho
+  intro prekrývalo zhora. Prejavovalo sa to dvoma vecami naraz, ktoré vyzerali
+  ako dve rôzne chyby: tvrdý zlom na hrane pripnutej plochy pri scrollovaní
+  dopredu, a pri scrollovaní späť dojem, že sa animácia už nevracia, pretože
+  krycí závoj intra prekryl dodávku aj sám seba.
+- Počas odovzdania má plocha intra mäkký spodný okraj (`.stage.soft`, maska
+  s prechodom). Zapína sa len na tom úseku, inak by odkrajovala spodok obrazu
+  po celé intro. Je to poistka, aby okraj nikdy nebol rez.
 - **Priesvitnosť prelínania ide zo surového postupu scrollu, nie z tlmenej
   hodnoty.** Tlmenie patrí k času videa, aby skoky nedrhli. Pri prelínaní
   zaostávalo, takže pri rýchlejšom scrolle plocha nestihla docelovať skôr,
