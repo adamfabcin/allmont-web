@@ -1363,15 +1363,21 @@ function pickVideo(){
 var SRC = pickVideo();
 
 /* Kde intro dohrá a kde sa začne prechod do plochy stránky.
-   TIME_END bolo 0,90. Video sa tým skončilo o 82 vh skôr, než sa vôbec začal
-   prechod, a celý ten kus scrollu držal jednu a tú istú snímku. Meranie pohybu
-   medzi snímkami hovorí, že samotné video až do konca beží, posledná sekunda
-   má 100 až 250 percent svojho priemerného pohybu. Stálo teda scrollovanie,
-   nie obraz. Teraz video dobehne 15 vh pred prechodom, čo je jedno kolečko
-   myši, teda nádych, nie zastávka. */
-var TIME_END = 0.945;
-var VEIL_A   = 0.955;
-var VEIL_B   = 0.998;
+
+   Pôvodne bolo TIME_END 0,90 a prechod začínal až na 0,955, takže medzi koncom
+   videa a začiatkom prechodu bolo 616 px scrollu, na ktorých sa nedialo nič.
+   Meranie pohybu medzi snímkami pritom hovorí, že video až do konca beží,
+   posledná sekunda má 100 až 250 percent svojho priemerného pohybu. Stálo teda
+   scrollovanie, nie obraz.
+
+   Teraz je to bez akejkoľvek medzery. Prechod začína na 0,92, teda ešte kým
+   sa obraz hýbe, a končí presne na 1,0, teda presne tam, kde sa sekcia končí
+   a nastupuje dodávka. Posledných zhruba dvadsať snímok okna sa tak prehrá už
+   pod rozplývaním, čo je to isté, ako keby boli odstrihnuté, len sa nič
+   nezahodilo. Za introm nezostane ani kúsok prázdnej obrazovky. */
+var TIME_END = 0.98;
+var VEIL_A   = 0.92;
+var VEIL_B   = 1.0;
 
 var stage  = document.getElementById('stage');
 var video  = document.getElementById('heroVideo');
@@ -1442,7 +1448,7 @@ var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null };
 
 function updateChrome(p){
   /* nápoveda zostáva po celý čas a zmizne až s prechodom do stránky */
-  var cueOp = 1 - smoothstep(p,0.948,0.99);
+  var cueOp = 1 - smoothstep(p,0.920,0.975);
   if (Math.abs(cueOp-chrome.cue) > 0.01){
     chrome.cue = cueOp;
     cue.style.opacity = cueOp.toFixed(2);
@@ -1470,7 +1476,7 @@ function updateChrome(p){
     chrome.veil = vOp;
     veil.style.opacity = vOp.toFixed(3);
   }
-  var navOn = p > 0.95;
+  var navOn = p > 0.955;
   if (navOn !== chrome.nav){ chrome.nav = navOn; nav.classList.toggle('on', navOn); }
 }
 
@@ -1639,6 +1645,12 @@ var end2   = document.getElementById('end2');
 
 var VAN_END = 0.94;   /* dobehne tesne pred koncom, potom krátky nádych */
 
+/* Prvé štyri snímky záberu sú úplne prázdne, meranie ukázalo nulovú
+   obsadenosť plátna aj nulový pohyb. Scroll ich preskočí, aby dodávka
+   začínala vchádzať hneď, ako sa obrazovka objaví. Nič sa nezahadzuje,
+   len sa cez ne neprechádza. */
+var VAN_SKIP = 4 / 25;
+
 function pickVan(){
   var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   if (conn){
@@ -1657,7 +1669,12 @@ function vanProgress(){
   if (total <= 0) return 0;
   return clamp(-r.top/total, 0, 1);
 }
-function vanMap(p){ return p >= VAN_END ? 1 : p / VAN_END; }
+function vanMap(p){
+  var d = vanV.duration || 1;
+  var t0 = VAN_SKIP / d;
+  var f = p >= VAN_END ? 1 : p / VAN_END;
+  return t0 + f * (1 - t0);
+}
 
 var vanBusy = false, vanPending = null;
 function vanSeek(t){
@@ -1681,11 +1698,14 @@ function vanTick(now){
 
   if (vanV.duration) vanSeek(vanMap(vanShown) * vanV.duration);
 
-  /* text prichádza hneď, ako sa do sekcie začne scrollovať */
-  var eOp = smoothstep(vanShown, 0.010, 0.105);
+  /* Obrazovka s dodávkou je na mieste hneď, ako sekcia nastúpi. Text sa
+     nevynára pomaly, len sa krátko dotiahne zdola, aby bolo vidieť, že
+     prišla nová plocha, a nie že sa niečo načítava. */
+  var eOp = smoothstep(vanShown, 0.0, 0.035);
   if (Math.abs(eOp - vanEndOp) > 0.004){
     vanEndOp = eOp;
     end2.style.opacity = eOp.toFixed(3);
+    end2.style.transform = 'translate3d(0,' + ((1-eOp)*34).toFixed(1) + 'px,0)';
   }
 
   if (done){ vanRaf = null; vanLast = 0; }

@@ -22,12 +22,20 @@ Ako intro funguje:
 - Video sa sťahuje celé ako blob, až potom sa zapne scrollovanie. Do vtedy drží
   miesto `hero-poster.jpg`, teda prvá snímka.
 - Hero má výšku 1500vh. Čas videa ide so scrollom rovnomerne po `TIME_END`
-  (0,945), potom drží poslednú snímku. Bolo tam 0,90, ale to znamenalo 616 px
-  scrollu, na ktorých sa nedialo vôbec nič, ani prechod. Meranie pohybu medzi
-  snímkami ukázalo, že samotné video až do konca beží, posledná sekunda má 100
-  až 250 percent svojho priemerného pohybu. Stálo teda scrollovanie, nie obraz.
-  Teraz je tá medzera 112 px, teda jedno kolečko myši. Nápoveda aj navigácia sa
-  posunuli s ňou, boli nastavené na starý koniec videa.
+  (0,98), rozplývanie do farby stránky beží od `VEIL_A` 0,92 po `VEIL_B` 1,0.
+  Prekrývajú sa zámerne: posledných zhruba dvadsať snímok okna sa prehrá už
+  pod rozplývaním, čo je to isté, ako keby boli odstrihnuté, len sa nič
+  nezahodilo. Rozplývanie končí presne na 1,0, teda presne tam, kde sekcia
+  končí a nastupuje dodávka, takže **za introm nezostane ani kúsok prázdnej
+  obrazovky**.
+
+  Ako sa k tomu došlo: pôvodne bolo `TIME_END` 0,90 a `VEIL_A` 0,955, medzi
+  koncom videa a začiatkom prechodu teda bolo 616 px scrollu, na ktorých sa
+  nedialo nič. Meranie pohybu medzi snímkami pritom ukázalo, že samotné video
+  až do konca beží, posledná sekunda má 100 až 250 percent svojho priemerného
+  pohybu. Stálo teda scrollovanie, nie obraz. Nápoveda „Scrollujte" (0,920 až
+  0,975) aj nástup navigácie (0,955) sú naviazané na rozplývanie, nie na koniec
+  videa, a treba ich posúvať spolu s ním.
 - **Päť titulkov** v prvých dvoch tretinách, biele, jeden rovnaký jemný závoj.
   Posledná tretina beží bez textu.
 - Na konci sa obraz rozplynie do farby stránky a **nadpis sa vynára priamo
@@ -112,7 +120,11 @@ najtmavší bod pod textom cez všetkých 167 snímok má bez závoja kontrast 1
 so závojom 10,4:1. Úplné krytie by dalo 14,1:1, ale zjedlo by kolesá dodávky.
 
 Sekcia má 640vh, `VAN_END` je 0,94, teda tá istá filozofia ako pri intre: video
-dobehne tesne pred koncom a nezostane stáť. Kvalita overená proti majstrovi,
+dobehne tesne pred koncom a nezostane stáť. Obrazovka s dodávkou je na mieste
+hneď, ako sekcia nastúpi: text sa dotiahne zdola za 3,5 percenta postupu, nie
+pomaly za desatinu. Prvé štyri snímky záberu sú podľa merania úplne prázdne,
+nulová obsadenosť plátna aj nulový pohyb, preto ich `VAN_SKIP` preskočí
+a dodávka začína vchádzať hneď. Nič sa nezahadzuje, len sa cez ne neprechádza. Kvalita overená proti majstrovi,
 SSIM 0,994. Veľkosti: 9,6 MB v 4K, 5,4 MB a 3,7 MB ako záloha.
 
 ## 2. Pravidlá značky, ktoré platia bez výnimky
