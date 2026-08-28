@@ -152,9 +152,19 @@ najdôležitejšia časť a bola postavená na dva razy nesprávne, tak pozor:
   technicky správne, ale dodávka za ten čas stihla vystrčiť len nos a plocha
   pôsobila prázdno. Cez dve obrazovky sa okno rozplýva a dodávka prichádza
   súčasne, takže nie je chvíľa, keď by na obrazovke nebolo nič.
-- Plocha intra je počas celého prelínania **pripnutá** (`stTop` je 0) a je
-  úplne priesvitná ešte predtým, než by sa vôbec pohla. To je overené
-  skenovaním celého úseku, nie odhadom.
+- **Plocha intra je `position:fixed`, nie `sticky`. Toto je posledný a hlavný
+  kus skladačky.** Pripnutá plocha sa pri scrollovaní hýbe: keď dorazí na
+  koniec svojej sekcie, odopne sa a odchádza hore. Priesvitnosť jej pritom
+  nastavuje skript, ktorý pri rýchlom scrolle o zlomok sekundy zaostane, lebo
+  scroll beží na inom vlákne než skript. Vtedy sa plocha už posunula, ale ešte
+  nezmizla, a jej spodný okraj bolo vidieť ako tvrdú hranu. **Žiadne ladenie
+  čísel to nemohlo vyriešiť, lebo príčinou nebol čas, ale pohyb.** Pevná plocha
+  sa nehýbe nikdy, takže nie je čo posunúť a hrana nemá ako vzniknúť.
+  Overené skenovaním: `stTop` je 0 na každej pozícii, dopredu aj späť, vrátane
+  1500 px za bodom, kde sa pripnutá plocha kedysi odopínala.
+- V štýloch zostáva `sticky` a na pevnú ju prepína skript v `enableScrub`,
+  aby stránka bez JavaScriptu neostala navždy pod celoobrazovkovou plochou.
+  `disableScrub` to vracia späť.
 - **Priesvitnosť prelínania ide zo surového postupu scrollu, nie z tlmenej
   hodnoty.** Tlmenie patrí k času videa, aby skoky nedrhli. Pri prelínaní
   zaostávalo, takže pri rýchlejšom scrolle plocha nestihla docelovať skôr,

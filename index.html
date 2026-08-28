@@ -118,8 +118,25 @@ button{font:inherit;color:inherit}
    ale v spoločnej vrstve stránky, a tým pádom NAD plochou dodávky, ktorá má
    z-index 1. Prelínanie potom pracovalo správne, len ho intro prekrývalo
    zhora, a na hrane pripnutej plochy z toho bol tvrdý zlom. */
-.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
-  background:var(--ink);z-index:0}
+/* position:fixed, nie sticky, a to je jadro celého odovzdania na dodávku.
+
+   Pripnutá plocha sa pri scrollovaní hýbe: keď dorazí na koniec svojej sekcie,
+   odopne sa a odchádza hore. Priesvitnosť jej pritom nastavuje skript, ktorý
+   pri rýchlom scrolle o zlomok sekundy zaostane, lebo scroll beží na inom
+   vlákne než skript. Vtedy sa plocha už posunula, ale ešte nezmizla, a jej
+   spodný okraj bolo vidieť ako tvrdú hranu. Žiadne ladenie čísel to nemohlo
+   vyriešiť, lebo príčinou nebol čas, ale pohyb.
+
+   Pevná plocha sa nehýbe nikdy. Aj keby skript zaostal, ostane celoobrazovková
+   a nanajvýš chvíľu dlhšie svieti, ale hrana nevznikne, lebo nie je čo posunúť.
+   Zobrazovanie ostáva rovnaké, pretože pripnutá plocha aj tak celý čas stála
+   na vrchu obrazovky. z-index:0 drží deti intra vo vlastnej vrstve, pod
+   plochou dodávky.
+
+   V štýloch zostáva sticky a na pevnú ju prepína skript, aby stránka bez
+   JavaScriptu neostala navždy pod celoobrazovkovou plochou. */
+.stage{position:sticky;top:0;height:100vh;height:100svh;
+  overflow:hidden;background:var(--ink);z-index:0}
 .stage .poster,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .stage .poster{background-size:cover;background-position:50% 50%;background-repeat:no-repeat}
 .stage video{opacity:0;transform:translateZ(0);will-change:transform}
@@ -1635,6 +1652,10 @@ var MQLS = GATES.map(function(q){ return window.matchMedia(q); });
 function enableScrub(){
   if (scrubOn) return;
   scrubOn = true;
+  /* Pevná plocha, nie pripnutá. Dôvod je pri .stage v štýloch. */
+  stage.style.position = 'fixed';
+  stage.style.left = '0';
+  stage.style.right = '0';
   initHeroOnce();
   window.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', onScroll);
@@ -1647,6 +1668,11 @@ function enableScrub(){
 function disableScrub(){
   if (!scrubOn) return;
   scrubOn = false;
+  stage.style.position = '';
+  stage.style.left = '';
+  stage.style.right = '';
+  stage.style.opacity = '';
+  stage.style.visibility = '';
   window.removeEventListener('scroll', onScroll);
   window.removeEventListener('resize', onScroll);
   if (rafId !== null){ cancelAnimationFrame(rafId); rafId = null; }
@@ -1770,7 +1796,7 @@ function onVanScroll(){ vanTarget = vanProgress(); paintStage(vanTarget); vanKic
    obrazovka svetlá, stojí na nej nadpis aj dodávka naraz. */
 var lastStageOp = -1;
 function paintStage(p){
-  var op = smoothstep(p, 0, vanFade() * 0.72);
+  var op = smoothstep(p, 0, vanFade() * 0.62);
   if (Math.abs(op - lastStageOp) < 0.004) return;
   lastStageOp = op;
   stage2.style.opacity = op.toFixed(3);
