@@ -217,7 +217,14 @@ button{font:inherit;color:inherit}
    nos a plocha pôsobila prázdno, hoci prelínanie bolo technicky správne. Teraz
    sa okno rozplýva a dodávka prichádza súčasne, cez viac ako dve obrazovky
    scrollu, takže nie je chvíľa, keď by na obrazovke nebolo nič. */
-.hero2{position:relative;height:720vh;margin-top:-200vh;background:#fff}
+/* POZOR NA POZADIE. Sekcia nesmie mať vlastnú farbu pozadia.
+   .hero a .hero2 sú obe position:relative so z-index auto, takže sa kreslia
+   v tej istej vrstve a rozhoduje poradie v dokumente: .hero2 je neskôr, takže
+   jej pozadie kreslí NAD pevnou plochou intra. A keďže .hero2 je obyčajný blok,
+   ktorý sa scrollovaním posúva hore, jej biele pozadie sa cez intro zdvíhalo
+   ako biela lišta zospodu. Presne tak to klient aj popísal.
+   Bielu preto nesie výlučne pripnutá plocha .stage2, ktorá stojí a neposúva sa. */
+.hero2{position:relative;height:720vh;margin-top:-200vh;background:transparent}
 .stage2{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
   background:#fff;z-index:1;opacity:0}
 /* Záber je presné 16:9 a využíva sa celý. Contain, nie cover, pretože stojan
@@ -264,7 +271,7 @@ button{font:inherit;color:inherit}
 
 /* Keď sa intro nescrolluje, nescrolluje sa ani toto. Vtedy je z toho bežný
    blok: posledná snímka ako obrázok a text pod ním. */
-.hero2.flat{height:auto;margin-top:0}
+.hero2.flat{height:auto;margin-top:0;background:#fff}
 .hero2.flat .stage2{opacity:1}
 .hero2.flat .stage2{position:static;height:auto;overflow:visible}
 .hero2.flat .stage2 video{display:none}
@@ -1857,11 +1864,10 @@ function paintStage(p){
   if (Math.abs(op - lastStageOp) < 0.004) return;
   lastStageOp = op;
   stage2.style.opacity = op.toFixed(3);
-  /* Bielenie obrazu okna robí závoj intra, nie táto priesvitnosť. Tu je len
-     poistka na poslednú štvrtinu úseku: keby závoj z akéhokoľvek dôvodu
-     nedobehol, plocha intra sa aj tak stratí a nemôže cez dodávku presvitať.
-     Je to neviditeľné, lebo v tej chvíli je obrazovka aj tak biela. */
-  stage.style.opacity = (1 - smoothstep(p, f * 0.72, f * 0.97)).toFixed(3);
+  /* Plocha intra sa NEBLEDNE priesvitnosťou. Bielenie robí závoj vnútri nej.
+     Keby sa blednúť začala, presvitalo by cez ňu tmavé pozadie sekcie intra,
+     ktoré je v prekryve pod ňou. Koniec robí skrytie, a to až vtedy, keď je
+     plocha dodávky úplne krycia, takže sa nemá čo objaviť. */
   stage.style.visibility = op > 0.995 ? 'hidden' : '';
 }
 

@@ -154,6 +154,19 @@ koniec animácie, potom biela. Druhá polovica: závoj začínal až tam, kde sa
 prihlásila sekcia dodávky. Teraz začína na 0,912, teda ešte v prvej animácii,
 takže jej koniec **je** začiatkom prechodu, nie samostatný krok pred ním.
 
+**`.hero2` NESMIE mať vlastnú farbu pozadia.** Toto bola tá chyba, ktorú klient
+popísal ako „zospodu sa vysunie biela lišta". `.hero` aj `.hero2` sú obe
+`position:relative` so `z-index:auto`, takže sa kreslia v tej istej vrstve
+a rozhoduje poradie v dokumente: `.hero2` je neskôr, takže jej pozadie kreslí
+**nad** pevnou plochou intra. A keďže `.hero2` je obyčajný blok, ktorý sa
+scrollovaním posúva hore, jej biele pozadie sa cez intro zdvíhalo ako biela
+lišta zospodu. Bielu preto nesie výlučne pripnutá plocha `.stage2`, ktorá stojí.
+Plochý režim má pozadie biele, tam sa nič neposúva.
+
+**Plocha intra sa nesmie bledúť priesvitnosťou.** Bielenie robí závoj vnútri
+nej. Keby blednúť začala, presvitalo by cez ňu tmavé pozadie sekcie intra, ktoré
+je v prekryve pod ňou. Koniec robí skrytie, a to až keď je plocha dodávky krycia.
+
 **Video dodávky beží už pod bielou.** Toto je jediná vec, ktorá na tom prechode
 naozaj rozhoduje, a dá sa ľahko pokaziť: `VAN_VIDEO_A`, teda kde sa rozbehne
 video, je 0, ale `VAN_FADE_A`, teda kde sa začne objavovať plocha, je 0,52. Keď
