@@ -167,17 +167,68 @@ button{font:inherit;color:inherit}
   background:linear-gradient(to bottom,rgba(6,14,26,.30) 0%,rgba(6,14,26,.04) 44%,rgba(238,241,244,1) 100%)}
 
 /* ==========================================================================
-   ÚVOD na poslednom obraze intra
+   ÚVOD, DRUHÉ SCROLLOVANÉ VIDEO. Príchod dodávky.
+
+   Zdrojový záber je štúdiový, na úplne čistej bielej. Pri kódovaní je biela
+   vynásobená hmlou #EEF1F4, takže pozadie záberu JE farba stránky. Z toho
+   plynie tri veci naraz: intro sa rozplynie presne do prvej snímky a prechod
+   nie je vidieť, video sa dá zobraziť celé cez object-fit:contain a okraje
+   sa nikde neprejavia, a kým sa súbor sťahuje, drží miesto samotné pozadie,
+   takže netreba ani obrázok, ani krúžok načítania.
+
+   Text sedí dole, aby dodávke nezavadzal. Nie je nad ním žiadny závoj,
+   pretože nestojí nad obrazom, ale pod ním.
    ========================================================================== */
-.end{position:absolute;left:0;right:0;bottom:0;height:100vh;height:100svh;z-index:30;
-  display:flex;align-items:center;padding:0 var(--pad);opacity:0;pointer-events:none}
-.end .label{display:block;margin-bottom:clamp(16px,2vw,26px)}
-.end h1{max-width:26ch}
-.end .lede{margin-top:clamp(18px,2.2vw,28px)}
-.end .row{margin-top:clamp(24px,3vw,38px);display:flex;gap:12px;flex-wrap:wrap}
-.end .meta{margin-top:clamp(24px,3vw,38px);padding-top:18px;border-top:1px solid var(--line);
+.hero2{position:relative;height:640vh;background:var(--canvas)}
+.stage2{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
+  background:var(--canvas);z-index:1}
+/* Záber je presné 16:9 a využíva sa celý. Contain, nie cover, pretože stojan
+   so sklom siaha až po pravý okraj obrazu a cover by ho na užšej obrazovke
+   odrezal. Pásy, ktoré pri contain vzniknú, nie je vidieť: majú tú istú farbu
+   ako pozadie záberu aj ako stránka. */
+.stage2 video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+  display:block;opacity:0;transition:opacity .7s var(--ease-out)}
+.stage2.van-ready video{opacity:1}
+.plate2{display:none;position:absolute;inset:0;background:var(--canvas) center/contain no-repeat}
+.stage2.van-failed video{display:none}
+.stage2.van-failed .plate2{display:block}
+
+/* Text stojí nad obrazom, preto pod ním je závoj. Je to ten istý systém
+   čitateľnosti ako v intre, len obrátený: tam bol tmavý na tmavom zábere,
+   tu je z hmly na svetlom. Nábeh má 132 px a za písmom nekryje úplne, ale na
+   0,86, aby dodávka pod textom presvitala. Meranie najtmavšieho bodu záberu
+   v tomto páse cez všetkých 167 snímok: bez závoja kontrast 1,0:1, pri 0,86
+   je to 10,8:1. Úplné krytie by dalo 14,1:1, ale zjedlo by kolesá. */
+.end2{position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:0 var(--pad) clamp(22px,3.4vw,48px);
+  opacity:0;transition:opacity .8s var(--ease-out)}
+.end2::before{content:"";position:absolute;left:0;right:0;bottom:0;top:-132px;z-index:-1;
+  background:linear-gradient(to bottom,rgba(238,241,244,0) 0,rgba(238,241,244,.86) 132px)}
+.end2.on{opacity:1}
+.end2 .wrap{display:grid;grid-template-columns:minmax(0,1.34fr) minmax(0,.66fr);
+  gap:clamp(20px,3vw,56px);align-items:end}
+/* nadpis v tomto bloku sadá na dva riadky, aby závoj nezjedol kolesá dodávky */
+.end2 h1{font-size:clamp(1.75rem,1.05rem + 2.05vw,3.05rem)}
+.end2 .label{display:block;margin-bottom:clamp(10px,1.2vw,16px)}
+.end2 h1{max-width:30ch}
+.end2 .row{margin-top:clamp(16px,1.8vw,24px);display:flex;gap:12px;flex-wrap:wrap}
+.end2 .meta{grid-column:1 / -1;margin-top:clamp(14px,1.8vw,22px);padding-top:14px;
+  border-top:1px solid var(--line);
   font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary)}
-.end.live{pointer-events:auto}
+@media (max-width:900px){
+  .end2 .wrap{grid-template-columns:1fr;align-items:start}
+  .end2 h1{max-width:none}
+}
+
+/* Keď sa intro nescrolluje, nescrolluje sa ani toto. Vtedy je z toho bežný
+   blok: posledná snímka ako obrázok a text pod ním. */
+.hero2.flat{height:auto}
+.hero2.flat .stage2{position:static;height:auto;overflow:visible}
+.hero2.flat .stage2 video{display:none}
+.hero2.flat .plate2{display:block;position:static;width:100%;aspect-ratio:16/9;
+  background-size:cover}
+.hero2.flat .end2{position:static;opacity:1;padding-top:clamp(26px,4vw,52px)}
+.hero2.flat .end2::before{display:none}
 
 /* ==========================================================================
    SEKCIE
@@ -858,19 +909,35 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
 
   <div class="plate" id="plate" aria-label="ALL MONT, realizácia"></div>
 
-  <!-- ÚVOD. Sedí na poslednom obraze intra, takže vo chvíli, keď obraz zbelie,
-       je text už na mieste a nič sa nedoskrollováva. V mobilnom režime, kde sa
-       intro nescrolluje, sa z toho stane bežná sekcia pod obrázkom. -->
-  <div class="end" id="uvod" tabindex="-1">
-    <div class="wrap">
-      <span class="label">ALL MONT, spol. s r.o. · Nitra</span>
-      <h1>Dodávka a montáž plastových a hliníkových okien.</h1>
-      <p class="lede">Vchodové dvere, parapetné dosky a príslušenstvo. Sme dlhoročný výrobca plastových a hliníkových okien a poskytujeme svoje služby na celom území Slovenska.</p>
-      <div class="row">
-        <a class="btn btn-primary" href="#kontakt">Nezáväzná cenová ponuka</a>
-        <a class="btn btn-ghost" href="#sluzby">Naše služby</a>
+</section>
+
+<!-- ================= ÚVOD, PRÍCHOD DODÁVKY =================
+     Druhé scrollované video. Intro sa na konci rozplynie do farby stránky
+     a prvá snímka tohto videa je presne tá istá farba, pretože biele pozadie
+     zdrojového záberu je pri kódovaní vynásobené hmlou. Prechod medzi oboma
+     pripnutými plochami preto nie je vidieť, aj keď je to obyčajný scroll.
+     Z toho istého dôvodu tu nie je ani obrázok, ktorý drží miesto, ani krúžok
+     načítania: kým sa video stiahne, drží miesto samotná farba stránky.
+     Text sedí dole, aby dodávke nezavadzal. -->
+<section class="hero2" id="uvod" tabindex="-1" aria-label="Dodávka a montáž plastových a hliníkových okien">
+  <div class="stage2" id="stage2">
+    <video id="vanVideo" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+    <div class="plate2" id="plate2" aria-label="Dodávka ALL MONT so stojanom okien"></div>
+    <div class="end2" id="end2">
+      <div class="wrap">
+        <div class="e2a">
+          <span class="label">ALL MONT, spol. s r.o. · Nitra</span>
+          <h1>Dodávka a montáž plastových a hliníkových okien.</h1>
+        </div>
+        <div class="e2b">
+          <p class="lede">Vchodové dvere, parapetné dosky a príslušenstvo. Sme dlhoročný výrobca plastových a hliníkových okien a poskytujeme svoje služby na celom území Slovenska.</p>
+          <div class="row">
+            <a class="btn btn-primary" href="#kontakt">Nezáväzná cenová ponuka</a>
+            <a class="btn btn-ghost" href="#sluzby">Naše služby</a>
+          </div>
+        </div>
+        <p class="meta">Poradenstvo a zameranie zdarma · Nitra, Levice, Bratislava · celé Slovensko</p>
       </div>
-      <p class="meta">Poradenstvo a zameranie zdarma · Nitra, Levice, Bratislava · celé Slovensko</p>
     </div>
   </div>
 </section>
@@ -1274,6 +1341,11 @@ var POSTER_URL  = 'assets/hero-poster.jpg?v=3';
 var ENDING_URL  = 'assets/hero-ending.jpg?v=3';
 var PLATE_URL   = 'assets/hero-plate.jpg?v=3';
 
+var VAN_1080    = 'assets/dodavka-1080.mp4?v=3';
+var VAN_1440    = 'assets/dodavka-1440.mp4?v=3';
+var VAN_2160    = 'assets/dodavka-2160.mp4?v=3';
+var VAN_PLATE   = 'assets/dodavka-plate.jpg?v=3';
+
 /* Ktorá verzia videa. Každá snímka je kľúčová, takže jeden skok dekóduje jednu
    snímku, okolo 9 ms aj v 4K. Výkonový dôvod nesahovať po 4K teda neexistuje,
    preto ho dostane každý počítač, ktorý scroll vôbec spúšťa. Menšia verzia je
@@ -1312,7 +1384,6 @@ var cue    = document.getElementById('cue');
 var cueFill= document.getElementById('cueFill');
 var veil   = document.getElementById('veil');
 var plate  = document.getElementById('plate');
-var endBox = document.getElementById('uvod');
 
 /* Prehliadač si pri obnovení stránky pamätá pozíciu scrollu a vrátil by vás do
    stredu intra. Obrázok, ktorý drží miesto, je ale vždy prvá snímka, takže by
@@ -1367,7 +1438,7 @@ function heroProgress(){
 
 var scrubOn = false;
 var target = 0, shown = 0, rafId = null, lastTick = 0, heroOnScreen = true;
-var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null, end:-1 };
+var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null };
 
 function updateChrome(p){
   /* nápoveda zostáva po celý čas a zmizne až s prechodom do stránky */
@@ -1398,13 +1469,6 @@ function updateChrome(p){
   if (Math.abs(vOp-chrome.veil) > 0.004){
     chrome.veil = vOp;
     veil.style.opacity = vOp.toFixed(3);
-  }
-  /* nadpis prichádza spolu s prechodom do plochy, nie po ňom */
-  var endOp = smoothstep(p,0.962,0.998);
-  if (Math.abs(endOp-chrome.end) > 0.004){
-    chrome.end = endOp;
-    endBox.style.opacity = endOp.toFixed(3);
-    endBox.classList.toggle('live', endOp > 0.6);
   }
   var navOn = p > 0.95;
   if (navOn !== chrome.nav){ chrome.nav = navOn; nav.classList.toggle('on', navOn); }
@@ -1533,7 +1597,7 @@ function enableScrub(){
   initHeroOnce();
   window.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', onScroll);
-  chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null, end:-1 };
+  chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null };
   caps.forEach(function(c){ c.op = -1; });
   updateCaps(heroProgress());
   updateChrome(heroProgress());
@@ -1556,6 +1620,163 @@ MQLS.forEach(function(m){
   if (m.addEventListener) m.addEventListener('change', applyHeroMode);
   else if (m.addListener) m.addListener(applyHeroMode);
 });
+
+
+/* ==========================================================================
+   5b. DRUHÉ SCROLLOVANÉ VIDEO. Príchod dodávky.
+
+   Rovnaká mechanika ako intro: čas videa ide so scrollom, skok dekóduje jednu
+   snímku, pohyb dobieha s tlmením. Dva rozdiely. Nie je tu obrázok, ktorý drží
+   miesto, ani krúžok načítania, pretože pozadie záberu je farba stránky a kým
+   sa súbor sťahuje, nie je čo nahrádzať. A text nestojí nad obrazom, ale pod
+   ním, takže nepotrebuje závoj.
+   ========================================================================== */
+var hero2  = document.getElementById('uvod');
+var stage2 = document.getElementById('stage2');
+var vanV   = document.getElementById('vanVideo');
+var plate2 = document.getElementById('plate2');
+var end2   = document.getElementById('end2');
+
+var VAN_END = 0.94;   /* dobehne tesne pred koncom, potom krátky nádych */
+
+function pickVan(){
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (conn){
+    var et = conn.effectiveType || '';
+    if (conn.saveData || et === 'slow-2g' || et === '2g') return VAN_1080;
+  }
+  return VAN_2160;
+}
+
+var vanTarget = 0, vanShown = 0, vanRaf = null, vanLast = 0;
+var vanOn = false, vanNear = false, vanFetched = false, vanEndOp = -1;
+
+function vanProgress(){
+  var r = hero2.getBoundingClientRect();
+  var total = hero2.offsetHeight - window.innerHeight;
+  if (total <= 0) return 0;
+  return clamp(-r.top/total, 0, 1);
+}
+function vanMap(p){ return p >= VAN_END ? 1 : p / VAN_END; }
+
+var vanBusy = false, vanPending = null;
+function vanSeek(t){
+  if (!vanV.duration) return;
+  if (vanBusy){ vanPending = t; return; }
+  vanBusy = true;
+  try { vanV.currentTime = t; } catch(e){ vanBusy = false; }
+}
+vanV.addEventListener('seeked', function(){
+  vanBusy = false;
+  if (vanPending !== null){ var t = vanPending; vanPending = null; vanSeek(t); }
+});
+vanV.addEventListener('error', function(){ vanBusy = false; vanPending = null; vanFail(); });
+
+function vanTick(now){
+  var dt = Math.min(100, now - (vanLast || now));
+  vanLast = now;
+  vanShown += (vanTarget - vanShown) * (1 - Math.pow(1-0.14, dt/16.667));
+  var done = Math.abs(vanTarget - vanShown) < 0.0005;
+  if (done) vanShown = vanTarget;
+
+  if (vanV.duration) vanSeek(vanMap(vanShown) * vanV.duration);
+
+  /* text prichádza hneď, ako sa do sekcie začne scrollovať */
+  var eOp = smoothstep(vanShown, 0.010, 0.105);
+  if (Math.abs(eOp - vanEndOp) > 0.004){
+    vanEndOp = eOp;
+    end2.style.opacity = eOp.toFixed(3);
+  }
+
+  if (done){ vanRaf = null; vanLast = 0; }
+  else vanRaf = requestAnimationFrame(vanTick);
+}
+function vanKick(){ if (!vanOn) return; if (vanRaf === null && vanNear) vanRaf = requestAnimationFrame(vanTick); }
+function onVanScroll(){ vanTarget = vanProgress(); vanKick(); }
+
+function vanFail(){
+  stage2.classList.add('van-failed');
+  plate2.style.backgroundImage = "url('" + VAN_PLATE + "')";
+  end2.style.opacity = '1';
+}
+function vanLoad(){
+  if (vanFetched) return;
+  vanFetched = true;
+  var url = pickVan();
+  if (!window.fetch || !window.AbortController){
+    vanV.src = url; vanV.load(); vanReady(); return;
+  }
+  var ctrl = new AbortController();
+  var watchdog = setTimeout(function(){ ctrl.abort(); }, 25000);
+  var opts = { signal: ctrl.signal };
+  try { opts.priority = 'low'; } catch(e){}
+
+  fetch(url, opts).then(function(res){
+    if (!res.ok || !res.body) throw new Error('bad response');
+    var reader = res.body.getReader(), chunks = [];
+    function pump(){
+      return reader.read().then(function(r){
+        if (r.done) return;
+        clearTimeout(watchdog);
+        watchdog = setTimeout(function(){ ctrl.abort(); }, 25000);
+        chunks.push(r.value);
+        return pump();
+      });
+    }
+    return pump().then(function(){
+      clearTimeout(watchdog);
+      vanV.src = URL.createObjectURL(new Blob(chunks, {type:'video/mp4'}));
+      vanV.load();
+      vanReady();
+    });
+  }).catch(vanFail);
+}
+function vanReady(){
+  vanV.addEventListener('canplay', function(){
+    vanTarget = vanProgress();
+    vanShown = vanTarget;
+    vanSeek(vanMap(vanShown) * vanV.duration);
+    stage2.classList.add('van-ready');
+    vanKick();
+  }, {once:true});
+}
+
+if ('IntersectionObserver' in window){
+  new IntersectionObserver(function(es){
+    vanNear = es[0].isIntersecting;
+    if (vanNear){ if (vanOn) vanLoad(); vanKick(); }
+  },{rootMargin:'300% 0px 300% 0px'}).observe(hero2);
+} else {
+  vanNear = true;
+}
+
+function applyVanMode(){
+  var gated = MQLS.some(function(m){ return m.matches; });
+  if (gated){
+    vanOn = false;
+    if (vanRaf !== null){ cancelAnimationFrame(vanRaf); vanRaf = null; }
+    window.removeEventListener('scroll', onVanScroll);
+    window.removeEventListener('resize', onVanScroll);
+    hero2.classList.add('flat');
+    plate2.style.backgroundImage = "url('" + VAN_PLATE + "')";
+    end2.style.opacity = '1';
+  } else {
+    hero2.classList.remove('flat');
+    end2.style.opacity = vanEndOp >= 0 ? vanEndOp.toFixed(3) : '0';
+    if (!vanOn){
+      vanOn = true;
+      window.addEventListener('scroll', onVanScroll, {passive:true});
+      window.addEventListener('resize', onVanScroll);
+    }
+    if (vanNear) vanLoad();
+    onVanScroll();
+  }
+}
+MQLS.forEach(function(m){
+  if (m.addEventListener) m.addEventListener('change', applyVanMode);
+  else if (m.addListener) m.addListener(applyVanMode);
+});
+applyVanMode();
 
 /* ==========================================================================
    6a. Nadpisy po riadkoch

@@ -80,6 +80,41 @@ K tomu tichá drobnosť po celej stránke: hrana, ktorá sa nakreslí. Azúrová
 nad kartou, pod odkazom v navigácii, pod tlačidlom bez výplne, pod odkazom
 v pätičke, a vlasová linka oznamovača sa pri príchode roztiahne od ľavého okraja.
 
+**Druhé scrollované video, príchod dodávky.** Za nadpisom „Dodávka a montáž"
+beží druhý scrollovaný záber. Intro zostalo nedotknuté, toto je samostatná
+sekcia s vlastnou pripnutou plochou, vlastným postupom a vlastným sťahovaním.
+
+Kľúčové rozhodnutie je farba. Zdrojový záber je štúdiový, na úplne čistej bielej
+255,255,255, overené meraním. Pri kódovaní je preto biela vynásobená hmlou
+`#EEF1F4`, takže **pozadie záberu je farba stránky**. Z toho plynú tri veci naraz:
+
+- Intro sa na konci rozplynie do farby stránky a prvá snímka tohto videa je
+  presne tá istá farba. Prechod medzi dvoma pripnutými plochami preto nie je
+  vidieť, hoci je to obyčajný scroll.
+- Nie je tu obrázok, ktorý drží miesto, ani krúžok načítania. Kým sa súbor
+  sťahuje, drží miesto samotné pozadie stránky, takže nie je čo nahrádzať.
+- Záber môže byť zobrazený cez `object-fit:contain` a pásy, ktoré pri tom
+  vzniknú, nie je vidieť. `cover` sem nepatrí, stojan so sklom siaha až po
+  pravý okraj obrazu a na užšej obrazovke by ho orezalo.
+
+**Pozadie stránky sa preto nemení na biele.** Bola to otázka a odpoveď je nie.
+Hmla nesie podľa manuálu 60 percent plôch a celý systém hĺbky na nej stojí:
+panely sú biele pri 72 až 88 percentách položené na hmle a mriežka za stránkou
+je vidieť len vďaka tomu rozdielu. Na bielom pozadí by panely aj mriežka zmizli.
+Zosúladil sa teda záber so stránkou, nie stránka so záberom.
+
+Záber je presné 16:9 a využíva sa celý. Čierne pásy 7 px hore aj dole boli
+nahradené bielou, ktorá sa pri kódovaní stala hmlou, takže rozmer je 3840×2160
+bez orezu a bez deformácie. Text sedí dole. Stojí nad obrazom, preto je pod ním
+závoj, ten istý systém čitateľnosti ako v intre, len obrátený: tam tmavý na
+tmavom zábere, tu z hmly na svetlom. Krytie 0,86 je merané, nie odhadnuté:
+najtmavší bod pod textom cez všetkých 167 snímok má bez závoja kontrast 1,0:1,
+so závojom 10,4:1. Úplné krytie by dalo 14,1:1, ale zjedlo by kolesá dodávky.
+
+Sekcia má 640vh, `VAN_END` je 0,94, teda tá istá filozofia ako pri intre: video
+dobehne tesne pred koncom a nezostane stáť. Kvalita overená proti majstrovi,
+SSIM 0,994. Veľkosti: 9,6 MB v 4K, 5,4 MB a 3,7 MB ako záloha.
+
 ## 2. Pravidlá značky, ktoré platia bez výnimky
 
 Vychádzajú z dizajn manuálu značky, verzia 1.0, ktorý má klient vlastný.

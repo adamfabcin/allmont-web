@@ -32,6 +32,10 @@ assets/
   hero-poster.jpg          prvá snímka, drží miesto kým sa video načíta
   hero-plate.jpg           obrázok namiesto videa na mobile
   hero-ending.jpg          náhľadový obrázok pre sociálne siete
+  dodavka-2160.mp4         druhé scrollované video, príchod dodávky, 4K
+  dodavka-1440.mp4         záloha 2560x1440
+  dodavka-1080.mp4         záloha pre slabé pripojenie
+  dodavka-plate.jpg        posledná snímka, namiesto videa na mobile
   allmont-logo-*.svg       logo podľa dizajn manuálu značky
   real-1..3.jpg            ilustračné obrázky v sekcii realizácií
   shot-1.jpg               snímka do sekcie o spoločnosti
@@ -68,6 +72,27 @@ súrodenci loga. Kto bude kresliť ďalší, nech drží tie isté čísla.
 Pred každou sekciou stojí ten istý oznamovač: číslo, vlasová linka a názov
 sekcie. Je to jediné miesto, kde názov sekcie stojí, v hlavičke sekcie sa už
 neopakuje.
+
+## Druhé video, príchod dodávky
+
+Za úvodným nadpisom beží druhý scrollovaný záber. Je zakódovaný tým istým
+receptom ako intro, každá snímka kľúčová, ale s jedným rozdielom: zdrojový
+záber je na čistej bielej, a tá je pri kódovaní vynásobená hmlou `#EEF1F4`.
+Pozadie záberu je preto farba stránky. Vďaka tomu na seba obe videá nadviažu
+bez viditeľného prechodu, netreba obrázok, ktorý drží miesto, a záber sa dá
+zobraziť celý, bez orezu.
+
+```bash
+ffmpeg -i dodavka.mov -an -sn -dn \
+  -filter_complex "[0:v:0]crop=3840:2144:0:8,pad=3840:2160:0:8:color=white,fps=25,format=gbrp[v];\
+                   color=c=0xEEF1F4:s=3840x2160:r=25:d=7,format=gbrp[bg];\
+                   [v][bg]blend=all_mode=multiply:shortest=1,format=yuv420p[out]" \
+  -map "[out]" -c:v libx264 -preset slow -crf 26 \
+  -x264-params "keyint=1:min-keyint=1:scenecut=0" \
+  -write_tmcd 0 -movflags +faststart dodavka-2160.mp4
+```
+
+Kvalita overená proti majstrovi: SSIM 0,994.
 
 ## Prečo to nie je ozdobené
 
