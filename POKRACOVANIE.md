@@ -226,6 +226,18 @@ Vychádzajú z dizajn manuálu značky, verzia 1.0, ktorý má klient vlastný.
 - Logo: symbol je okno s krížom a jedným 45° odleskom v ľavej hornej tabuli.
   Nikdy neprekresľovať, používať priložené SVG.
 
+**Hľadanie v videu musí mať časovú poistku.** Kým prebieha jeden skok, ďalší sa
+nezadáva. Príznak „hľadám" sa vypína, keď prehliadač ohlási dokončenie. Lenže on
+ho neohlási vždy: keď nový čas padne do tej istej snímky, udalosť neprebehne
+a príznak zostane zapnutý **navždy**. Video sa tým zasekne a prestane reagovať
+na scroll v oboch smeroch. Prejavilo sa to tak, že sa dodávka pri scrollovaní
+späť nevrátila, ostala stáť na snímke, kde skončila.
+
+Preto sa skok, ktorý sa neohlásil do 400 ms, považuje za stratený a hľadanie ide
+ďalej. A slučka nesmie skončiť len podľa dobehnutia tlmenej hodnoty: musí bežať,
+kým sa posledný skok naozaj nezadá, inak by ostalo video o krok pozadu. Platí to
+pre obe videá.
+
 ## 3. Ako sa tu pracuje, čo klient ocenil
 
 - **Merať, nie hádať.** Každé rozhodnutie o čitateľnosti textu nad videom padlo

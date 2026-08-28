@@ -1550,9 +1550,13 @@ function tick(now){
   lastTick = now;
   shown += (target - shown) * (1 - Math.pow(1-0.14, dt/16.667));
 
-  var done = Math.abs(target-shown) < 0.0005;
-  if (done) shown = target;
-  if (video.duration) requestSeek(mapTime(shown) * video.duration);
+  /* Slučka nesmie skončiť skôr, než sa posledný skok naozaj zadá. Keby
+     skončila len podľa dobehnutia tlmenej hodnoty, mohla by ju poistka vyššie
+     odmietnuť a video by ostalo o krok pozadu. */
+  var want = video.duration ? mapTime(shown) * video.duration : lastSeek;
+  var done = Math.abs(target-shown) < 0.0005 && Math.abs(want - lastSeek) < 0.004;
+  if (Math.abs(target-shown) < 0.0005) shown = target;
+  if (video.duration) requestSeek(want);
   updateCaps(shown);
   updateChrome(target);
 
@@ -1571,27 +1575,24 @@ function onScroll(){
   kick();
 }
 
-/* Zahodenie požiadavky na ten istý čas. Kým intro drží poslednú snímku, nemá
-   zmysel púšťať hľadanie znova a znova, zbytočne by to uberalo z plynulosti
-   práve vo chvíli, keď sa prelína s dodávkou. Odfiltrovať sa to musí pri
-   vstupe, nie vo fronte, inak by front zahodil čakajúcu požiadavku. */
-var seekBusy = false, pendingTime = null, lastSeek = -1;
+/* Hľadanie v videu, s poistkou proti zaseknutiu.
+
+   Kým prebieha jeden skok, ďalší sa nezadáva, inak by sa hromadili. Príznak
+   „hľadám" sa vypína, keď prehliadač ohlási dokončenie. Lenže on ho neohlási
+   vždy: keď nový čas padne do tej istej snímky, udalosť neprebehne a príznak
+   by zostal zapnutý navždy. Video by sa tým zaseklo a už by nereagovalo na
+   scroll ani dopredu, ani späť. Preto je tu časová poistka: skok, ktorý sa
+   neohlásil do 400 ms, sa považuje za stratený a hľadanie ide ďalej. */
+var seekBusy = false, seekAt = 0, lastSeek = -1;
 function requestSeek(t){
   if (!video.duration) return;
   if (Math.abs(t - lastSeek) < 0.004) return;
-  lastSeek = t;
-  applySeek(t);
-}
-function applySeek(t){
-  if (seekBusy){ pendingTime = t; return; }
-  seekBusy = true;
+  if (seekBusy && performance.now() - seekAt < 400) return;
+  seekBusy = true; seekAt = performance.now(); lastSeek = t;
   try { video.currentTime = t; } catch(e){ seekBusy = false; }
 }
-video.addEventListener('seeked', function(){
-  seekBusy = false;
-  if (pendingTime !== null){ var t = pendingTime; pendingTime = null; applySeek(t); }
-});
-video.addEventListener('error', function(){ seekBusy = false; pendingTime = null; failVideo(); });
+video.addEventListener('seeked', function(){ seekBusy = false; });
+video.addEventListener('error', function(){ seekBusy = false; failVideo(); });
 
 if ('IntersectionObserver' in window){
   new IntersectionObserver(function(es){
@@ -1787,32 +1788,28 @@ function vanMap(p){
   return clamp((p - a) / (VAN_END - a), 0, 1);
 }
 
-var vanBusy = false, vanPending = null, vanLastSeek = -1;
+/* Tá istá poistka ako pri intre. Bez nej sa dodávka zasekla: pri scrollovaní
+   späť ostala stáť na snímke, kde skončila, a už sa nevrátila. */
+var vanBusy = false, vanSeekAt = 0, vanLastSeek = -1;
 function vanSeek(t){
   if (!vanV.duration) return;
   if (Math.abs(t - vanLastSeek) < 0.004) return;
-  vanLastSeek = t;
-  vanApply(t);
-}
-function vanApply(t){
-  if (vanBusy){ vanPending = t; return; }
-  vanBusy = true;
+  if (vanBusy && performance.now() - vanSeekAt < 400) return;
+  vanBusy = true; vanSeekAt = performance.now(); vanLastSeek = t;
   try { vanV.currentTime = t; } catch(e){ vanBusy = false; }
 }
-vanV.addEventListener('seeked', function(){
-  vanBusy = false;
-  if (vanPending !== null){ var t = vanPending; vanPending = null; vanApply(t); }
-});
-vanV.addEventListener('error', function(){ vanBusy = false; vanPending = null; vanFail(); });
+vanV.addEventListener('seeked', function(){ vanBusy = false; });
+vanV.addEventListener('error', function(){ vanBusy = false; vanFail(); });
 
 function vanTick(now){
   var dt = Math.min(100, now - (vanLast || now));
   vanLast = now;
   vanShown += (vanTarget - vanShown) * (1 - Math.pow(1-0.14, dt/16.667));
-  var done = Math.abs(vanTarget - vanShown) < 0.0005;
-  if (done) vanShown = vanTarget;
+  var want = vanV.duration ? vanMap(vanShown) * vanV.duration : vanLastSeek;
+  var done = Math.abs(vanTarget - vanShown) < 0.0005 && Math.abs(want - vanLastSeek) < 0.004;
+  if (Math.abs(vanTarget - vanShown) < 0.0005) vanShown = vanTarget;
 
-  if (vanV.duration) vanSeek(vanMap(vanShown) * vanV.duration);
+  if (vanV.duration) vanSeek(want);
 
   paintStage(vanTarget);
 
