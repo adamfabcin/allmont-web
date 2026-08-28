@@ -1673,7 +1673,7 @@ function pickVan(){
 }
 
 var vanTarget = 0, vanShown = 0, vanRaf = null, vanLast = 0;
-var vanOn = false, vanNear = false, vanFetched = false, vanEndOp = -1;
+var vanOn = false, vanNear = false, vanFetched = false;
 
 function vanProgress(){
   var r = hero2.getBoundingClientRect();
@@ -1729,22 +1729,39 @@ function vanTick(now){
 
   if (vanV.duration) vanSeek(vanMap(vanShown) * vanV.duration);
 
-  /* Prelínanie plochy dodávky cez dohrávajúce intro. Text sa neprelína
-     zvlášť, ide s celou plochou, takže vo chvíli, keď je obrazovka svetlá,
-     stojí na nej nadpis aj dodávka naraz. Zdola sa už len krátko dotiahne. */
-  var f = vanFade();
-  var sOp = smoothstep(vanShown, 0, f);
-  if (Math.abs(sOp - vanEndOp) > 0.004){
-    vanEndOp = sOp;
-    stage2.style.opacity = sOp.toFixed(3);
-    end2.style.transform = 'translate3d(0,' + ((1-sOp)*26).toFixed(1) + 'px,0)';
-  }
+  paintStage(vanTarget);
 
   if (done){ vanRaf = null; vanLast = 0; }
   else vanRaf = requestAnimationFrame(vanTick);
 }
 function vanKick(){ if (!vanOn) return; if (vanRaf === null && vanNear) vanRaf = requestAnimationFrame(vanTick); }
-function onVanScroll(){ vanTarget = vanProgress(); vanKick(); }
+function onVanScroll(){ vanTarget = vanProgress(); paintStage(vanTarget); vanKick(); }
+
+/* Prelínanie plochy dodávky cez dohrávajúce intro.
+
+   Dve veci, ktoré sa tu museli opraviť a nesmú sa vrátiť:
+
+   1. Priesvitnosť ide zo SUROVÉHO postupu scrollu, nie z tlmenej hodnoty.
+      Tlmenie patrí k času videa, aby skoky nedrhli, ale pri prelínaní
+      zaostávalo. Pri rýchlejšom scrolle plocha nestihla docelovať skôr, než
+      sa pripnutá plocha intra odopla, a bolo vidieť tvrdú hranu, ako obraz
+      okna odchádza hore a pod ním svieti holá hmla.
+   2. Prelínanie končí na 72 percentách prekryvu, nie na sto. Zvyšok prekryvu
+      je rezerva, aby bolo hotové s istotou skôr, než sa intro pohne.
+
+   Text sa neprelína zvlášť, ide s celou plochou, takže vo chvíli, keď je
+   obrazovka svetlá, stojí na nej nadpis aj dodávka naraz. */
+var lastStageOp = -1;
+function paintStage(p){
+  var op = smoothstep(p, 0, vanFade() * 0.72);
+  if (Math.abs(op - lastStageOp) < 0.004) return;
+  lastStageOp = op;
+  stage2.style.opacity = op.toFixed(3);
+  end2.style.transform = 'translate3d(0,' + ((1-op)*26).toFixed(1) + 'px,0)';
+  /* Keď je plocha dodávky krycia, plochu intra netreba vôbec kresliť.
+     Je to poistka proti tej hrane a zároveň sa tým ušetrí skladanie obrazu. */
+  stage.style.visibility = op > 0.995 ? 'hidden' : '';
+}
 
 function vanFail(){
   stage2.classList.add('van-failed');
@@ -1812,9 +1829,11 @@ function applyVanMode(){
     hero2.classList.add('flat');
     plate2.style.backgroundImage = "url('" + VAN_PLATE + "')";
     stage2.style.opacity = '1';
+    stage.style.visibility = '';
   } else {
     hero2.classList.remove('flat');
-    stage2.style.opacity = vanEndOp >= 0 ? vanEndOp.toFixed(3) : '0';
+    lastStageOp = -1;
+    paintStage(vanProgress());
     if (!vanOn){
       vanOn = true;
       window.addEventListener('scroll', onVanScroll, {passive:true});

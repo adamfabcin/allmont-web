@@ -133,6 +133,17 @@ najdôležitejšia časť a bola postavená na dva razy nesprávne, tak pozor:
 - Rozplynutie intra do hmly je **rýchlejšie** ako prelínanie (0,925 až 0,965
   oproti prekryvu, ktorý beží až do konca). Musí to tak byť, inak by sa pod
   polopriesvitnou plochou dodávky ukazoval duch poslednej snímky okna.
+- **Priesvitnosť prelínania ide zo surového postupu scrollu, nie z tlmenej
+  hodnoty.** Tlmenie patrí k času videa, aby skoky nedrhli. Pri prelínaní
+  zaostávalo, takže pri rýchlejšom scrolle plocha nestihla docelovať skôr,
+  než sa pripnutá plocha intra odopla, a bolo vidieť **tvrdú hranu**: obraz
+  okna odchádzal hore a pod ním svietila holá hmla. Toto bola hlásená chyba.
+- Prelínanie končí na **72 percentách** prekryvu, nie na sto. Zvyšok je
+  rezerva, aby bolo hotové s istotou skôr, než sa intro pohne. Pri 1440×860 to
+  vychádza tak, že prelínanie dobehne na 11 811 px a intro sa odopne až na
+  12 040 px.
+- Keď je plocha dodávky krycia, plocha intra sa prepne na `visibility:hidden`.
+  Poistka proti tej istej hrane a zároveň úspora pri skladaní obrazu.
 - Dodávka začne vchádzať sprava v tretine prelínania (`VAN_LEAD` 0,34), nie
   až po ňom. Keby čakala, nasledoval by po prelínaní kus prázdnej hmly a človek
   by sa k nej musel doscrollovať. A keby začínala skôr, prišla by o príchod
