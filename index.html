@@ -51,7 +51,7 @@ body{
 }
 h1,h2,h3{font-weight:700;letter-spacing:-.025em;line-height:1.06;margin:0;text-wrap:balance}
 h1{font-size:clamp(2rem,1.2rem + 3.6vw,3.9rem);letter-spacing:-.032em}
-h2{font-size:clamp(1.7rem,1.1rem + 2.4vw,2.9rem);letter-spacing:-.03em}
+h2{font-size:clamp(1.78rem,1.05rem + 2.9vw,3.35rem);letter-spacing:-.034em}
 h3{font-size:clamp(1.0625rem,1rem + .45vw,1.35rem);letter-spacing:-.02em}
 p{margin:0}
 a{color:inherit}
@@ -386,17 +386,26 @@ footer .fbot{max-width:1280px;margin:36px auto 0;padding-top:22px;border-top:1px
   display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
 footer .fbot p{font-weight:500;font-size:.6875rem;letter-spacing:.06em;color:rgba(255,255,255,.5)}
 
-/* --- príchody na scroll, len objavenie sa --- */
-.rv{opacity:0;transition:opacity .32s var(--ease-out)}
+/* --- príchody na scroll --- */
+/* Predtým to bolo len preblikanie za 0,32 s a spúšťalo sa dve obrazovky
+   dopredu, takže ho v skutočnosti nikto nikdy nevidel. Teraz obsah prichádza
+   zdola, dlhšie a s pokojnejšou krivkou, a spúšťa sa až keď naozaj vchádza
+   do obrazu. Poistka pre rýchle scrollovanie zostáva. */
+.rv{opacity:0;transform:translate3d(0,26px,0);
+  transition:opacity .95s var(--ease-out),transform .95s var(--ease-out)}
 .rv.nofade,.stg.nofade>*{transition:none !important}
-.rv.in{opacity:1}
-.stg>*{opacity:0;transition:opacity .32s var(--ease-out)}
-.stg.in>*{opacity:1}
-.stg.in>*:nth-child(2){transition-delay:.04s}
-.stg.in>*:nth-child(3){transition-delay:.08s}
-.stg.in>*:nth-child(4){transition-delay:.12s}
-.stg.in>*:nth-child(5){transition-delay:.16s}
-.stg.in>*:nth-child(6){transition-delay:.2s}
+.rv.in{opacity:1;transform:none}
+.stg>*{opacity:0;transform:translate3d(0,22px,0);
+  transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)}
+.stg.in>*{opacity:1;transform:none}
+.stg.in>*:nth-child(2){transition-delay:.07s}
+.stg.in>*:nth-child(3){transition-delay:.14s}
+.stg.in>*:nth-child(4){transition-delay:.21s}
+.stg.in>*:nth-child(5){transition-delay:.28s}
+.stg.in>*:nth-child(6){transition-delay:.35s}
+.stg.in>*:nth-child(7){transition-delay:.42s}
+.stg.in>*:nth-child(8){transition-delay:.49s}
+.stg.in>*:nth-child(n+9){transition-delay:.56s}
 .stg.stg-done>*{transition-delay:0s !important}
 
 body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused !important}
@@ -444,7 +453,10 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
     transition-duration:.001ms !important;transition-delay:0s !important}
-  .rv,.stg>*{opacity:1 !important}
+  .rv,.stg>*{opacity:1 !important;transform:none !important}
+  .rv.wipe img{clip-path:none !important;transform:none !important}
+  .hsplit .ln>span{transform:none !important}
+  .divider.rv .ln{transform:none !important}
   .cue i::after,.divider .ln::after,.dust i{animation:none !important}
 }
 
@@ -579,6 +591,153 @@ input:focus,textarea:focus{background:#fff;border-color:var(--accent);
   .prog i{transition:none}
 }
 
+
+/* ==========================================================================
+   DRUHÁ PRIEMIUM VRSTVA.
+   Zadanie znelo: nech to vyzerá podstatne drahšie. Manuál pritom zakazuje
+   gradienty na plochách, zaoblené rohy aj druhé písmo, takže hodnota sa
+   nedá kúpiť ozdobou. Nesú ju štyri veci: pevná mriežka za stránkou, ktorá
+   dá priesvitnosti zmysel, pomalšie a smerové príchody, stierka na obrazoch
+   a nadpisy, ktoré sa vysúvajú po riadkoch.
+   ========================================================================== */
+
+/* --- pevná mriežka za stránkou -------------------------------------------
+   Doteraz boli priesvitné plochy priesvitné do prázdna, pod nimi bola jednoliata
+   farba, takže sklo nebolo vidieť. Teraz je za nimi pevná mriežka vlasových
+   stĺpcov. Pri scrollovaní sa panely posúvajú voči nej a hĺbka je skutočná,
+   nie namaľovaná. Sú to skutočné 1 px prvky, nie gradient. */
+.grid{position:fixed;top:0;bottom:0;left:0;right:0;z-index:0;pointer-events:none;
+  max-width:1280px;margin:0 auto;padding:0 var(--pad);
+  display:flex;justify-content:space-between}
+.grid span{width:1px;background:rgba(15,34,51,.05)}
+.grid-ink{position:absolute;z-index:0}
+.grid-ink span{background:rgba(143,193,242,.08)}
+main#main{position:relative;z-index:1}
+.sec-ink > .wrap,.sec-ink > .cut,footer .fwrap,footer .fbot{position:relative;z-index:2}
+footer{position:relative;overflow:hidden}
+.sec-ink{overflow:hidden}
+@media (max-width:620px){.grid span:nth-child(2),.grid span:nth-child(4){display:none}}
+
+/* --- obrazy prichádzajú stierkou -----------------------------------------
+   Obraz sa odkrýva zhora nadol a zároveň dosadá z mierneho priblíženia.
+   Rám drží tmavú plochu, takže odkrývanie je zámer, nie chýbajúci obrázok. */
+.rv.wipe{opacity:1;transform:none}
+.rv.wipe img{clip-path:inset(0 0 100% 0);transform:scale(1.06);
+  transition:clip-path 1.1s var(--ease-out),transform 1.6s var(--ease-out)}
+.rv.wipe.in img{clip-path:inset(0 0 0 0);transform:none}
+.rv.wipe figcaption{opacity:0;transition:opacity .7s .55s var(--ease-out)}
+.rv.wipe.in figcaption{opacity:1}
+.rv.wipe.nofade img{transition:none !important;clip-path:none !important;transform:none !important}
+/* zväčšenie pri prejdení musí stáť až za stierkou, inak by ho prebila */
+.about figure:hover img,.refs figure:hover img,.refpair figure:hover img{transform:scale(1.035)}
+.about figure{transition:box-shadow .45s var(--ease)}
+.about figure:hover{box-shadow:var(--lift-2)}
+.about img{transition:transform 1.6s var(--ease)}
+
+/* Zameriavacie rohy na obrazoch, ten istý jazyk ako kurzor. Biele s tichým
+   tieňom, pretože azúrová sa na svetlej fotke stratí a na tmavej kričí. */
+.wipe{position:relative}
+.wipe::before,.wipe::after{content:"";position:absolute;width:22px;height:22px;
+  border:0 solid #fff;opacity:0;pointer-events:none;z-index:3;
+  filter:drop-shadow(0 0 2px rgba(9,18,30,.55));
+  transition:opacity .55s var(--ease) .35s,transform .55s var(--ease) .35s}
+.wipe::before{left:14px;top:14px;border-left-width:1px;border-top-width:1px;transform:translate(-6px,-6px)}
+.wipe::after{right:14px;bottom:14px;border-right-width:1px;border-bottom-width:1px;transform:translate(6px,6px)}
+.wipe.in::before,.wipe.in::after{opacity:.8;transform:none}
+.wipe:hover::before,.wipe:hover::after{opacity:1}
+
+/* text vedľa obrazu má začínať tam, kde obraz, nie plávať v jeho strede */
+.about{align-items:start}
+.about figure{position:sticky;top:96px}
+@media (max-width:900px){.about figure{position:static}}
+
+/* --- nadpisy sa vysúvajú po riadkoch --------------------------------------
+   Riadok je vlastné okno, text sa doň zasunie zdola. Robí to skript, ktorý
+   najprv zmeria, kde sadli riadky, a až potom ich zabalí. Keď sa čokoľvek
+   nepodarí, nadpis zostane obyčajným nadpisom. */
+.hsplit .ln{display:block;overflow:hidden;padding-bottom:.09em;margin-bottom:-.09em}
+.hsplit .ln>span{display:block;transform:translateY(110%);
+  transition:transform 1.05s var(--ease-out);font-style:normal}
+.in .hsplit .ln>span{transform:none}
+.rv.has-split{transform:none}
+.rv.nofade .hsplit .ln>span{transition:none !important}
+
+/* --- oznamovač sekcie: linka sa nakreslí ---------------------------------- */
+.divider.rv .ln{transform:scaleX(0);transform-origin:0 50%;
+  transition:transform 1.25s var(--ease-out) .1s}
+.divider.rv.in .ln{transform:scaleX(1)}
+.divider.rv.nofade .ln{transition:none !important;transform:scaleX(1)}
+.divider .no{font-size:.6875rem;letter-spacing:.16em}
+.divider .nm{transition:none}
+
+/* --- karty: azúrová hrana, ktorá sa nakreslí pri prejdení ------------------ */
+.card{position:relative}
+.card::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;
+  background:var(--accent);transform:scaleX(0);transform-origin:0 50%;
+  transition:transform .5s var(--ease);z-index:3}
+.card:hover::before{transform:scaleX(1)}
+.card:hover{transform:translateY(-3px)}
+.card h3{transition:color .3s var(--ease)}
+.card:hover h3{color:var(--accent)}
+.card:hover svg{transform:translateY(-2px) scale(1.05)}
+
+/* to isté na službách a certifikátoch, aby to bola jedna rodina */
+.srv li,.certs li,.slist li{position:relative}
+.srv li::before,.certs li::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;
+  background:var(--accent);transform:scaleX(0);transform-origin:0 50%;
+  transition:transform .5s var(--ease);z-index:3}
+.certs li::before{background:var(--accent-muted)}
+.srv li:hover::before,.certs li:hover::before{transform:scaleX(1)}
+
+/* --- tlačidlá: presnejší dotyk -------------------------------------------- */
+.btn{position:relative;overflow:hidden}
+.btn-primary::after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.32);
+  opacity:0;transition:opacity .35s var(--ease)}
+.btn-primary:hover::after{opacity:1}
+.btn-ghost::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--accent);transform:scaleX(0);transform-origin:0 50%;
+  transition:transform .45s var(--ease)}
+.btn-ghost:hover::after{transform:scaleX(1)}
+
+/* --- navigácia: linka pod odkazom ---------------------------------------- */
+.nav a.lnk{position:relative;padding-bottom:3px}
+.nav a.lnk::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--accent);transform:scaleX(0);transform-origin:0 50%;
+  transition:transform .4s var(--ease)}
+.nav a.lnk:hover::after{transform:scaleX(1)}
+
+/* --- pás údajov: nech je naozaj sklo ------------------------------------- */
+.strip{background:rgba(255,255,255,.72)}
+.strip li{transition:color .3s var(--ease)}
+
+/* --- viac vzduchu, aby mala sadzba kde dýchať ----------------------------- */
+.sec{padding:clamp(76px,9.4vw,158px) var(--pad)}
+.hd .lede{margin-top:clamp(20px,2.4vw,30px)}
+.wrap{position:relative}
+
+/* --- panely nech sú o niečo priesvitnejšie, keď je za nimi mriežka -------- */
+.card{background:rgba(255,255,255,.86)}
+.srv li{background:rgba(255,255,255,.86)}
+.cbox{background:rgba(255,255,255,.88)}
+.card:hover,.srv li:hover{background:rgba(255,255,255,.99)}
+
+
+/* --- kontakt a pätička ---------------------------------------------------- */
+#kontakt{background:rgba(255,255,255,.72) !important;border-top:1px solid var(--hair) !important}
+input,textarea{background:rgba(255,255,255,.72)}
+.crow{border-bottom:1px solid var(--hair)}
+.refcats span{transition:border-color .3s var(--ease),color .3s var(--ease)}
+.refcats span:hover{border-color:var(--accent);color:var(--accent)}
+footer .fnav a{position:relative}
+footer .fnav a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;
+  background:var(--accent-muted);transform:scaleX(0);transform-origin:0 50%;
+  transition:transform .4s var(--ease)}
+footer .fnav a:hover::after{transform:scaleX(1)}
+
+@media (prefers-reduced-motion:reduce){
+  .wipe::before,.wipe::after{transform:none !important;opacity:.55 !important}
+}
+
 /* ==========================================================================
    KURZOR. Zameriavací kríž namiesto šípky, pokračovanie tónu značky:
    pravé uhly a presnosť. Vnútorný kríž nemá žiadny sklz, aby sedel presne
@@ -630,6 +789,8 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
 </head>
 <body>
 <a class="skip" href="#uvod">Preskočiť na obsah</a>
+
+<div class="grid" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 
 <div class="prog" id="prog" aria-hidden="true"><i></i></div>
 
@@ -715,7 +876,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
 </section>
 
   <!-- ================= PÁS ÚDAJOV ================= -->
-  <div class="strip">
+  <div class="strip rv">
     <ul>
       <li>ISO 9001</li>
       <li>ISO 14001</li>
@@ -737,7 +898,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
         <p style="margin-top:20px;color:var(--text-secondary)">Radi Vám vyjdeme v ústrety aj vo výrobe plastových okien a dverí v atypických tvarových prevedeniach. Kladieme veľký dôraz na kvalitu našich výrobkov a komplexnosť našich služieb s cieľom Vašej spokojnosti s priebehom i výsledkom celého diela.</p>
         <p style="margin-top:20px;color:var(--text-secondary)">Pracujeme na celom území Slovenska, ale hlavne v Nitre, Leviciach a Bratislave.</p>
       </div>
-      <figure class="rv">
+      <figure class="rv wipe">
         <img src="assets/shot-1.jpg?v=3" alt="Novostavba s veľkými presklenami, realizácia ALL MONT" width="1920" height="1080" loading="lazy" decoding="async">
       </figure>
     </div>
@@ -747,6 +908,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
   <!-- ================= Z ČOHO JE OKNO, všeobecne ================= -->
   <section class="sec sec-ink" id="okno">
     <div class="divider rv"><span class="n no">02</span><span class="ln" aria-hidden="true"></span><span class="n nm">Z čoho je okno</span></div>
+    <div class="grid grid-ink" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
     <div class="dust" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <div class="wrap" style="position:relative;z-index:2">
       <div class="hd rv">
@@ -929,6 +1091,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
   <!-- ================= CENNÍK SERVISNÝCH PRÁC ================= -->
   <section class="sec sec-ink" id="cennik">
     <div class="divider rv"><span class="n no">05</span><span class="ln" aria-hidden="true"></span><span class="n nm">Servis a náhradné diely</span></div>
+    <div class="grid grid-ink" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
     <div class="dust" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <div class="wrap" style="position:relative;z-index:2">
       <div class="hd rv">
@@ -973,7 +1136,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
         <h2>Rodinné domy aj občianska vybavenosť.</h2>
       </div>
       <div class="refs">
-        <figure class="rv">
+        <figure class="rv wipe">
           <img src="assets/real-1.jpg?v=3" alt="Novostavba s veľkoplošným presklením a bielymi rámami" width="1920" height="1080" loading="lazy" decoding="async">
           <figcaption>Novostavba · veľkoplošné presklenie</figcaption>
         </figure>
@@ -993,11 +1156,11 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
       </div>
 
       <div class="refpair">
-        <figure class="rv">
+        <figure class="rv wipe">
           <img src="assets/real-2.jpg?v=3" alt="Interiér s presklením od podlahy, tenké biele rámy" width="1920" height="1080" loading="lazy" decoding="async">
           <figcaption>Interiér · presklenie od podlahy</figcaption>
         </figure>
-        <figure class="rv">
+        <figure class="rv wipe">
           <img src="assets/real-3.jpg?v=3" alt="Detail osadeného bieleho okna s kovaním a tesnením" width="1920" height="1080" loading="lazy" decoding="async">
           <figcaption>Detail osadenia a kovania</figcaption>
         </figure>
@@ -1011,6 +1174,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
   <!-- ================= CERTIFIKÁTY ================= -->
   <section class="sec sec-ink" id="certifikaty" style="padding-bottom:clamp(52px,6vw,96px)">
     <div class="divider rv"><span class="n no">07</span><span class="ln" aria-hidden="true"></span><span class="n nm">Certifikáty</span></div>
+    <div class="grid grid-ink" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
     <div class="wrap">
       <div class="hd rv">
         <h2>Čím sa vieme preukázať.</h2>
@@ -1068,6 +1232,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
 </main>
 
 <footer>
+  <div class="grid grid-ink" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
   <div class="fwrap">
     <div>
       <img src="assets/allmont-logo-horizontal-dark.svg" alt="ALL MONT, plastové okná a dvere" width="410" height="100">
@@ -1393,7 +1558,82 @@ MQLS.forEach(function(m){
 });
 
 /* ==========================================================================
-   6. Príchody sekcií
+   6a. Nadpisy po riadkoch
+   Riadok sa stane vlastným okienkom a text sa doň zasunie zdola. Rozdelenie
+   musí prísť až po tom, ako prehliadač riadky naozaj zalomí, preto sa najprv
+   zabalia slová, odmerá sa, na ktorom riadku ktoré sadlo, a až potom sa nadpis
+   poskladá nanovo. Keď čokoľvek nesedí, nadpis zostane obyčajným nadpisom.
+   ========================================================================== */
+var splitHeads = Array.prototype.filter.call(
+  document.querySelectorAll('main .sec h2'),
+  function(h){ return h.children.length === 0 && h.textContent.trim().length > 0; });
+
+function splitOne(h){
+  var src = h.getAttribute('data-text');
+  if (src === null){ src = h.textContent; h.setAttribute('data-text', src); }
+  h.textContent = src;
+  h.classList.remove('hsplit');
+
+  var words = src.split(/\s+/).filter(Boolean);
+  if (words.length < 2) return;
+
+  h.textContent = '';
+  words.forEach(function(w, i){
+    var sp = document.createElement('span');
+    sp.textContent = w;
+    h.appendChild(sp);
+    if (i < words.length - 1) h.appendChild(document.createTextNode(' '));
+  });
+
+  var spans = h.querySelectorAll('span');
+  var lines = [], top = null, cur = null;
+  for (var i = 0; i < spans.length; i++){
+    var t = Math.round(spans[i].offsetTop);
+    if (top === null || Math.abs(t - top) > 3){ top = t; cur = []; lines.push(cur); }
+    cur.push(spans[i].textContent);
+  }
+  if (!lines.length){ h.textContent = src; return; }
+
+  h.textContent = '';
+  lines.forEach(function(ws, i){
+    var ln = document.createElement('span');
+    ln.className = 'ln';
+    var inner = document.createElement('span');
+    inner.textContent = ws.join(' ');
+    inner.style.transitionDelay = (0.05 + i * 0.085).toFixed(3) + 's';
+    ln.appendChild(inner);
+    h.appendChild(ln);
+  });
+  h.classList.add('hsplit');
+  /* rodič sa už neposúva, inak by sa pohyb zdvojil */
+  var box = h.closest ? h.closest('.rv') : null;
+  if (box) box.classList.add('has-split');
+}
+
+function splitAll(){
+  splitHeads.forEach(function(h){
+    try { splitOne(h); }
+    catch(e){
+      var src = h.getAttribute('data-text');
+      if (src) h.textContent = src;
+      h.classList.remove('hsplit');
+    }
+  });
+}
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  splitAll();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(splitAll);
+  var reSplit = 0, lastW = window.innerWidth;
+  window.addEventListener('resize', function(){
+    if (window.innerWidth === lastW) return;
+    lastW = window.innerWidth;
+    clearTimeout(reSplit);
+    reSplit = setTimeout(splitAll, 260);
+  });
+}
+
+/* ==========================================================================
+   6b. Príchody sekcií
    ========================================================================== */
 var revealTargets = document.querySelectorAll('.rv,.stg');
 
@@ -1411,7 +1651,7 @@ function reveal(el){
   if (el.classList.contains('in')) return;
   if (performance.now() < fastUntil) el.classList.add('nofade');
   el.classList.add('in');
-  if (el.classList.contains('stg')) setTimeout(function(){ el.classList.add('stg-done'); }, 400);
+  if (el.classList.contains('stg')) setTimeout(function(){ el.classList.add('stg-done'); }, 1600);
 }
 
 if ('IntersectionObserver' in window){
@@ -1421,7 +1661,7 @@ if ('IntersectionObserver' in window){
       reveal(e.target);
       ro.unobserve(e.target);
     });
-  },{rootMargin:'1800px 0px 1800px 0px', threshold:0});
+  },{rootMargin:'400px 0px -8% 0px', threshold:0});
   Array.prototype.forEach.call(revealTargets, function(el){ ro.observe(el); });
 
   /* Záchytná sieť pre prípad, že prehliadač hlásenia zlúči. */
@@ -1431,7 +1671,12 @@ if ('IntersectionObserver' in window){
     var vh = window.innerHeight;
     Array.prototype.forEach.call(document.querySelectorAll('.rv:not(.in),.stg:not(.in)'), function(el){
       var r = el.getBoundingClientRect();
-      if (r.top < vh * 2.6 && r.bottom > -vh * 1.6) reveal(el);
+      /* Pri bežnom čítaní sa spúšťa tesne pred vstupom do obrazu, aby bolo
+         príchod vôbec vidieť. Pri rýchlom scrollovaní sa okno roztiahne na
+         dve obrazovky a prelínanie sa vypne, takže nikde nezostane diera. */
+      var fast = performance.now() < fastUntil;
+      var ahead = fast ? 2.6 : 0.94, behind = fast ? 1.6 : 0.7;
+      if (r.top < vh * ahead && r.bottom > -vh * behind) reveal(el);
     });
   };
   window.addEventListener('scroll', function(){

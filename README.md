@@ -69,6 +69,14 @@ Pred každou sekciou stojí ten istý oznamovač: číslo, vlasová linka a náz
 sekcie. Je to jediné miesto, kde názov sekcie stojí, v hlavičke sekcie sa už
 neopakuje.
 
+## Prečo to nie je ozdobené
+
+Dizajn manuál zakazuje gradienty na plochách, zaoblené rohy aj druhé písmo.
+Hĺbku preto nesie pevná mriežka vlasových stĺpcov za stránkou, priesvitné
+panely nad ňou, pomalé smerové príchody, nadpisy vysúvané po riadkoch
+a obrazy odkrývané stierkou. Nič z toho nie je gradient a nič z toho nemá
+zaoblený roh. Kto bude pokračovať, nech to tak nechá.
+
 ## Čo ešte potrebuje potvrdenie od firmy
 
 1. **Obrázky v sekcii realizácií sú ilustračné, nie skutočné.** Pred spustením

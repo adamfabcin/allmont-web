@@ -52,6 +52,34 @@ dvakrát pod sebou. Na tmavých sekciách sa linka aj text prepnú, sekcia si dr
 vlastné odsadenie a oznamovač zdedí len šírku sadzobného zrkadla. Odsadenia
 sekcií sú preto späť na jednom rytme, bez ručných výnimiek.
 
+**Druhá priemium vrstva.** Zadanie znelo, nech to vyzerá podstatne drahšie.
+Manuál pritom zakazuje gradienty na plochách, zaoblené rohy aj druhé písmo,
+takže hodnotu nebolo možné kúpiť ozdobou. Nesú ju štyri veci:
+
+1. **Pevná mriežka za stránkou.** Priesvitné plochy boli doteraz priesvitné do
+   prázdna, pod nimi bola jednoliata farba, takže sklo nebolo vidieť. Teraz je
+   za nimi pevná mriežka vlasových stĺpcov, panely sa pri scrollovaní posúvajú
+   voči nej a hĺbka je skutočná. Sú to skutočné 1 px prvky, nie gradient.
+   Tmavé bloky a pätička majú tú istú mriežku vo farbe skla.
+2. **Príchody, ktoré je vôbec vidieť.** Predtým to bolo preblikanie za 0,32 s,
+   ktoré sa spúšťalo dve obrazovky dopredu, takže ho nikto nikdy neuvidel.
+   Teraz obsah prichádza zdola za 0,95 s a spúšťa sa tesne pred vstupom do
+   obrazu. Poistka pre rýchle scrollovanie zostáva: keď človek cukne o viac
+   ako obrazovku, okno sa roztiahne späť na dve obrazovky a prelínanie sa
+   vypne, takže nikde nezostane diera.
+3. **Nadpisy po riadkoch.** Každý riadok je vlastné okienko a text sa doň
+   zasunie zdola. Skript najprv zabalí slová, odmeria, kde riadky sadli, a až
+   potom nadpis poskladá nanovo. Robí sa to znova pri zmene šírky okna a keď
+   čokoľvek zlyhá, nadpis zostane obyčajným nadpisom.
+4. **Obrazy prichádzajú stierkou** zhora nadol a dosadajú z mierneho
+   priblíženia, s bielymi zameriavacími rohmi, ktoré sú ten istý jazyk ako
+   kurzor. Rohy sú biele s tichým tieňom, pretože azúrová sa na svetlej fotke
+   stratí a na tmavej kričí.
+
+K tomu tichá drobnosť po celej stránke: hrana, ktorá sa nakreslí. Azúrová linka
+nad kartou, pod odkazom v navigácii, pod tlačidlom bez výplne, pod odkazom
+v pätičke, a vlasová linka oznamovača sa pri príchode roztiahne od ľavého okraja.
+
 ## 2. Pravidlá značky, ktoré platia bez výnimky
 
 Vychádzajú z dizajn manuálu značky, verzia 1.0, ktorý má klient vlastný.
