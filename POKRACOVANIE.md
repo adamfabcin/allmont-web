@@ -267,8 +267,9 @@ pre obe videá.
    vygenerované. V sekcii je o tom poctivá poznámka. Pred spustením naostro ich
    treba vymeniť za skutočné fotky z tých šiestich menovaných realizácií.
    `shot-1.jpg` v sekcii o spoločnosti už **skutočná je**, je to fotka výrobnej
-   haly od klienta. Je na výšku, do rámu 4:3 je vložená s bielym okrajom po
-   stranách, aby sa nemusel orezať baner s logom ani stroje.
+   haly od klienta. Je na výšku a rám je v jej vlastnom pomere 2:3, takže sa
+   neoreže nič a nie sú tam žiadne biele boky. Skúšaný bol aj rám 4:3 s bielym
+   okrajom po stranách a klient to odmietol.
 2. **Ceny servisu.** Zoznam prác je z pôvodnej stránky, kde bol cenník platný od
    15.01.2013. Ceny sú zámerne na vyžiadanie.
 3. **Formulár** otvára návštevníkovi jeho e-mailový program. Ak má odosielať web

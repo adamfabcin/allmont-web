@@ -352,7 +352,9 @@ button{font:inherit;color:inherit}
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4.4vw,72px);align-items:center}
 .about .txt p + p{margin-top:20px}
 .about figure{margin:0;overflow:hidden;background:var(--ink-2)}
-.about img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+/* Fotka výrobnej haly je na výšku a rám je v jej vlastnom pomere 2:3.
+   Žiadny orez, žiadne biele boky, fotka vypĺňa rám celá. */
+.about img{width:100%;height:auto;aspect-ratio:2/3;object-fit:cover}
 @media (max-width:900px){.about{grid-template-columns:1fr}}
 
 /* --- služby --- */
@@ -1033,7 +1035,7 @@ html.cur-on a,html.cur-on button,html.cur-on summary,html.cur-on label{cursor:no
         <p style="margin-top:20px;color:var(--text-secondary)">Pracujeme na celom území Slovenska, ale hlavne v Nitre, Leviciach a Bratislave.</p>
       </div>
       <figure class="rv wipe">
-        <img src="assets/shot-1.jpg?v=5" alt="Výrobná hala ALL MONT v Nitre, výroba plastových okien" width="1600" height="1200" loading="lazy" decoding="async">
+        <img src="assets/shot-1.jpg?v=6" alt="Výrobná hala ALL MONT v Nitre, výroba plastových okien" width="1400" height="2100" loading="lazy" decoding="async">
       </figure>
     </div>
   </section>
