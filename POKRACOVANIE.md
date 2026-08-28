@@ -119,12 +119,35 @@ tmavom zábere, tu z hmly na svetlom. Krytie 0,86 je merané, nie odhadnuté:
 najtmavší bod pod textom cez všetkých 167 snímok má bez závoja kontrast 1,0:1,
 so závojom 10,4:1. Úplné krytie by dalo 14,1:1, ale zjedlo by kolesá dodávky.
 
-Sekcia má 640vh, `VAN_END` je 0,94, teda tá istá filozofia ako pri intre: video
-dobehne tesne pred koncom a nezostane stáť. Obrazovka s dodávkou je na mieste
-hneď, ako sekcia nastúpi: text sa dotiahne zdola za 3,5 percenta postupu, nie
-pomaly za desatinu. Prvé štyri snímky záberu sú podľa merania úplne prázdne,
-nulová obsadenosť plátna aj nulový pohyb, preto ich `VAN_SKIP` preskočí
-a dodávka začína vchádzať hneď. Nič sa nezahadzuje, len sa cez ne neprechádza. Kvalita overená proti majstrovi,
+**Obe plochy sa prekrývajú, prechod je prelínanie, nie scroll.** Toto je
+najdôležitejšia časť a bola postavená na dva razy nesprávne, tak pozor:
+
+- `.hero2` má `margin-top:-195vh`. Nie -95vh. Pripnutá plocha intra sa totiž
+  odopne už **jednu obrazovku pred koncom** svojej sekcie, nie na jej konci.
+  Prekryv teda musí byť o tú obrazovku väčší, inak nevznikne vôbec. 100vh je
+  to dobehnutie, 95vh je samotné prelínanie.
+- Na prekryve sú obe pripnuté plochy naraz. Plocha dodávky má `z-index:1`,
+  takže kreslí navrchu, a jej priesvitnosť riadi skript zo svojho postupu.
+  Pozadie sekcie `.hero2` sa pritom kreslí **pod** plochu intra, takže cez
+  polopriesvitnú dodávku vidno dohrávajúce intro. To je zámer.
+- Rozplynutie intra do hmly je **rýchlejšie** ako prelínanie (0,925 až 0,965
+  oproti prekryvu, ktorý beží až do konca). Musí to tak byť, inak by sa pod
+  polopriesvitnou plochou dodávky ukazoval duch poslednej snímky okna.
+- Dodávka začne vchádzať sprava v tretine prelínania (`VAN_LEAD` 0,34), nie
+  až po ňom. Keby čakala, nasledoval by po prelínaní kus prázdnej hmly a človek
+  by sa k nej musel doscrollovať. A keby začínala skôr, prišla by o príchod
+  sprava, čo je celý zámer záberu.
+- `VAN_SKIP` bol zrušený, žiadne snímky sa nepreskakujú. Príchod je celý.
+
+Sekcia má 720vh, `VAN_END` je 0,94, teda tá istá filozofia ako pri intre: video
+dobehne tesne pred koncom a nezostane stáť. Výška je zvolená tak, aby spád vyšiel
+na 3,3vh na snímku, teda takmer rovnako ako intro (3,85vh na snímku).
+
+`TIME_END` intra je 0,93, teda presne tam, kde sa prekryv začína. Nie je to len
+kvôli medzere: keby video okna bežalo ďalej, dekódovali by sa počas prelínania
+dve 4K videá naraz a scroll by sekol. Preto je aj filter, ktorý zahodí požiadavku
+na ten istý čas, aby držaná snímka nespúšťala hľadanie znova a znova. Filtrovať
+sa to musí pri vstupe, nie vo fronte, inak front zahodí čakajúcu požiadavku. Kvalita overená proti majstrovi,
 SSIM 0,994. Veľkosti: 9,6 MB v 4K, 5,4 MB a 3,7 MB ako záloha.
 
 ## 2. Pravidlá značky, ktoré platia bez výnimky

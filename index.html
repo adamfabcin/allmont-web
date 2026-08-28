@@ -179,9 +179,14 @@ button{font:inherit;color:inherit}
    Text sedí dole, aby dodávke nezavadzal. Nie je nad ním žiadny závoj,
    pretože nestojí nad obrazom, ale pod ním.
    ========================================================================== */
-.hero2{position:relative;height:640vh;background:var(--canvas)}
+/* Sekcia je vytiahnutá hore, aby sa jej pripnutá plocha prekryla s dohrávajúcim
+   introm a prelínala sa cezeň. Prečo práve 195vh: pripnutá plocha intra sa
+   odopne už o jednu obrazovku pred koncom svojej sekcie, nie na jej konci.
+   Prekryv teda musí byť o tú obrazovku väčší, inak nevznikne vôbec. 100vh je
+   to dobehnutie, 95vh je samotné prelínanie. */
+.hero2{position:relative;height:720vh;margin-top:-195vh;background:var(--canvas)}
 .stage2{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
-  background:var(--canvas);z-index:1}
+  background:var(--canvas);z-index:1;opacity:0}
 /* Záber je presné 16:9 a využíva sa celý. Contain, nie cover, pretože stojan
    so sklom siaha až po pravý okraj obrazu a cover by ho na užšej obrazovke
    odrezal. Pásy, ktoré pri contain vzniknú, nie je vidieť: majú tú istú farbu
@@ -200,11 +205,9 @@ button{font:inherit;color:inherit}
    v tomto páse cez všetkých 167 snímok: bez závoja kontrast 1,0:1, pri 0,86
    je to 10,8:1. Úplné krytie by dalo 14,1:1, ale zjedlo by kolesá. */
 .end2{position:absolute;left:0;right:0;bottom:0;z-index:2;
-  padding:0 var(--pad) clamp(22px,3.4vw,48px);
-  opacity:0;transition:opacity .8s var(--ease-out)}
+  padding:0 var(--pad) clamp(22px,3.4vw,48px)}
 .end2::before{content:"";position:absolute;left:0;right:0;bottom:0;top:-132px;z-index:-1;
   background:linear-gradient(to bottom,rgba(238,241,244,0) 0,rgba(238,241,244,.86) 132px)}
-.end2.on{opacity:1}
 .end2 .wrap{display:grid;grid-template-columns:minmax(0,1.34fr) minmax(0,.66fr);
   gap:clamp(20px,3vw,56px);align-items:end}
 /* nadpis v tomto bloku sadá na dva riadky, aby závoj nezjedol kolesá dodávky */
@@ -222,12 +225,13 @@ button{font:inherit;color:inherit}
 
 /* Keď sa intro nescrolluje, nescrolluje sa ani toto. Vtedy je z toho bežný
    blok: posledná snímka ako obrázok a text pod ním. */
-.hero2.flat{height:auto}
+.hero2.flat{height:auto;margin-top:0}
+.hero2.flat .stage2{opacity:1}
 .hero2.flat .stage2{position:static;height:auto;overflow:visible}
 .hero2.flat .stage2 video{display:none}
 .hero2.flat .plate2{display:block;position:static;width:100%;aspect-ratio:16/9;
   background-size:cover}
-.hero2.flat .end2{position:static;opacity:1;padding-top:clamp(26px,4vw,52px)}
+.hero2.flat .end2{position:static;transform:none;padding-top:clamp(26px,4vw,52px)}
 .hero2.flat .end2::before{display:none}
 
 /* ==========================================================================
@@ -1370,14 +1374,16 @@ var SRC = pickVideo();
    posledná sekunda má 100 až 250 percent svojho priemerného pohybu. Stálo teda
    scrollovanie, nie obraz.
 
-   Teraz je to bez akejkoľvek medzery. Prechod začína na 0,92, teda ešte kým
-   sa obraz hýbe, a končí presne na 1,0, teda presne tam, kde sa sekcia končí
-   a nastupuje dodávka. Posledných zhruba dvadsať snímok okna sa tak prehrá už
-   pod rozplývaním, čo je to isté, ako keby boli odstrihnuté, len sa nič
-   nezahodilo. Za introm nezostane ani kúsok prázdnej obrazovky. */
-var TIME_END = 0.98;
-var VEIL_A   = 0.92;
-var VEIL_B   = 1.0;
+   Teraz je to bez akejkoľvek medzery a bez toho, aby sa dve 4K videá dekódovali
+   naraz. Sekcia s dodávkou je vytiahnutá o jednu obrazovku hore, takže jej
+   plocha sa začne prelínať presne na 0,932. Video okna dohrá na 0,93, teda
+   presne tam. Rozplynutie do farby stránky je rýchlejšie ako prelínanie
+   (0,925 až 0,965), aby sa pod polopriesvitnou plochou dodávky neukazoval
+   duch poslednej snímky okna. Od 0,965 už je vespodu čistá hmla a navrchu
+   sa doprelína dodávka, ktorá medzitým začala vchádzať sprava. */
+var TIME_END = 0.93;
+var VEIL_A   = 0.925;
+var VEIL_B   = 0.965;
 
 var stage  = document.getElementById('stage');
 var video  = document.getElementById('heroVideo');
@@ -1448,7 +1454,7 @@ var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null };
 
 function updateChrome(p){
   /* nápoveda zostáva po celý čas a zmizne až s prechodom do stránky */
-  var cueOp = 1 - smoothstep(p,0.920,0.975);
+  var cueOp = 1 - smoothstep(p,0.900,0.950);
   if (Math.abs(cueOp-chrome.cue) > 0.01){
     chrome.cue = cueOp;
     cue.style.opacity = cueOp.toFixed(2);
@@ -1476,7 +1482,7 @@ function updateChrome(p){
     chrome.veil = vOp;
     veil.style.opacity = vOp.toFixed(3);
   }
-  var navOn = p > 0.955;
+  var navOn = p > 0.95;
   if (navOn !== chrome.nav){ chrome.nav = navOn; nav.classList.toggle('on', navOn); }
 }
 
@@ -1497,16 +1503,25 @@ function tick(now){
 function kick(){ if (!scrubOn) return; if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick); }
 function onScroll(){ target = heroProgress(); window.__introRunning = target < 0.985; kick(); }
 
-var seekBusy = false, pendingTime = null;
+/* Zahodenie požiadavky na ten istý čas. Kým intro drží poslednú snímku, nemá
+   zmysel púšťať hľadanie znova a znova, zbytočne by to uberalo z plynulosti
+   práve vo chvíli, keď sa prelína s dodávkou. Odfiltrovať sa to musí pri
+   vstupe, nie vo fronte, inak by front zahodil čakajúcu požiadavku. */
+var seekBusy = false, pendingTime = null, lastSeek = -1;
 function requestSeek(t){
   if (!video.duration) return;
+  if (Math.abs(t - lastSeek) < 0.004) return;
+  lastSeek = t;
+  applySeek(t);
+}
+function applySeek(t){
   if (seekBusy){ pendingTime = t; return; }
   seekBusy = true;
   try { video.currentTime = t; } catch(e){ seekBusy = false; }
 }
 video.addEventListener('seeked', function(){
   seekBusy = false;
-  if (pendingTime !== null){ var t = pendingTime; pendingTime = null; requestSeek(t); }
+  if (pendingTime !== null){ var t = pendingTime; pendingTime = null; applySeek(t); }
 });
 video.addEventListener('error', function(){ seekBusy = false; pendingTime = null; failVideo(); });
 
@@ -1573,6 +1588,7 @@ function loadHeroBlob(){
       video.load();
       video.addEventListener('canplay', function(){
         target = heroProgress();
+        lastSeek = -1;
         requestSeek(mapTime(target) * video.duration);
         stage.classList.add('video-ready');
         kick();
@@ -1645,11 +1661,7 @@ var end2   = document.getElementById('end2');
 
 var VAN_END = 0.94;   /* dobehne tesne pred koncom, potom krátky nádych */
 
-/* Prvé štyri snímky záberu sú úplne prázdne, meranie ukázalo nulovú
-   obsadenosť plátna aj nulový pohyb. Scroll ich preskočí, aby dodávka
-   začínala vchádzať hneď, ako sa obrazovka objaví. Nič sa nezahadzuje,
-   len sa cez ne neprechádza. */
-var VAN_SKIP = 4 / 25;
+
 
 function pickVan(){
   var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
@@ -1669,23 +1681,42 @@ function vanProgress(){
   if (total <= 0) return 0;
   return clamp(-r.top/total, 0, 1);
 }
-function vanMap(p){
-  var d = vanV.duration || 1;
-  var t0 = VAN_SKIP / d;
-  var f = p >= VAN_END ? 1 : p / VAN_END;
-  return t0 + f * (1 - t0);
+/* Koľko z postupu sekcie pripadá na prekryv s introm. Presne tá jedna
+   obrazovka, o ktorú je sekcia vytiahnutá hore. Na tomto úseku sa plocha
+   dodávky prelína cez dohrávajúce intro. */
+function vanFade(){
+  var total = hero2.offsetHeight - window.innerHeight;
+  if (total <= 0) return 1;
+  return clamp(window.innerHeight * 0.95 / total, 0.02, 0.9);
 }
 
-var vanBusy = false, vanPending = null;
+/* Dodávka nesmie na prelínanie čakať, inak by po ňom nasledoval kus prázdnej
+   hmly a človek by sa k nej musel doscrollovať. Začne teda vchádzať sprava
+   v tretine prelínania, takže obrazovka a dodávka prichádzajú súčasne.
+   Zároveň nesmie byť na začiatku prelínania už na mieste, príchod sprava je
+   celý zámer záberu. */
+var VAN_LEAD = 0.34;
+function vanMap(p){
+  var a = vanFade() * VAN_LEAD;
+  var q = clamp((p - a) / (VAN_END - a), 0, 1);
+  return q;
+}
+
+var vanBusy = false, vanPending = null, vanLastSeek = -1;
 function vanSeek(t){
   if (!vanV.duration) return;
+  if (Math.abs(t - vanLastSeek) < 0.004) return;
+  vanLastSeek = t;
+  vanApply(t);
+}
+function vanApply(t){
   if (vanBusy){ vanPending = t; return; }
   vanBusy = true;
   try { vanV.currentTime = t; } catch(e){ vanBusy = false; }
 }
 vanV.addEventListener('seeked', function(){
   vanBusy = false;
-  if (vanPending !== null){ var t = vanPending; vanPending = null; vanSeek(t); }
+  if (vanPending !== null){ var t = vanPending; vanPending = null; vanApply(t); }
 });
 vanV.addEventListener('error', function(){ vanBusy = false; vanPending = null; vanFail(); });
 
@@ -1698,14 +1729,15 @@ function vanTick(now){
 
   if (vanV.duration) vanSeek(vanMap(vanShown) * vanV.duration);
 
-  /* Obrazovka s dodávkou je na mieste hneď, ako sekcia nastúpi. Text sa
-     nevynára pomaly, len sa krátko dotiahne zdola, aby bolo vidieť, že
-     prišla nová plocha, a nie že sa niečo načítava. */
-  var eOp = smoothstep(vanShown, 0.0, 0.035);
-  if (Math.abs(eOp - vanEndOp) > 0.004){
-    vanEndOp = eOp;
-    end2.style.opacity = eOp.toFixed(3);
-    end2.style.transform = 'translate3d(0,' + ((1-eOp)*34).toFixed(1) + 'px,0)';
+  /* Prelínanie plochy dodávky cez dohrávajúce intro. Text sa neprelína
+     zvlášť, ide s celou plochou, takže vo chvíli, keď je obrazovka svetlá,
+     stojí na nej nadpis aj dodávka naraz. Zdola sa už len krátko dotiahne. */
+  var f = vanFade();
+  var sOp = smoothstep(vanShown, 0, f);
+  if (Math.abs(sOp - vanEndOp) > 0.004){
+    vanEndOp = sOp;
+    stage2.style.opacity = sOp.toFixed(3);
+    end2.style.transform = 'translate3d(0,' + ((1-sOp)*26).toFixed(1) + 'px,0)';
   }
 
   if (done){ vanRaf = null; vanLast = 0; }
@@ -1717,7 +1749,6 @@ function onVanScroll(){ vanTarget = vanProgress(); vanKick(); }
 function vanFail(){
   stage2.classList.add('van-failed');
   plate2.style.backgroundImage = "url('" + VAN_PLATE + "')";
-  end2.style.opacity = '1';
 }
 function vanLoad(){
   if (vanFetched) return;
@@ -1755,6 +1786,7 @@ function vanReady(){
   vanV.addEventListener('canplay', function(){
     vanTarget = vanProgress();
     vanShown = vanTarget;
+    vanLastSeek = -1;
     vanSeek(vanMap(vanShown) * vanV.duration);
     stage2.classList.add('van-ready');
     vanKick();
@@ -1779,10 +1811,10 @@ function applyVanMode(){
     window.removeEventListener('resize', onVanScroll);
     hero2.classList.add('flat');
     plate2.style.backgroundImage = "url('" + VAN_PLATE + "')";
-    end2.style.opacity = '1';
+    stage2.style.opacity = '1';
   } else {
     hero2.classList.remove('flat');
-    end2.style.opacity = vanEndOp >= 0 ? vanEndOp.toFixed(3) : '0';
+    stage2.style.opacity = vanEndOp >= 0 ? vanEndOp.toFixed(3) : '0';
     if (!vanOn){
       vanOn = true;
       window.addEventListener('scroll', onVanScroll, {passive:true});
