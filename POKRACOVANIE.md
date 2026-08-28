@@ -40,7 +40,16 @@ Ako intro funguje:
   Posledná tretina beží bez textu.
 - Na konci sa obraz rozplynie do farby stránky a **nadpis sa vynára priamo
   v tom prechode** (blok `.end`), aby za introm nezostala prázdna obrazovka.
-- Nápoveda „Scrollujte" a linka postupu sú dole v strede po celý čas.
+- Nápoveda „Scrollujte" a linka postupu sú dole v strede po celý čas, **biele
+  po celý čas**. Predtým sa na svetlých snímkach prepínali na tmavú, lebo
+  meranie jasu presne pod nimi hovorí, že od 70 percent videa klesne kontrast
+  bielej na 2,1 až 3,1:1, čo je nečitateľné. Biela sa dá udržať len s vlastným
+  systémom čitateľnosti, a je to ten istý, aký už má kurzor: **tmavý závoj
+  priamo okolo písma**, nie plocha pod ním. Kontrast potom nedáva pozadie, ale
+  ten závoj, takže nezáleží, aká svetlá je snímka. Kto by ten `drop-shadow`
+  odstránil, spraví nápovedu na konci intra neviditeľnou.
+- Doplnená časť linky postupu **žiari**. Žiara je na tom istom prvku, ktorý sa
+  naťahuje, takže rastie spolu s ním.
 - Kurzor je zameriavací kríž. Počas intra sa pri scrollovaní skryje a pohyb
   myšou ho vráti. Po intre zostáva.
 
