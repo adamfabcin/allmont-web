@@ -1125,8 +1125,14 @@ function pickVideo(){
 }
 var SRC = pickVideo();
 
-/* kde intro dohrá a kde sa začne prechod do plochy stránky */
-var TIME_END = 0.90;
+/* Kde intro dohrá a kde sa začne prechod do plochy stránky.
+   TIME_END bolo 0,90. Video sa tým skončilo o 82 vh skôr, než sa vôbec začal
+   prechod, a celý ten kus scrollu držal jednu a tú istú snímku. Meranie pohybu
+   medzi snímkami hovorí, že samotné video až do konca beží, posledná sekunda
+   má 100 až 250 percent svojho priemerného pohybu. Stálo teda scrollovanie,
+   nie obraz. Teraz video dobehne 15 vh pred prechodom, čo je jedno kolečko
+   myši, teda nádych, nie zastávka. */
+var TIME_END = 0.945;
 var VEIL_A   = 0.955;
 var VEIL_B   = 0.998;
 
@@ -1200,7 +1206,7 @@ var chrome = { cue:-1, top:-1, veil:-1, nav:null, ip:-1, cueDark:null, end:-1 };
 
 function updateChrome(p){
   /* nápoveda zostáva po celý čas a zmizne až s prechodom do stránky */
-  var cueOp = 1 - smoothstep(p,0.93,0.99);
+  var cueOp = 1 - smoothstep(p,0.948,0.99);
   if (Math.abs(cueOp-chrome.cue) > 0.01){
     chrome.cue = cueOp;
     cue.style.opacity = cueOp.toFixed(2);
@@ -1235,7 +1241,7 @@ function updateChrome(p){
     endBox.style.opacity = endOp.toFixed(3);
     endBox.classList.toggle('live', endOp > 0.6);
   }
-  var navOn = p > 0.94;
+  var navOn = p > 0.95;
   if (navOn !== chrome.nav){ chrome.nav = navOn; nav.classList.toggle('on', navOn); }
 }
 

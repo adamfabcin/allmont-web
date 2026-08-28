@@ -22,7 +22,12 @@ Ako intro funguje:
 - Video sa sťahuje celé ako blob, až potom sa zapne scrollovanie. Do vtedy drží
   miesto `hero-poster.jpg`, teda prvá snímka.
 - Hero má výšku 1500vh. Čas videa ide so scrollom rovnomerne po `TIME_END`
-  (0,90), potom drží poslednú snímku.
+  (0,945), potom drží poslednú snímku. Bolo tam 0,90, ale to znamenalo 616 px
+  scrollu, na ktorých sa nedialo vôbec nič, ani prechod. Meranie pohybu medzi
+  snímkami ukázalo, že samotné video až do konca beží, posledná sekunda má 100
+  až 250 percent svojho priemerného pohybu. Stálo teda scrollovanie, nie obraz.
+  Teraz je tá medzera 112 px, teda jedno kolečko myši. Nápoveda aj navigácia sa
+  posunuli s ňou, boli nastavené na starý koniec videa.
 - **Päť titulkov** v prvých dvoch tretinách, biele, jeden rovnaký jemný závoj.
   Posledná tretina beží bez textu.
 - Na konci sa obraz rozplynie do farby stránky a **nadpis sa vynára priamo
