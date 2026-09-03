@@ -23,6 +23,8 @@ neukázal starú verziu stránky.
 
 ```
 index.html                 celá stránka, štýly aj skript v jednom súbore
+POKRACOVANIE.md            stav, pravidlá a pasce, čítať pred akoukoľvek zmenou
+DENNIK-SEDENIA.md          história rozhodnutí a slepých uličiek
 serve.py                   lokálny server bez kešovania
 SPUSTIT-WEB.command        spúšťač pre macOS
 assets/
